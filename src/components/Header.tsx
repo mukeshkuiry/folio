@@ -4,10 +4,13 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import gsap from "gsap";
 import clsx from "clsx";
+import { SOCIALS } from "@/lib/data";
 
 const NAV_ITEMS = [
-  { label: "Project Index", href: "/#directory" },
-  { label: "Profile", href: "/#profile" },
+  { label: "Home", href: "/", index: "01." },
+  { label: "Work", href: "/work", index: "02." },
+  { label: "Profile", href: "/#profile", index: "03." },
+  { label: "Contact", href: "/contact", index: "04." },
 ];
 
 export function Header() {
@@ -77,7 +80,7 @@ export function Header() {
   return (
     <>
       <header className={clsx("header", hidden && !menuOpen && "hidden")}>
-        <Link href="/" className="header-logo">WESTERN ARCH</Link>
+        <Link href="/" className="header-logo">MUKESH KUIRY</Link>
         <button
           className="header-menu-btn"
           onClick={openMenu}
@@ -88,9 +91,9 @@ export function Header() {
       </header>
 
       {/* Full-screen menu overlay */}
-      <div className="menu-overlay" ref={overlayRef}>
+      <div className="menu-overlay" ref={overlayRef} data-theme="dark">
         <div className="menu-overlay-header">
-          <span className="menu-overlay-logo">WESTERN ARCH</span>
+          <span className="menu-overlay-logo">MUKESH KUIRY</span>
           <button className="menu-close-btn" onClick={closeMenu} aria-label="Close menu">
             Close
           </button>
@@ -105,6 +108,7 @@ export function Header() {
                 ref={(el) => { navLinksRef.current[i] = el; }}
                 onClick={closeMenu}
               >
+                <span className="menu-nav-index">{item.index}</span>
                 {item.label}
               </Link>
             </div>
@@ -112,10 +116,16 @@ export function Header() {
         </nav>
 
         <div className="menu-footer">
-          <span className="menu-email">PERSONAL WORKSPACE (V1.0)</span>
-          <a href="https://github.com/westernarch" className="menu-email" target="_blank" rel="noopener noreferrer">
-            github.com/westernarch
-          </a>
+          <a href="mailto:mukeshkk3162@gmail.com" className="menu-email">mukeshkk3162@gmail.com</a>
+          <div style={{ display: "flex", gap: "1.4em", alignItems: "center" }}>
+            {SOCIALS.map((s) => (
+              <a key={s.label} href={s.href} className="menu-social-icon" target="_blank" rel="noopener noreferrer" aria-label={s.label}>
+                <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18" aria-hidden="true">
+                  <path d={s.iconPath} />
+                </svg>
+              </a>
+            ))}
+          </div>
         </div>
       </div>
     </>

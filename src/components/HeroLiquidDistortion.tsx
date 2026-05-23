@@ -119,7 +119,7 @@ export function HeroLiquidDistortion() {
       ctx.textBaseline = "top";
       ctx.textAlign = "left";
 
-      const lines = ["Independent", "engineering", "focused on utility", "and clean execution."];
+      const lines = ["software", "engineering", "focused on scale", "and clean execution."];
       // Match .t-hero exactly: clamp(40px, 10vw, 200px), weight 300, line-height 0.95em, letter-spacing -0.02em
       const cw = container?.offsetWidth ?? window.innerWidth;
       const cssPx = Math.min(Math.max(40, cw * 0.10), 200);

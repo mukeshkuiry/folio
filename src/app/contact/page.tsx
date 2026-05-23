@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { SOCIALS } from "@/lib/data";
 
 type FormData = {
   name: string;
@@ -54,22 +55,26 @@ export default function ContactPage() {
         <div className="contact-grid">
           {/* Info column */}
           <div>
+            <div style={{ display: "flex", alignItems: "center", gap: "0.6em", marginBottom: "3vw" }}>
+              <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#4caf50", display: "inline-block", flexShrink: 0 }} />
+              <span className="t-caption" style={{ color: "var(--color-grey-mid)", letterSpacing: "0.08em" }}>AVAILABLE FOR WORK</span>
+            </div>
             <p className="contact-info-email">
-              <a href="mailto:hello@zajno.com">hello@zajno.com</a>
+              <a href="mailto:mukeshkk3162@gmail.com">mukeshkk3162@gmail.com</a>
             </p>
             <div className="contact-info-socials">
-              {["Instagram", "Twitter", "Dribbble", "Behance", "LinkedIn"].map((s) => (
-                <a href="#" key={s} className="contact-info-link">{s}</a>
+              {SOCIALS.map((s) => (
+                <a href={s.href} key={s.label} className="contact-info-link" target="_blank" rel="noopener noreferrer">{s.label}</a>
               ))}
             </div>
-            <p className="contact-location">Tbilisi, Georgia<br />New York, USA</p>
+            <p className="contact-location">Bengaluru, India</p>
           </div>
 
           {/* Form column */}
           <div>
             {submitted ? (
               <div className="form-success">
-                Thank you. We&apos;ll be in touch shortly.
+                Thank you. I&apos;ll get back to you shortly.
               </div>
             ) : (
               <form onSubmit={handleSubmit} noValidate>
@@ -100,27 +105,15 @@ export default function ContactPage() {
                     placeholder="Your company (optional)"
                   />
                 </FormField>
-                <FormField label="Project Description" error={errors.description}>
+                <FormField label="Project / Opportunity" error={errors.description}>
                   <textarea
                     className={`form-input${errors.description ? " error" : ""}`}
                     rows={4}
                     value={form.description}
                     onChange={(e) => handleChange("description", e.target.value)}
-                    placeholder="Tell us about your project..."
+                    placeholder="What are you working on?"
                     style={{ resize: "none", display: "block" }}
                   />
-                </FormField>
-                <FormField label="Budget Range">
-                  <select
-                    className="form-select"
-                    value={form.budget}
-                    onChange={(e) => handleChange("budget", e.target.value)}
-                  >
-                    <option value="">Select a range</option>
-                    {BUDGET_OPTIONS.map((opt) => (
-                      <option key={opt} value={opt}>{opt}</option>
-                    ))}
-                  </select>
                 </FormField>
                 <button type="submit" className="form-submit-btn">
                   Send message <span>→</span>
@@ -133,10 +126,14 @@ export default function ContactPage() {
 
       <footer className="footer-cta">
         <div className="footer-bottom">
-          <span>© {new Date().getFullYear()} Zajno Studio. All rights reserved.</span>
+          <span>© {new Date().getFullYear()} Mukesh Kuiry. All rights reserved.</span>
           <div className="footer-socials">
-            {["Instagram", "Twitter", "Dribbble"].map((s) => (
-              <a href="#" key={s} className="footer-social-link t-caption">{s}</a>
+            {SOCIALS.map((s) => (
+              <a key={s.label} href={s.href} className="footer-social-link" target="_blank" rel="noopener noreferrer" aria-label={s.label}>
+                <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden="true">
+                  <path d={s.iconPath} />
+                </svg>
+              </a>
             ))}
           </div>
         </div>

@@ -3,9 +3,11 @@ import { useEffect, useRef } from "react";
 import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { PROJECTS } from "@/lib/data";
+import { PROJECTS, SOCIALS } from "@/lib/data";
 import { WebGLImage } from "@/components/WebGLImage";
 import { HeroLiquidDistortion } from "@/components/HeroLiquidDistortion";
+import { SiteFluidPreview } from "@/components/SiteFluidPreview";
+import { MagneticButton } from "@/components/MagneticButton";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -22,7 +24,7 @@ function Hero() {
       <div className="hero-content">
         <div style={{ position: "relative" }}>
           <h1 className="t-hero" style={{ visibility: "hidden" }}>
-            {["Independent", , "focused on utility", "and clean execution."].map((line, i) => (
+            {["Independent", "engineering", "focused on utility", "and clean execution."].map((line, i) => (
               <span className="hero-line-wrap" key={i}>
                 <span className="hero-line" ref={(el) => { linesRef.current[i] = el; }} style={{ display: "block" }}>{line}</span>
               </span>
@@ -35,12 +37,10 @@ function Hero() {
         <div style={{ marginTop: "4vw", borderTop: "1px solid var(--color-grey-light)", paddingTop: "2vw", display: "flex", alignItems: "flex-start", gap: "6vw" }}>
           <p className="t-caption" style={{ color: "var(--color-grey-mid)", whiteSpace: "nowrap", paddingTop: "0.3em" }}>PERSONAL WORKSPACE&nbsp;(V1.0)</p>
           <p className="t-body" style={{ color: "var(--color-grey-mid)", maxWidth: "36vw" }}>
-            Western Arch is a dedicated workspace for specialized web software. Every tool is built independently to provide immediate utility, local data isolation, and absolute visual continuity.
+            A curated portfolio of work, projects, and engineering craft. From distributed backend systems to full-stack products, everything here is something I built, shipped, or obsessed over.
           </p>
         </div>
-        <Link href="#directory" className="link-arrow t-caption" style={{ marginTop: "3vw", display: "inline-flex" }}>
-          Explore Directory <span style={{ marginLeft: "0.4em" }}>→</span>
-        </Link>
+
       </div>
       <div className="hero-scroll">
         <span>Scroll</span>
@@ -85,7 +85,14 @@ function ProjectItem({ project, index }: { project: (typeof PROJECTS)[0]; index:
         ref={wrapRef}
         style={{ clipPath: "inset(100% 0% 0% 0%)", aspectRatio: "21 / 9" }}
       >
-        <WebGLImage color={project.color ?? "#C8C4BD"} style={{ position: "absolute", inset: 0 }} />
+        {(project as { preview_url?: string }).preview_url ? (
+          <SiteFluidPreview
+            url={(project as { preview_url?: string }).preview_url!}
+            fallbackColor={project.color ?? "#141924"}
+          />
+        ) : (
+          <WebGLImage color={project.color ?? "#C8C4BD"} style={{ position: "absolute", inset: 0 }} />
+        )}
       </div>
 
       {/* Meta bar */}
@@ -115,7 +122,7 @@ function ProjectItem({ project, index }: { project: (typeof PROJECTS)[0]; index:
   );
 }
 
-const MARQUEE_ITEMS = ["TypeScript", "Go", "Node.js", "Swift", "React", "Next.js", "Tailwind CSS", "WebGL"];
+const MARQUEE_ITEMS = ["Golang", "TypeScript", "Node.js", "NestJS", "React", "Next.js", "Python", "Redis", "Kafka", "MongoDB", "Docker", "Kubernetes", "AWS", "PostgreSQL", "GitHub Actions"];
 function Marquee() {
   const doubled = [...MARQUEE_ITEMS, ...MARQUEE_ITEMS];
   return (
@@ -131,22 +138,22 @@ function Marquee() {
 
 function AboutTeaser() {
   const ledger = [
-    { label: "Core Engineering", value: "TypeScript, Go, Node.js, Swift" },
-    { label: "Interface Layer", value: "React, Next.js, Tailwind CSS, WebGL" },
-    { label: "System Stance", value: "Data Isolation, Zero-Server Dependency, Performance Constraints" },
+    { label: "Current Role", value: "Software Engineer @ Refyne India, Bengaluru" },
+    { label: "Stack", value: "Golang, TypeScript, Node.js, React, Next.js, Python" },
+    { label: "Infrastructure", value: "AWS, Docker, Kubernetes, Redis, Kafka, MongoDB" },
   ];
   return (
     <section id="profile" className="section" style={{ borderTop: "1px solid var(--color-grey-light)" }}>
       <div className="about-teaser">
         <div>
           <p className="about-label">The Engineer</p>
-          <a href="https://github.com/westernarch" className="link-arrow t-caption" style={{ marginTop: "2vw" }} target="_blank" rel="noopener noreferrer">
-            github.com/westernarch <span>→</span>
+          <a href="https://github.com/mukeshkuiry" className="link-arrow t-caption" style={{ marginTop: "2vw" }} target="_blank" rel="noopener noreferrer">
+            github.com/mukeshkuiry <span>→</span>
           </a>
         </div>
         <div>
           <p className="about-text">
-            I handle the entire pipeline of my applications—from core system mechanics to user interface layout. By maintaining control over the entire codebase, I ensure that any standalone utility within this ecosystem behaves predictably, securely isolates client operations locally, and loads instantly.
+            I care deeply about how software is built, not just that it works. Clean abstractions, resilient systems, interfaces that feel inevitable. Good engineering is invisible. That's the standard I hold myself to.
           </p>
           <div style={{ marginTop: "4vw", display: "flex", flexDirection: "column", gap: 0 }}>
             {ledger.map((item, i) => (
@@ -164,12 +171,20 @@ function AboutTeaser() {
 
 function FooterCTA() {
   return (
-    <footer className="footer-cta">
-      <h2 className="footer-cta-heading" style={{ opacity: 0.08, userSelect: "none", pointerEvents: "none" }}>WESTERN<br />ARCH</h2>
+    <footer className="footer-cta" data-theme="dark">
+      <h2 className="footer-cta-heading" style={{ opacity: 0.08, userSelect: "none", pointerEvents: "none" }}>MUKESH<br />KUIRY</h2>
       <div className="footer-bottom">
-        <span>© 2026 WESTERN ARCH. ALL RIGHTS RESERVED.</span>
-        <Link href="https://github.com/westernarch" className="footer-social-link t-caption" target="_blank" rel="noopener noreferrer">github.com/westernarch →</Link>
-        <span>DESIGNED WITH STRUCTURAL DISCIPLINE.</span>
+        <span>© {new Date().getFullYear()} MUKESH KUIRY. ALL RIGHTS RESERVED.</span>
+        <div className="footer-socials">
+          {SOCIALS.map((s) => (
+            <a key={s.label} href={s.href} className="footer-social-link" target="_blank" rel="noopener noreferrer" aria-label={s.label}>
+              <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden="true">
+                <path d={s.iconPath} />
+              </svg>
+            </a>
+          ))}
+        </div>
+        <Link href="/contact" className="link-arrow t-caption">Get in Touch <span>→</span></Link>
       </div>
     </footer>
   );
@@ -181,11 +196,19 @@ export default function HomePage() {
       <Hero />
       <section id="directory" className="section">
         <div style={{ marginBottom: "4vw", display: "flex", justifyContent: "space-between", alignItems: "baseline", borderBottom: "1px solid var(--color-grey-light)", paddingBottom: "1.5vw" }}>
-          <h2 className="t-section">Project Directory</h2>
-          <span className="t-caption" style={{ color: "var(--color-grey-mid)" }}>{PROJECTS.length}&nbsp;TOOLS&nbsp;ACTIVE</span>
+          <h2 className="t-section">Work Directory</h2>
+          <span className="t-caption" style={{ color: "var(--color-grey-mid)" }}>{PROJECTS.length}&nbsp;PROJECTS</span>
         </div>
         <div style={{ marginTop: "5vw" }}>
-          {PROJECTS.map((p, i) => <ProjectItem key={p.slug} project={p} index={i} />)}
+          {PROJECTS.slice(0, 3).map((p, i) => <ProjectItem key={p.slug} project={p} index={i} />)}
+        </div>
+        <div style={{ marginTop: "4vw", paddingTop: "3vw", borderTop: "1px solid var(--color-grey-light)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <span className="t-caption" style={{ color: "var(--color-grey-mid)" }}>SHOWING 3 OF {PROJECTS.length}</span>
+          <MagneticButton>
+            <Link href="/work" className="view-all-btn">
+              View All Works <span>→</span>
+            </Link>
+          </MagneticButton>
         </div>
       </section>
       <Marquee />

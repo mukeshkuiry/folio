@@ -7,11 +7,11 @@ import { PageTransition } from "@/components/PageTransition";
 import { SmoothScrollProvider } from "@/components/SmoothScrollProvider";
 
 export const metadata: Metadata = {
-  title: "Western Arch",
-  description: "Western Arch is a dedicated workspace for specialized web software. Every tool is built independently to provide immediate utility, local data isolation, and absolute visual continuity.",
+  title: "Mukesh Kuiry",
+  description: "Mukesh Kuiry — Independent software engineer building distributed systems, full-stack products, and clean engineering craft.",
   openGraph: {
-    title: "Western Arch",
-    description: "Western Arch is a dedicated workspace for specialized web software. Every tool is built independently to provide immediate utility, local data isolation, and absolute visual continuity.",
+    title: "Mukesh Kuiry",
+    description: "Mukesh Kuiry — Independent software engineer building distributed systems, full-stack products, and clean engineering craft.",
     type: "website",
   },
   twitter: { card: "summary_large_image" },

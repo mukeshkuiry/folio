@@ -43,6 +43,20 @@ export function CustomCursor() {
     const observer = new MutationObserver(addHoverListeners);
     observer.observe(document.body, { childList: true, subtree: true });
 
+    function isDarkUnderCursor(x: number, y: number): boolean {
+      try {
+        const els = document.elementsFromPoint(x, y);
+        return els.some(
+          (el) =>
+            el instanceof HTMLElement &&
+            (el.dataset.theme === "dark" ||
+              el.closest("[data-theme='dark']") !== null)
+        );
+      } catch {
+        return false;
+      }
+    }
+
     function animate() {
       if (!dot || !ring) return;
       // Dot: snaps directly
@@ -54,6 +68,11 @@ export function CustomCursor() {
       ringX += (mouseX - ringX) * 0.12;
       ringY += (mouseY - ringY) * 0.12;
       ring.style.transform = `translate3d(${ringX - 24}px, ${ringY - 24}px, 0)`;
+
+      // Dark/light adaptive color
+      const dark = isDarkUnderCursor(mouseX, mouseY);
+      dot.classList.toggle("is-dark", dark);
+      ring.classList.toggle("is-dark", dark);
 
       raf = requestAnimationFrame(animate);
     }
