@@ -61,10 +61,12 @@ body {
 
 /* === TYPOGRAPHY SCALE === */
 .t-hero {
-  font-size: clamp(40px, 9vw, 180px);
-  font-weight: 400;
+  font-size: clamp(40px, 10vw, 200px);
+  font-weight: 300;
   line-height: 0.95em;
   letter-spacing: -0.02em;
+  margin: 0;
+  padding: 0;
 }
 .t-section {
   font-size: clamp(28px, 5vw, 100px);
@@ -325,8 +327,8 @@ body {
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  padding: 0 var(--content-pad-h) 6vw;
+  justify-content: center;
+  padding: 4vw var(--content-pad-h) 6vw;
   position: relative;
   overflow: hidden;
 }

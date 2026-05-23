@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { PROJECTS } from "@/lib/data";
 import { WebGLImage } from "@/components/WebGLImage";
+import { HeroLiquidDistortion } from "@/components/HeroLiquidDistortion";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -17,14 +18,20 @@ function Hero() {
   return (
     <section className="hero">
       <div className="hero-bg" />
+      {/* WebGL Liquid Distortion overlay on the hero text */}
       <div className="hero-content">
-        <h1 className="t-hero">
-          {["Independent engineering", "focused on utility", "and clean execution."].map((line, i) => (
-            <span className="hero-line-wrap" key={i}>
-              <span className="hero-line" ref={(el) => { linesRef.current[i] = el; }} style={{ display: "block" }}>{line}</span>
-            </span>
-          ))}
-        </h1>
+        <div style={{ position: "relative" }}>
+          <h1 className="t-hero" style={{ visibility: "hidden" }}>
+            {["Independent", , "focused on utility", "and clean execution."].map((line, i) => (
+              <span className="hero-line-wrap" key={i}>
+                <span className="hero-line" ref={(el) => { linesRef.current[i] = el; }} style={{ display: "block" }}>{line}</span>
+              </span>
+            ))}
+          </h1>
+          <div style={{ position: "absolute", inset: 0 }}>
+            <HeroLiquidDistortion />
+          </div>
+        </div>
         <div style={{ marginTop: "4vw", borderTop: "1px solid var(--color-grey-light)", paddingTop: "2vw", display: "flex", alignItems: "flex-start", gap: "6vw" }}>
           <p className="t-caption" style={{ color: "var(--color-grey-mid)", whiteSpace: "nowrap", paddingTop: "0.3em" }}>PERSONAL WORKSPACE&nbsp;(V1.0)</p>
           <p className="t-body" style={{ color: "var(--color-grey-mid)", maxWidth: "36vw" }}>
@@ -56,11 +63,12 @@ function ProjectItem({ project, index }: { project: (typeof PROJECTS)[0]; index:
       trigger: wrap, start: "top 78%",
       onEnter: () => gsap.to(wrap, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.2, ease: "power3.inOut" }),
     });
-    const st2 = ScrollTrigger.create({
-      trigger: metaRef.current, start: "top 85%",
-      onEnter: () => gsap.from(metaRef.current, { y: 18, opacity: 0, duration: 0.7, ease: "power3.out" }),
-    });
-    return () => { st1.kill(); st2.kill(); };
+    const metaEl = metaRef.current;
+    const st2 = metaEl ? ScrollTrigger.create({
+      trigger: metaEl, start: "top 85%",
+      onEnter: () => gsap.from(metaEl, { y: 18, opacity: 0, duration: 0.7, ease: "power3.out" }),
+    }) : null;
+    return () => { st1.kill(); st2?.kill(); };
   }, []);
 
   return (
