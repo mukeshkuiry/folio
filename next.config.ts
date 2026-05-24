@@ -6,25 +6,6 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ["three", "gsap"],
   },
-  async rewrites() {
-    return {
-      beforeFiles: [
-        // Handle blog subdomain in development
-        {
-          source: "/:path*",
-          has: [{ type: "host", value: "blog.localhost:3000" }],
-          destination: "/blog/:path*",
-        },
-        {
-          source: "/:path*",
-          has: [{ type: "host", value: "blog.mukeshkuiry.com" }],
-          destination: "/blog/:path*",
-        },
-      ],
-      afterFiles: [],
-      fallback: [],
-    };
-  },
 };
 
 export default nextConfig;
