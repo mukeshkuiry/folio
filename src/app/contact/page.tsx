@@ -29,15 +29,22 @@ export default function ContactPage() {
     return Object.keys(errs).length === 0;
   }, [form]);
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (validate()) {
-      setIsSubmitting(true);
-      // Simulate async submission
-      setTimeout(() => {
-        setIsSubmitting(false);
-        setSubmitted(true);
-      }, 800);
+    if (!validate()) return;
+    setIsSubmitting(true);
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      if (!res.ok) throw new Error("Failed");
+      setSubmitted(true);
+    } catch {
+      setErrors({ description: "Something went wrong. Please try again or email me directly." });
+    } finally {
+      setIsSubmitting(false);
     }
   }
 
