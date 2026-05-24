@@ -1,11 +1,11 @@
 "use client";
-import { useState, useEffect, useRef, useCallback } from "react";
+import { SOCIALS } from "@/lib/data";
+import { blogIndexUrl, isBlogSite, mainSiteUrl } from "@/lib/site";
+import clsx from "clsx";
+import gsap from "gsap";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import gsap from "gsap";
-import clsx from "clsx";
-import { SOCIALS } from "@/lib/data";
-import { blogIndexUrl } from "@/lib/site";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 const NAV_ITEMS = [
   { label: "Home", href: "/", index: "01." },
@@ -76,37 +76,45 @@ export function Header() {
     <>
       <header className={clsx("header", hidden && !menuOpen && "hidden")}>
         <Link href="/" className="header-logo">MUKESH KUIRY</Link>
-        <button className="header-menu-btn" onClick={openMenu} aria-label="Open menu">Menu</button>
+        {isBlogSite ? (
+          <Link href={mainSiteUrl()} className="header-menu-btn" aria-label="Visit portfolio">
+            Visit Portfolio
+          </Link>
+        ) : (
+          <button className="header-menu-btn" onClick={openMenu} aria-label="Open menu">Menu</button>
+        )}
       </header>
 
-      <div className="menu-overlay" ref={overlayRef} data-theme="dark" role="dialog" aria-modal="true" aria-label="Navigation menu">
-        <div className="menu-overlay-header">
-          <span className="menu-overlay-logo">MUKESH KUIRY</span>
-          <button className="menu-close-btn" onClick={closeMenu} aria-label="Close menu">Close</button>
-        </div>
-        <nav className="menu-nav" aria-label="Main navigation">
-          {NAV_ITEMS.map((item, i) => (
-            <div className="menu-nav-item" key={item.href}>
-              <Link href={item.href} className="menu-nav-link" ref={(el) => { navLinksRef.current[i] = el; }} onClick={closeMenu}>
-                <span className="menu-nav-index">{item.index}</span>
-                {item.label}
-              </Link>
-            </div>
-          ))}
-        </nav>
-        <div className="menu-footer">
-          <a href="mailto:mukeshkk3162@gmail.com" className="menu-email">mukeshkk3162@gmail.com</a>
-          <div style={{ display: "flex", gap: "1.4em", alignItems: "center" }}>
-            {SOCIALS.map((s) => (
-              <a key={s.label} href={s.href} className="menu-social-icon" target="_blank" rel="noopener noreferrer" aria-label={s.label}>
-                <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18" aria-hidden="true">
-                  <path d={s.iconPath} />
-                </svg>
-              </a>
+      {!isBlogSite && (
+        <div className="menu-overlay" ref={overlayRef} data-theme="dark" role="dialog" aria-modal="true" aria-label="Navigation menu">
+          <div className="menu-overlay-header">
+            <span className="menu-overlay-logo">MUKESH KUIRY</span>
+            <button className="menu-close-btn" onClick={closeMenu} aria-label="Close menu">Close</button>
+          </div>
+          <nav className="menu-nav" aria-label="Main navigation">
+            {NAV_ITEMS.map((item, i) => (
+              <div className="menu-nav-item" key={item.href}>
+                <Link href={item.href} className="menu-nav-link" ref={(el) => { navLinksRef.current[i] = el; }} onClick={closeMenu}>
+                  <span className="menu-nav-index">{item.index}</span>
+                  {item.label}
+                </Link>
+              </div>
             ))}
+          </nav>
+          <div className="menu-footer">
+            <a href="mailto:mukeshkk3162@gmail.com" className="menu-email">mukeshkk3162@gmail.com</a>
+            <div style={{ display: "flex", gap: "1.4em", alignItems: "center" }}>
+              {SOCIALS.map((s) => (
+                <a key={s.label} href={s.href} className="menu-social-icon" target="_blank" rel="noopener noreferrer" aria-label={s.label}>
+                  <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18" aria-hidden="true">
+                    <path d={s.iconPath} />
+                  </svg>
+                </a>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </>
   );
 }
