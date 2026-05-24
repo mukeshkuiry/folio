@@ -1,15 +1,15 @@
 "use client";
-import { useEffect, useRef } from "react";
-import Link from "next/link";
+import { HeroLiquidDistortion } from "@/components/HeroLiquidDistortion";
+import { MagneticButton } from "@/components/MagneticButton";
+import { SiteFluidPreview } from "@/components/SiteFluidPreview";
+import { WebGLImage } from "@/components/WebGLImage";
+import { BLOG_POSTS, formatDate, getFeaturedPosts } from "@/lib/blog-data";
+import { PROJECTS, SOCIALS, type Project } from "@/lib/data";
+import { blogIndexUrl, blogPostUrl } from "@/lib/site";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { PROJECTS, SOCIALS, type Project } from "@/lib/data";
-import { BLOG_POSTS, getFeaturedPosts, formatDate } from "@/lib/blog-data";
-import { blogIndexUrl, blogPostUrl } from "@/lib/site";
-import { WebGLImage } from "@/components/WebGLImage";
-import { HeroLiquidDistortion } from "@/components/HeroLiquidDistortion";
-import { SiteFluidPreview } from "@/components/SiteFluidPreview";
-import { MagneticButton } from "@/components/MagneticButton";
+import Link from "next/link";
+import { useEffect, useRef } from "react";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -234,20 +234,6 @@ function AboutTeaser() {
           <p className="about-text">
             I care deeply about how software is built, not just that it works. Clean abstractions, resilient systems, interfaces that feel inevitable. Good engineering is invisible. That&apos;s the standard I hold myself to.
           </p>
-          <div className="about-stats">
-            <div>
-              <p className="stat-number">3+</p>
-              <p className="stat-label">Years Building</p>
-            </div>
-            <div>
-              <p className="stat-number">{PROJECTS.length}</p>
-              <p className="stat-label">Projects Shipped</p>
-            </div>
-            <div>
-              <p className="stat-number">{BLOG_POSTS.length}</p>
-              <p className="stat-label">Articles Written</p>
-            </div>
-          </div>
           <div style={{ marginTop: "4vw", display: "flex", flexDirection: "column", gap: 0 }}>
             {ledger.map((item, i) => (
               <div key={i} className="about-ledger-item" style={{ borderTop: "1px solid var(--color-grey-light)", paddingTop: "1.4vw", paddingBottom: "1.4vw", display: "grid", gridTemplateColumns: "28% 1fr", gap: "2vw", alignItems: "start" }}>
