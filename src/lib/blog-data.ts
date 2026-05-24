@@ -1098,6 +1098,674 @@ You can't run Kafka blind. Key metrics to watch:
 Event-driven systems trade consistency for availability and scalability. Understand the tradeoffs before committing. When done right, they're the backbone of every large-scale system I've built.
 `,
   },
+  {
+    slug: "raft-leader-elections-under-real-network-chaos",
+    title: "Raft Leader Elections Under Real Network Chaos",
+    excerpt:
+      "How election timers, heartbeat jitter, and fsync latency interact in production Raft clusters, and what to tune before split-brain scares your team.",
+    date: "2026-05-22",
+    readTime: "14 min read",
+    category: "Distributed Systems",
+    featured: true,
+    coverColor: "#13202b",
+    content: `
+# Raft Leader Elections Under Real Network Chaos
+
+Leader election bugs in production usually come from timing assumptions that hold in staging but collapse under packet reordering and storage jitter.
+
+## Hidden Inputs That Skew Elections
+
+- Disk flush latency spikes on leaders.
+- Noisy neighbors causing cgroup CPU throttling.
+- Clock jitter in virtualized environments.
+
+\`\`\`go
+// Election timeout should be randomized and significantly larger
+// than heartbeat interval to reduce collision probability.
+heartbeat := 100 * time.Millisecond
+electionMin := 600 * time.Millisecond
+electionMax := 1200 * time.Millisecond
+\`\`\`
+
+## Practical Guardrails
+
+1. Keep election timeout at least 5x heartbeat.
+2. Track term-change rate as an SLO signal.
+3. Separate WAL IO from snapshot IO paths.
+
+Consensus systems fail in the margins. Measure the margins.
+`,
+  },
+  {
+    slug: "postgres-index-bloat-and-fillfactor-strategies",
+    title: "Postgres Index Bloat and Fillfactor Strategies",
+    excerpt:
+      "A practical approach to reducing index bloat in write-heavy OLTP systems using fillfactor tuning, HOT-friendly schema design, and targeted reindex plans.",
+    date: "2026-05-21",
+    readTime: "13 min read",
+    category: "Databases",
+    featured: false,
+    coverColor: "#1b2735",
+    content: `
+# Postgres Index Bloat and Fillfactor Strategies
+
+Index bloat is a silent tax on both latency and storage. Teams often notice it only after cache hit ratio starts drifting.
+
+## Start with Table Behavior
+
+If updates touch indexed columns frequently, bloat compounds quickly.
+
+\`\`\`sql
+ALTER TABLE orders SET (fillfactor = 75);
+REINDEX INDEX CONCURRENTLY idx_orders_status_updated_at;
+\`\`\`
+
+## Tuning Pattern
+
+- Lower fillfactor on high-churn tables.
+- Prefer HOT updates by minimizing unnecessary indexed columns.
+- Schedule rolling concurrent reindex for top offenders.
+
+The goal is not zero bloat. The goal is controlled, predictable bloat.
+`,
+  },
+  {
+    slug: "kubernetes-pod-startup-critical-path-analysis",
+    title: "Kubernetes Pod Startup Critical Path Analysis",
+    excerpt:
+      "Break down cold-start latency from scheduler queue to readiness probe success, with specific tactics for reducing startup p99 in multi-tenant clusters.",
+    date: "2026-05-20",
+    readTime: "12 min read",
+    category: "DevOps",
+    featured: false,
+    coverColor: "#122130",
+    content: `
+# Kubernetes Pod Startup Critical Path Analysis
+
+Startup delay is a chain problem: image pull, cgroup setup, sidecar init, app boot, readiness checks. Fixing one link rarely solves p99.
+
+## Instrument the Full Timeline
+
+1. Scheduler enqueue to bind.
+2. Node pull and unpack.
+3. Container create and entrypoint.
+4. Probe pass and endpoint publish.
+
+\`\`\`yaml
+startupProbe:
+  httpGet:
+    path: /healthz
+    port: 8080
+  periodSeconds: 2
+  failureThreshold: 40
+\`\`\`
+
+Treat startup latency as a product metric, not just platform noise.
+`,
+  },
+  {
+    slug: "grpc-stream-backpressure-with-flow-control-windows",
+    title: "gRPC Stream Backpressure with Flow Control Windows",
+    excerpt:
+      "How to prevent memory blowups and long-tail latency in bidirectional gRPC streams using bounded buffers and dynamic flow-control tuning.",
+    date: "2026-05-18",
+    readTime: "15 min read",
+    category: "Backend",
+    featured: false,
+    coverColor: "#152432",
+    content: `
+# gRPC Stream Backpressure with Flow Control Windows
+
+Unbounded stream consumers eventually fail in one of three ways: memory pressure, queue thrashing, or timeout amplification.
+
+## Core Rule
+
+Apply backpressure at every stage, not just network transport.
+
+\`\`\`go
+// Bounded application channel protects process memory.
+msgs := make(chan *pb.Event, 1024)
+\`\`\`
+
+## Implementation Notes
+
+- Tune HTTP/2 window sizes with realistic payloads.
+- Use bounded worker pools for downstream processing.
+- Propagate cancellation aggressively.
+
+Throughput without backpressure is borrowed time.
+`,
+  },
+  {
+    slug: "multi-region-idempotency-for-payment-apis",
+    title: "Multi-Region Idempotency for Payment APIs",
+    excerpt:
+      "Designing payment mutation endpoints that remain safe under retries, failover races, and duplicate submit storms across regions.",
+    date: "2026-05-17",
+    readTime: "16 min read",
+    category: "Architecture",
+    featured: true,
+    coverColor: "#1a2b38",
+    content: `
+# Multi-Region Idempotency for Payment APIs
+
+Payment APIs are where distributed systems bugs become financial bugs. Idempotency design has to be explicit and auditable.
+
+## Record Shape
+
+\`\`\`typescript
+type IdempotencyRow = {
+  key: string;
+  requestHash: string;
+  status: "inflight" | "committed" | "rejected";
+  responseJson: string;
+};
+\`\`\`
+
+## Failure Handling
+
+1. Same key + same hash => replay prior response.
+2. Same key + different hash => hard reject.
+3. Inflight collision => client retry with backoff.
+
+Idempotency is a correctness contract, not an optimization layer.
+`,
+  },
+  {
+    slug: "building-low-latency-search-with-hybrid-indexes",
+    title: "Building Low-Latency Search with Hybrid Indexes",
+    excerpt:
+      "Combining lexical inverted indexes with vector retrieval for high-recall, low-latency developer search workloads at scale.",
+    date: "2026-05-15",
+    readTime: "17 min read",
+    category: "Search",
+    featured: false,
+    coverColor: "#182430",
+    content: `
+# Building Low-Latency Search with Hybrid Indexes
+
+Developer search fails when you over-commit to either lexical matching or embeddings alone. Hybrid retrieval wins in most practical corpora.
+
+## Retrieval Plan
+
+- Lexical BM25 for precision anchors.
+- Vector ANN for semantic recall.
+- Reciprocal rank fusion for stable blending.
+
+\`\`\`text
+RRF(d) = Σ 1 / (k + rank_i(d))
+\`\`\`
+
+## Operations Notes
+
+Keep vector index rebuilds decoupled from lexical refresh cadence to avoid synchronized regressions.
+
+Search quality is mostly ranking engineering, not model hype.
+`,
+  },
+  {
+    slug: "timeseries-cardinality-budgeting-for-prometheus",
+    title: "Time-Series Cardinality Budgeting for Prometheus",
+    excerpt:
+      "A governance model for labels and metric families that keeps Prometheus fast during incidents while preserving useful debugging signals.",
+    date: "2026-05-14",
+    readTime: "11 min read",
+    category: "Observability",
+    featured: false,
+    coverColor: "#1d2a36",
+    content: `
+# Time-Series Cardinality Budgeting for Prometheus
+
+Cardinality blowups are predictable if you do not enforce label budgets.
+
+## Budget by Metric Family
+
+Assign a max active-series target for each service and block merges that exceed policy.
+
+\`\`\`yaml
+metric_relabel_configs:
+  - source_labels: [path]
+    regex: "/users/[0-9]+"
+    target_label: path
+    replacement: "/users/:id"
+\`\`\`
+
+## Anti-Patterns
+
+- Raw URL labels.
+- User IDs in counters.
+- Request IDs in histograms.
+
+Metrics should summarize systems, not mirror event logs.
+`,
+  },
+  {
+    slug: "clickhouse-materialized-view-pipelines-for-analytics",
+    title: "ClickHouse Materialized View Pipelines for Product Analytics",
+    excerpt:
+      "Designing ingestion and rollup pipelines with ClickHouse materialized views for reliable sub-second dashboard queries.",
+    date: "2026-05-13",
+    readTime: "14 min read",
+    category: "Data Engineering",
+    featured: false,
+    coverColor: "#1c2532",
+    content: `
+# ClickHouse Materialized View Pipelines for Product Analytics
+
+Raw event tables are great for flexibility and terrible for dashboard consistency under peak load.
+
+## Pattern
+
+1. Ingest immutable raw facts.
+2. Build deterministic rollup MVs.
+3. Query rollups by default; raw only for deep-dive.
+
+\`\`\`sql
+CREATE MATERIALIZED VIEW mv_daily_signups
+ENGINE = SummingMergeTree
+ORDER BY (org_id, day)
+AS SELECT org_id, toDate(ts) AS day, count() AS signups
+FROM events
+WHERE event_name = 'signup'
+GROUP BY org_id, day;
+\`\`\`
+
+Analytics stability comes from precomputation discipline.
+`,
+  },
+  {
+    slug: "online-mysql-migrations-with-dual-write-cutovers",
+    title: "Online MySQL Migrations with Dual-Write Cutovers",
+    excerpt:
+      "A tested migration sequence for large MySQL tables using shadow schema, dual writes, checksums, and rollback-safe traffic switching.",
+    date: "2026-05-11",
+    readTime: "18 min read",
+    category: "Databases",
+    featured: true,
+    coverColor: "#15212d",
+    content: `
+# Online MySQL Migrations with Dual-Write Cutovers
+
+Schema migrations on multi-terabyte datasets are operational programs, not single SQL statements.
+
+## Safe Sequence
+
+1. Shadow table creation.
+2. Backfill in bounded chunks.
+3. Enable dual-write.
+4. Validate checksums continuously.
+5. Gradual read cutover, then write cutover.
+
+\`\`\`sql
+INSERT INTO users_v2 (id, email)
+SELECT id, email FROM users
+WHERE id > ? AND id <= ?;
+\`\`\`
+
+No cutover without sustained zero drift.
+`,
+  },
+  {
+    slug: "building-internal-platform-scorecards-that-drive-adoption",
+    title: "Building Internal Platform Scorecards That Drive Adoption",
+    excerpt:
+      "How platform teams can improve reliability and velocity with actionable scorecards linked to auto-fix workflows.",
+    date: "2026-05-10",
+    readTime: "12 min read",
+    category: "Platform Engineering",
+    featured: false,
+    coverColor: "#1f2b37",
+    content: `
+# Building Internal Platform Scorecards That Drive Adoption
+
+Platform scorecards fail when they are dashboards without remediation paths.
+
+## Make Them Actionable
+
+- Show one-click fixes for each failing control.
+- Surface scorecards in PR checks and service catalogs.
+- Reward trend improvements, not only absolute thresholds.
+
+\`\`\`yaml
+service_scorecard:
+  tracing_enabled: true
+  runbook_present: true
+  rollback_tested: true
+\`\`\`
+
+Adoption follows convenience. Policy follows adoption.
+`,
+  },
+  {
+    slug: "event-sourcing-snapshot-cadence-and-replay-costs",
+    title: "Event Sourcing Snapshot Cadence and Replay Costs",
+    excerpt:
+      "A cost model for snapshot frequency in event-sourced systems, balancing write overhead against replay latency and incident recovery speed.",
+    date: "2026-05-09",
+    readTime: "13 min read",
+    category: "Architecture",
+    featured: false,
+    coverColor: "#172633",
+    content: `
+# Event Sourcing Snapshot Cadence and Replay Costs
+
+Snapshots are a classic tradeoff: write amplification now versus replay pain later.
+
+## Simple Cost Frame
+
+Let replay time be $R(n)$ for $n$ events since snapshot, and snapshot overhead per write be $S$. Pick cadence minimizing expected recovery + steady-state costs.
+
+## Practical Heuristic
+
+- Snapshot on both count threshold and wall-clock threshold.
+- Snapshot sooner for aggregates with high recovery criticality.
+
+\`\`\`text
+if events_since_snapshot > 10_000 or age > 30m => snapshot
+\`\`\`
+
+Tune cadence using incident replay data, not gut feel.
+`,
+  },
+  {
+    slug: "zero-trust-service-identity-with-spiffe-in-k8s",
+    title: "Zero-Trust Service Identity with SPIFFE in Kubernetes",
+    excerpt:
+      "A migration guide from network trust to workload identity using SPIFFE/SPIRE, short-lived certs, and policy shadow mode.",
+    date: "2026-05-08",
+    readTime: "15 min read",
+    category: "Security",
+    featured: false,
+    coverColor: "#13242f",
+    content: `
+# Zero-Trust Service Identity with SPIFFE in Kubernetes
+
+IP-based trust is fragile in dynamic orchestration platforms. Identity has to be workload-scoped and cryptographically verifiable.
+
+## Rollout Phases
+
+1. Authenticate only.
+2. Authorize in shadow mode.
+3. Enforce least-privilege policies.
+
+\`\`\`yaml
+principal: spiffe://prod/ns/payments/sa/api
+allow:
+  - method: ChargeCard
+\`\`\`
+
+Shadow mode is where policy quality is built.
+`,
+  },
+  {
+    slug: "adaptive-kafka-consumer-concurrency-with-lag-feedback",
+    title: "Adaptive Kafka Consumer Concurrency with Lag Feedback",
+    excerpt:
+      "Dynamic worker scaling for consumers driven by lag slope and handler latency, with safeguards to avoid rebalance thrash.",
+    date: "2026-05-07",
+    readTime: "12 min read",
+    category: "Streaming",
+    featured: false,
+    coverColor: "#1a2733",
+    content: `
+# Adaptive Kafka Consumer Concurrency with Lag Feedback
+
+Static consumer concurrency is almost always wrong by lunchtime.
+
+## Feedback Inputs
+
+- partition lag delta
+- handler p95
+- broker throttle signals
+
+\`\`\`typescript
+if (lagSlope > HIGH && p95 < 100) workers += 2;
+if (p95 > 300) workers = Math.max(1, workers - 1);
+\`\`\`
+
+Scale conservatively to avoid rebalance storms.
+`,
+  },
+  {
+    slug: "slo-burn-rate-alerting-that-reduces-noise",
+    title: "SLO Burn-Rate Alerting That Reduces Noise",
+    excerpt:
+      "Designing multi-window burn-rate alerts that catch real reliability regressions early without paging teams for harmless variance.",
+    date: "2026-05-06",
+    readTime: "11 min read",
+    category: "Reliability",
+    featured: false,
+    coverColor: "#1b2631",
+    content: `
+# SLO Burn-Rate Alerting That Reduces Noise
+
+Burn-rate alerts work best when tied to action policies, not generic severity labels.
+
+## Two-Window Pattern
+
+- Fast-burn window detects acute incidents.
+- Slow-burn window detects chronic erosion.
+
+\`\`\`text
+fast: 1h window, burn > 14x
+slow: 6h window, burn > 4x
+\`\`\`
+
+Alert design should optimize decision quality, not chart sophistication.
+`,
+  },
+  {
+    slug: "webassembly-edge-filters-for-api-hardening",
+    title: "WebAssembly Edge Filters for API Hardening",
+    excerpt:
+      "Use WASM edge filters to enforce deterministic request normalization and basic abuse controls before traffic reaches core services.",
+    date: "2026-05-05",
+    readTime: "13 min read",
+    category: "Edge Computing",
+    featured: false,
+    coverColor: "#142532",
+    content: `
+# WebAssembly Edge Filters for API Hardening
+
+Edge policy logic should be simple, deterministic, and cheap.
+
+## Best Fit Use Cases
+
+- Header normalization
+- Path canonicalization
+- Lightweight signature checks
+
+\`\`\`rust
+#[no_mangle]
+pub fn on_request(req: Request) -> Action {
+    if req.path().starts_with("/internal") { return Action::Deny(403); }
+    Action::Continue
+}
+\`\`\`
+
+Edge layers should reject obvious bad traffic and leave business logic to origin.
+`,
+  },
+  {
+    slug: "oauth-refresh-token-rotation-for-public-clients",
+    title: "OAuth Refresh Token Rotation for Public Clients",
+    excerpt:
+      "Secure token lifecycle patterns for mobile and SPA apps with refresh rotation, reuse detection, and compromise-aware session revocation.",
+    date: "2026-05-04",
+    readTime: "14 min read",
+    category: "Security",
+    featured: false,
+    coverColor: "#202b36",
+    content: `
+# OAuth Refresh Token Rotation for Public Clients
+
+Public clients cannot protect long-lived secrets. Rotation and reuse detection are non-negotiable.
+
+## Core Controls
+
+1. PKCE for authorization code flow.
+2. Short-lived access tokens.
+3. One-time-use refresh tokens.
+
+\`\`\`json
+{
+  "access_token_ttl": 900,
+  "refresh_rotation": true,
+  "reuse_detection": true
+}
+\`\`\`
+
+Design the token lifecycle assuming compromise, not best behavior.
+`,
+  },
+  {
+    slug: "redis-streams-job-recovery-with-claim-loops",
+    title: "Redis Streams Job Recovery with Claim Loops",
+    excerpt:
+      "Reliable background processing with Redis Streams using consumer groups, pending-entry recovery, and explicit poison-message handling.",
+    date: "2026-05-03",
+    readTime: "12 min read",
+    category: "Infrastructure",
+    featured: false,
+    coverColor: "#1d2b39",
+    content: `
+# Redis Streams Job Recovery with Claim Loops
+
+At-least-once delivery only works if abandoned pending jobs are reclaimed predictably.
+
+## Recovery Loop
+
+- Scan PEL for stale deliveries.
+- Claim by healthy workers.
+- Track attempt count and DLQ threshold.
+
+\`\`\`bash
+XAUTOCLAIM jobs workers worker-3 60000 0-0 COUNT 100
+\`\`\`
+
+Queue durability comes from recovery behavior, not enqueue speed.
+`,
+  },
+  {
+    slug: "cost-aware-batch-scheduling-on-spot-nodes",
+    title: "Cost-Aware Batch Scheduling on Spot Nodes",
+    excerpt:
+      "Reduce compute spend safely with interruption-aware scheduling, checkpointing, and queue-level SLA classes for batch workloads.",
+    date: "2026-05-02",
+    readTime: "13 min read",
+    category: "Cloud",
+    featured: false,
+    coverColor: "#18242f",
+    content: `
+# Cost-Aware Batch Scheduling on Spot Nodes
+
+Spot capacity is powerful only when jobs are built to survive interruption.
+
+## Queue Classes
+
+- SLA-critical: on-demand only.
+- Flexible: spot preferred with fallback.
+- Experimental: spot only.
+
+\`\`\`yaml
+nodeSelector:
+  capacity-type: spot
+tolerations:
+  - key: interruption
+    operator: Exists
+\`\`\`
+
+Cost optimization without interruption policy is just deferred incident creation.
+`,
+  },
+  {
+    slug: "feature-flag-control-plane-consistency-models",
+    title: "Feature Flag Control-Plane Consistency Models",
+    excerpt:
+      "How to classify flags by risk and assign consistency guarantees so kill switches are strong while experiments stay fast.",
+    date: "2026-05-01",
+    readTime: "12 min read",
+    category: "Platform",
+    featured: false,
+    coverColor: "#1e2934",
+    content: `
+# Feature Flag Control-Plane Consistency Models
+
+Not all flags deserve the same consistency guarantees. Over-constraining all flag reads increases latency and cost.
+
+## Consistency Tiers
+
+1. Safety flags: strongly consistent.
+2. Experiment flags: bounded staleness.
+3. Cosmetic flags: client-evaluated.
+
+\`\`\`typescript
+type FlagTier = "safety" | "experiment" | "cosmetic";
+\`\`\`
+
+Correct consistency tiering is a major lever for both reliability and performance.
+`,
+  },
+  {
+    slug: "llm-agent-cache-design-for-tool-heavy-workflows",
+    title: "LLM Agent Cache Design for Tool-Heavy Workflows",
+    excerpt:
+      "A cache architecture for agent systems combining prompt normalization, tool-result memoization, and freshness-aware invalidation.",
+    date: "2026-04-30",
+    readTime: "15 min read",
+    category: "AI Infrastructure",
+    featured: false,
+    coverColor: "#112332",
+    content: `
+# LLM Agent Cache Design for Tool-Heavy Workflows
+
+Tool-heavy agents repeat work constantly. Caching is the difference between viable and expensive.
+
+## Layered Cache
+
+- Prompt fingerprint cache.
+- Tool output cache by normalized args.
+- Retrieval cache by semantic neighborhood.
+
+\`\`\`typescript
+const key = sha256(JSON.stringify({ promptTemplate, contextHash, toolSig }));
+\`\`\`
+
+Cache policy must encode freshness risk, not only hit-rate goals.
+`,
+  },
+  {
+    slug: "cqrs-read-model-rebuilds-with-versioned-cutover",
+    title: "CQRS Read-Model Rebuilds with Versioned Cutover",
+    excerpt:
+      "Rebuild large read models online using side-by-side projections, semantic diff checks, and cohort-based traffic migration.",
+    date: "2026-04-29",
+    readTime: "16 min read",
+    category: "Architecture",
+    featured: false,
+    coverColor: "#172633",
+    content: `
+# CQRS Read-Model Rebuilds with Versioned Cutover
+
+Read models drift. Rebuilds are inevitable. Downtime is optional.
+
+## Versioned Strategy
+
+1. Build V2 projection in parallel.
+2. Compare V1/V2 on sampled traffic.
+3. Shift cohorts gradually.
+4. Keep rollback path warm.
+
+\`\`\`pseudo
+if cohort(userId) == "canary":
+  query(V2)
+else:
+  query(V1)
+\`\`\`
+
+Confidence comes from diff quality, not migration speed.
+`,
+  },
 ];
 
 export function getFeaturedPosts(): BlogPost[] {
