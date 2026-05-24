@@ -1,7 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resendApiKey = process.env.RESEND_API_KEY;
+const resend = resendApiKey ? new Resend(resendApiKey) : null;
+const mailFrom = process.env.RESEND_FROM_EMAIL ?? "Contact Form <onboarding@resend.dev>";
+const mailTo = process.env.CONTACT_TO_EMAIL ?? "mukeshkk3162@gmail.com";
 
 export async function POST(req: NextRequest) {
   try {
@@ -14,9 +17,16 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    await resend.emails.send({
-      from: "Contact Form <onboarding@resend.dev>",
-      to: "mukeshkk3162@gmail.com",
+    if (!resend) {
+      return NextResponse.json(
+        { error: "Missing Resend API key" },
+        { status: 500 },
+      );
+    }
+
+    const response = await resend.emails.send({
+      from: mailFrom,
+      to: mailTo,
       replyTo: email,
       subject: `New message from ${name}${company ? ` (${company})` : ""}`,
       html: `
@@ -51,7 +61,17 @@ export async function POST(req: NextRequest) {
       `,
     });
 
-    return NextResponse.json({ success: true });
+    if (response.error) {
+      console.error("Resend send error:", response.error);
+      return NextResponse.json(
+        {
+          error: response.error.message ?? "Failed to send message",
+        },
+        { status: 502 },
+      );
+    }
+
+    return NextResponse.json({ success: true, id: response.data.id });
   } catch (err) {
     console.error("Contact form error:", err);
     return NextResponse.json(

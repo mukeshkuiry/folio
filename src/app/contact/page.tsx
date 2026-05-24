@@ -1,6 +1,6 @@
 "use client";
-import { useState, useCallback } from "react";
 import { SOCIALS } from "@/lib/data";
+import { useCallback, useState } from "react";
 
 type FormData = {
   name: string;
@@ -39,10 +39,18 @@ export default function ContactPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
-      if (!res.ok) throw new Error("Failed");
+      if (!res.ok) {
+        const payload = await res.json().catch(() => null);
+        throw new Error(payload?.error ?? "Failed");
+      }
       setSubmitted(true);
-    } catch {
-      setErrors({ description: "Something went wrong. Please try again or email me directly." });
+    } catch (error) {
+      setErrors({
+        description:
+          error instanceof Error && error.message !== "Failed"
+            ? error.message
+            : "Something went wrong. Please try again or email me directly.",
+      });
     } finally {
       setIsSubmitting(false);
     }
