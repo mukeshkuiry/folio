@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, memo } from "react";
 import * as THREE from "three";
 import { useDevice } from "@/hooks/useDevice";
 
@@ -21,25 +21,26 @@ const FRAG = /* glsl */ `
   uniform vec3 uColor;
   uniform float uHover;
   uniform vec2 uMouse;
+  uniform float uTime;
   varying vec2 vUv;
-
-  float circle(vec2 uv, vec2 center, float radius) {
-    return 1.0 - smoothstep(radius - 0.01, radius + 0.01, length(uv - center));
-  }
 
   void main() {
     vec2 mouse = uMouse;
     float dist = length(vUv - mouse);
     float ripple = sin(dist * 40.0 - uHover * 6.0) * 0.04 * uHover;
-    vec2 distortedUv = vUv + normalize(vUv - mouse) * ripple;
+    vec2 distortedUv = vUv + normalize(vUv - mouse + 0.001) * ripple;
 
-    // Subtle grid lines
+    // Subtle animated grid lines
+    float timeShift = uTime * 0.3;
     float grid = 0.0;
-    grid += smoothstep(0.495, 0.5, mod(distortedUv.x * 10.0, 1.0));
-    grid += smoothstep(0.495, 0.5, mod(distortedUv.y * 10.0, 1.0));
+    grid += smoothstep(0.48, 0.5, mod(distortedUv.x * 10.0 + timeShift, 1.0));
+    grid += smoothstep(0.48, 0.5, mod(distortedUv.y * 10.0, 1.0));
     grid = clamp(grid, 0.0, 1.0) * 0.06;
 
-    vec3 col = uColor + grid * 0.5;
+    // Subtle gradient overlay
+    float vignette = 1.0 - smoothstep(0.3, 1.2, length(vUv - 0.5));
+    
+    vec3 col = uColor + grid * 0.5 + vignette * 0.02;
     gl_FragColor = vec4(col, 1.0);
   }
 `;
@@ -48,7 +49,7 @@ function hexToRGB(hex: string): THREE.Color {
   return new THREE.Color(hex);
 }
 
-export function WebGLImage({ color = "#C8C4BD", className, style }: Props) {
+export const WebGLImage = memo(function WebGLImage({ color = "#C8C4BD", className, style }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const device = useDevice();
 
@@ -57,7 +58,7 @@ export function WebGLImage({ color = "#C8C4BD", className, style }: Props) {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: false, alpha: false, powerPreference: "low-power" });
     const scene = new THREE.Scene();
     const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 10);
     camera.position.z = 1;
@@ -65,9 +66,10 @@ export function WebGLImage({ color = "#C8C4BD", className, style }: Props) {
     const geometry = new THREE.PlaneGeometry(2, 2);
     const col = hexToRGB(color);
     const uniforms = {
-      uColor:  { value: new THREE.Vector3(col.r, col.g, col.b) },
-      uHover:  { value: 0 },
-      uMouse:  { value: new THREE.Vector2(0.5, 0.5) },
+      uColor: { value: new THREE.Vector3(col.r, col.g, col.b) },
+      uHover: { value: 0 },
+      uMouse: { value: new THREE.Vector2(0.5, 0.5) },
+      uTime: { value: 0 },
     };
     const material = new THREE.ShaderMaterial({ vertexShader: VERT, fragmentShader: FRAG, uniforms });
     scene.add(new THREE.Mesh(geometry, material));
@@ -76,15 +78,21 @@ export function WebGLImage({ color = "#C8C4BD", className, style }: Props) {
     let targetHover = 0;
     let currentHover = 0;
     let targetMx = 0.5, targetMy = 0.5;
+    let isVisible = false;
+    const startTime = performance.now();
 
     const resize = () => {
       const { clientWidth: w, clientHeight: h } = canvas;
       renderer.setSize(w, h, false);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
     };
     resize();
     const ro = new ResizeObserver(resize);
     ro.observe(canvas);
+
+    // Only render when visible (IntersectionObserver for performance)
+    const io = new IntersectionObserver(([entry]) => { isVisible = entry.isIntersecting; }, { threshold: 0.05 });
+    io.observe(canvas);
 
     const onEnter = () => { targetHover = 1; };
     const onLeave = () => { targetHover = 0; };
@@ -99,18 +107,22 @@ export function WebGLImage({ color = "#C8C4BD", className, style }: Props) {
     canvas.addEventListener("mousemove", onMove);
 
     function render() {
+      animId = requestAnimationFrame(render);
+      if (!isVisible) return;
+      
       currentHover += (targetHover - currentHover) * 0.06;
       uniforms.uHover.value = currentHover;
       uniforms.uMouse.value.x += (targetMx - uniforms.uMouse.value.x) * 0.08;
       uniforms.uMouse.value.y += (targetMy - uniforms.uMouse.value.y) * 0.08;
+      uniforms.uTime.value = (performance.now() - startTime) / 1000;
       renderer.render(scene, camera);
-      animId = requestAnimationFrame(render);
     }
     animId = requestAnimationFrame(render);
 
     return () => {
       cancelAnimationFrame(animId);
       ro.disconnect();
+      io.disconnect();
       canvas.removeEventListener("mouseenter", onEnter);
       canvas.removeEventListener("mouseleave", onLeave);
       canvas.removeEventListener("mousemove", onMove);
@@ -136,4 +148,4 @@ export function WebGLImage({ color = "#C8C4BD", className, style }: Props) {
       style={{ width: "100%", height: "100%", display: "block", ...style }}
     />
   );
-}
+});

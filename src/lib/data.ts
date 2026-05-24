@@ -2,7 +2,29 @@
  * Mukesh Kuiry — Project Directory & Engineer Profile Data
  */
 
-export const PROJECTS = [
+export interface Project {
+  slug: string;
+  title: string;
+  category: string;
+  year: string;
+  client: string;
+  awards: string[];
+  description: string;
+  external_url: string;
+  thumbnail: string | null;
+  hero: string | null;
+  color: string;
+  preview_url?: string;
+}
+
+export interface Social {
+  label: string;
+  handle: string;
+  href: string;
+  iconPath: string;
+}
+
+export const PROJECTS: Project[] = [
   {
     slug: "aquest",
     title: "aquest.it",
@@ -65,7 +87,7 @@ export const PROJECTS = [
   },
 ];
 
-export const SOCIALS = [
+export const SOCIALS: Social[] = [
   {
     label: "Instagram",
     handle: "mukesh_kuiry_",
@@ -102,4 +124,6 @@ export const CATEGORIES = [
   "Active Beta",
   "In Development",
   "Live",
-];
+] as const;
+
+export type Category = (typeof CATEGORIES)[number];

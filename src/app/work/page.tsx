@@ -1,9 +1,9 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, memo } from "react";
 import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { PROJECTS, CATEGORIES, SOCIALS } from "@/lib/data";
+import { PROJECTS, CATEGORIES, SOCIALS, type Project } from "@/lib/data";
 import { WebGLImage } from "@/components/WebGLImage";
 import { SiteFluidPreview } from "@/components/SiteFluidPreview";
 
@@ -19,7 +19,7 @@ export default function WorkPage() {
 
   useEffect(() => {
     const items = gridRef.current?.querySelectorAll(".work-item");
-    if (!items) return;
+    if (!items?.length) return;
     gsap.fromTo(items,
       { opacity: 0, y: 40 },
       { opacity: 1, y: 0, duration: 0.7, ease: "power2.out", stagger: 0.08 }
@@ -34,24 +34,30 @@ export default function WorkPage() {
           <span className="t-caption" style={{ color: "var(--color-grey-mid)" }}>{filtered.length}&nbsp;PROJECTS</span>
         </div>
 
-        {/* Category filters */}
-        <div className="work-filters">
+        <div className="work-filters" role="tablist" aria-label="Filter projects">
           {CATEGORIES.map((cat) => (
             <button
               key={cat}
               className={`work-filter-btn ${activeFilter === cat ? "active" : ""}`}
               onClick={() => setActiveFilter(cat)}
+              role="tab"
+              aria-selected={activeFilter === cat}
             >
               {cat}
             </button>
           ))}
         </div>
 
-        {/* Grid */}
-        <div className="work-grid" ref={gridRef}>
-          {filtered.map((project) => (
-            <WorkCard key={project.slug} project={project} />
-          ))}
+        <div className="work-grid" ref={gridRef} role="tabpanel">
+          {filtered.length === 0 ? (
+            <p className="t-body" style={{ color: "var(--color-grey-mid)", gridColumn: "1 / -1", textAlign: "center", padding: "8vw 0" }}>
+              No projects in this category yet.
+            </p>
+          ) : (
+            filtered.map((project) => (
+              <WorkCard key={project.slug} project={project} />
+            ))
+          )}
         </div>
       </section>
 
@@ -60,7 +66,7 @@ export default function WorkPage() {
   );
 }
 
-function WorkCard({ project }: { project: (typeof PROJECTS)[0] }) {
+const WorkCard = memo(function WorkCard({ project }: { project: Project }) {
   const itemRef = useRef<HTMLAnchorElement>(null);
 
   useEffect(() => {
@@ -70,6 +76,7 @@ function WorkCard({ project }: { project: (typeof PROJECTS)[0] }) {
     const tween = ScrollTrigger.create({
       trigger: el,
       start: "top 90%",
+      once: true,
       onEnter: () => gsap.to(el, { opacity: 1, y: 0, duration: 0.7, ease: "power2.out" }),
     });
     return () => tween.kill();
@@ -84,9 +91,9 @@ function WorkCard({ project }: { project: (typeof PROJECTS)[0] }) {
       rel="noopener noreferrer"
     >
       <div className="work-thumb">
-        {(project as { preview_url?: string }).preview_url ? (
+        {project.preview_url ? (
           <SiteFluidPreview
-            url={(project as { preview_url?: string }).preview_url!}
+            url={project.preview_url}
             fallbackColor={project.color ?? "#141924"}
           />
         ) : (
@@ -111,11 +118,11 @@ function WorkCard({ project }: { project: (typeof PROJECTS)[0] }) {
       </div>
     </a>
   );
-}
+});
 
 function Footer() {
   return (
-    <footer className="footer-cta">
+    <footer className="footer-cta" data-theme="dark">
       <h2 className="footer-cta-heading"><Link href="/contact">Start a project</Link></h2>
       <div className="footer-bottom">
         <span>© {new Date().getFullYear()} Mukesh Kuiry</span>

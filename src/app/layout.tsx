@@ -5,12 +5,13 @@ import { Header } from "@/components/Header";
 import { CustomCursor } from "@/components/CustomCursor";
 import { PageTransition } from "@/components/PageTransition";
 import { SmoothScrollProvider } from "@/components/SmoothScrollProvider";
+import { ScrollProgressBar } from "@/components/ScrollProgressBar";
 
 export const metadata: Metadata = {
-  title: "Mukesh Kuiry",
+  title: "Mukesh Kuiry — Software Engineer",
   description: "Mukesh Kuiry — Independent software engineer building distributed systems, full-stack products, and clean engineering craft.",
   openGraph: {
-    title: "Mukesh Kuiry",
+    title: "Mukesh Kuiry — Software Engineer",
     description: "Mukesh Kuiry — Independent software engineer building distributed systems, full-stack products, and clean engineering craft.",
     type: "website",
   },
@@ -28,12 +29,15 @@ export default function RootLayout({
         <Loader />
         <CustomCursor />
         <PageTransition />
+        <ScrollProgressBar />
         <Header />
         <SmoothScrollProvider>
           <main className="main-content">
             {children}
           </main>
         </SmoothScrollProvider>
+        {/* Film grain overlay for texture */}
+        <div className="grain" aria-hidden="true" />
       </body>
     </html>
   );

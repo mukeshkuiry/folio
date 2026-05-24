@@ -1,10 +1,30 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Allow Three.js and GSAP to be bundled client-side without issues
   transpilePackages: ["three", "gsap", "lenis"],
-  // Ensure GLSL/shader strings don't cause issues in strict mode
   reactStrictMode: false,
+  experimental: {
+    optimizePackageImports: ["three", "gsap"],
+  },
+  async rewrites() {
+    return {
+      beforeFiles: [
+        // Handle blog subdomain in development
+        {
+          source: "/:path*",
+          has: [{ type: "host", value: "blog.localhost:3000" }],
+          destination: "/blog/:path*",
+        },
+        {
+          source: "/:path*",
+          has: [{ type: "host", value: "blog.mukeshkuiry.com" }],
+          destination: "/blog/:path*",
+        },
+      ],
+      afterFiles: [],
+      fallback: [],
+    };
+  },
 };
 
 export default nextConfig;

@@ -1,16 +1,18 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import gsap from "gsap";
 import clsx from "clsx";
 import { SOCIALS } from "@/lib/data";
+import { blogIndexUrl } from "@/lib/site";
 
 const NAV_ITEMS = [
   { label: "Home", href: "/", index: "01." },
   { label: "Work", href: "/work", index: "02." },
-  { label: "Profile", href: "/#profile", index: "03." },
-  { label: "Contact", href: "/contact", index: "04." },
+  { label: "Blog", href: blogIndexUrl(), index: "03." },
+  { label: "Profile", href: "/#profile", index: "04." },
+  { label: "Contact", href: "/contact", index: "05." },
 ];
 
 export function Header() {
@@ -21,7 +23,6 @@ export function Header() {
   const navLinksRef = useRef<(HTMLAnchorElement | null)[]>([]);
   const lastScrollY = useRef(0);
 
-  // Hide header on scroll down, show on scroll up
   useEffect(() => {
     const onScroll = () => {
       const y = window.scrollY;
@@ -32,7 +33,20 @@ export function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Close menu on route change
+  const closeMenu = useCallback(() => {
+    const overlay = overlayRef.current;
+    if (!overlay) return;
+    gsap.to(navLinksRef.current.filter(Boolean).reverse(), {
+      y: "110%", opacity: 0, duration: 0.35, ease: "power2.in", stagger: 0.04,
+      onComplete: () => {
+        gsap.to(overlay, {
+          opacity: 0, duration: 0.4, ease: "power2.in",
+          onComplete: () => { overlay.classList.remove("is-open"); setMenuOpen(false); },
+        });
+      },
+    });
+  }, []);
+
   useEffect(() => {
     if (menuOpen) closeMenu();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -45,76 +59,41 @@ export function Header() {
     overlay.classList.add("is-open");
     gsap.to(overlay, { opacity: 1, duration: 0.5, ease: "power2.out" });
     gsap.to(navLinksRef.current.filter(Boolean), {
-      y: "0%",
-      opacity: 1,
-      duration: 0.6,
-      ease: "power3.out",
-      stagger: 0.07,
-      delay: 0.2,
+      y: "0%", opacity: 1, duration: 0.6, ease: "power3.out", stagger: 0.07, delay: 0.2,
     });
   }
 
-  function closeMenu() {
-    const overlay = overlayRef.current;
-    if (!overlay) return;
-    gsap.to(navLinksRef.current.filter(Boolean).reverse(), {
-      y: "110%",
-      opacity: 0,
-      duration: 0.35,
-      ease: "power2.in",
-      stagger: 0.04,
-      onComplete: () => {
-        gsap.to(overlay, {
-          opacity: 0,
-          duration: 0.4,
-          ease: "power2.in",
-          onComplete: () => {
-            overlay.classList.remove("is-open");
-            setMenuOpen(false);
-          },
-        });
-      },
-    });
-  }
+  // Keyboard accessibility: close on Escape
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && menuOpen) closeMenu();
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [menuOpen, closeMenu]);
 
   return (
     <>
       <header className={clsx("header", hidden && !menuOpen && "hidden")}>
         <Link href="/" className="header-logo">MUKESH KUIRY</Link>
-        <button
-          className="header-menu-btn"
-          onClick={openMenu}
-          aria-label="Open menu"
-        >
-          Menu
-        </button>
+        <button className="header-menu-btn" onClick={openMenu} aria-label="Open menu">Menu</button>
       </header>
 
-      {/* Full-screen menu overlay */}
-      <div className="menu-overlay" ref={overlayRef} data-theme="dark">
+      <div className="menu-overlay" ref={overlayRef} data-theme="dark" role="dialog" aria-modal="true" aria-label="Navigation menu">
         <div className="menu-overlay-header">
           <span className="menu-overlay-logo">MUKESH KUIRY</span>
-          <button className="menu-close-btn" onClick={closeMenu} aria-label="Close menu">
-            Close
-          </button>
+          <button className="menu-close-btn" onClick={closeMenu} aria-label="Close menu">Close</button>
         </div>
-
         <nav className="menu-nav" aria-label="Main navigation">
           {NAV_ITEMS.map((item, i) => (
             <div className="menu-nav-item" key={item.href}>
-              <Link
-                href={item.href}
-                className="menu-nav-link"
-                ref={(el) => { navLinksRef.current[i] = el; }}
-                onClick={closeMenu}
-              >
+              <Link href={item.href} className="menu-nav-link" ref={(el) => { navLinksRef.current[i] = el; }} onClick={closeMenu}>
                 <span className="menu-nav-index">{item.index}</span>
                 {item.label}
               </Link>
             </div>
           ))}
         </nav>
-
         <div className="menu-footer">
           <a href="mailto:mukeshkk3162@gmail.com" className="menu-email">mukeshkk3162@gmail.com</a>
           <div style={{ display: "flex", gap: "1.4em", alignItems: "center" }}>

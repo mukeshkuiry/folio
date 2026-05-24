@@ -9,27 +9,20 @@ export function CustomCursor() {
 
   useEffect(() => {
     if (device === "m") return;
-
     const dot = dotRef.current;
     const ring = ringRef.current;
     if (!dot || !ring) return;
 
     let mouseX = 0, mouseY = 0;
-    let dotX = 0, dotY = 0;
     let ringX = 0, ringY = 0;
     let raf: number;
 
-    const onMouseMove = (e: MouseEvent) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-    };
-
+    const onMouseMove = (e: MouseEvent) => { mouseX = e.clientX; mouseY = e.clientY; };
     const onMouseEnterLink = () => ring.classList.add("is-hover");
     const onMouseLeaveLink = () => ring.classList.remove("is-hover");
 
     document.addEventListener("mousemove", onMouseMove);
 
-    // Attach hover to all interactive elements
     const addHoverListeners = () => {
       const targets = document.querySelectorAll("a, button, [data-cursor-hover]");
       targets.forEach((el) => {
@@ -39,47 +32,40 @@ export function CustomCursor() {
     };
     addHoverListeners();
 
-    // Observe DOM changes for dynamically added elements
-    const observer = new MutationObserver(addHoverListeners);
+    // Use MutationObserver with debounce for performance
+    let mutationTimeout: ReturnType<typeof setTimeout>;
+    const observer = new MutationObserver(() => {
+      clearTimeout(mutationTimeout);
+      mutationTimeout = setTimeout(addHoverListeners, 100);
+    });
     observer.observe(document.body, { childList: true, subtree: true });
 
     function isDarkUnderCursor(x: number, y: number): boolean {
       try {
         const els = document.elementsFromPoint(x, y);
         return els.some(
-          (el) =>
-            el instanceof HTMLElement &&
-            (el.dataset.theme === "dark" ||
-              el.closest("[data-theme='dark']") !== null)
+          (el) => el instanceof HTMLElement &&
+            (el.dataset.theme === "dark" || el.closest("[data-theme='dark']") !== null)
         );
-      } catch {
-        return false;
-      }
+      } catch { return false; }
     }
 
     function animate() {
       if (!dot || !ring) return;
-      // Dot: snaps directly
-      dotX = mouseX;
-      dotY = mouseY;
-      dot.style.transform = `translate3d(${dotX - 4}px, ${dotY - 4}px, 0)`;
-
-      // Ring: lags behind (lerp)
+      dot.style.transform = `translate3d(${mouseX - 4}px, ${mouseY - 4}px, 0)`;
       ringX += (mouseX - ringX) * 0.12;
       ringY += (mouseY - ringY) * 0.12;
       ring.style.transform = `translate3d(${ringX - 24}px, ${ringY - 24}px, 0)`;
-
-      // Dark/light adaptive color
       const dark = isDarkUnderCursor(mouseX, mouseY);
       dot.classList.toggle("is-dark", dark);
       ring.classList.toggle("is-dark", dark);
-
       raf = requestAnimationFrame(animate);
     }
     raf = requestAnimationFrame(animate);
 
     return () => {
       cancelAnimationFrame(raf);
+      clearTimeout(mutationTimeout);
       document.removeEventListener("mousemove", onMouseMove);
       observer.disconnect();
     };
@@ -89,9 +75,7 @@ export function CustomCursor() {
 
   return (
     <>
-      <div className="cursor" ref={dotRef}>
-        <div className="cursor-dot" />
-      </div>
+      <div className="cursor" ref={dotRef}><div className="cursor-dot" /></div>
       <div className="cursor-ring" ref={ringRef} />
     </>
   );

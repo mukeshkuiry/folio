@@ -10,6 +10,7 @@ export function SmoothScrollProvider({ children }: { children: React.ReactNode }
 
   useEffect(() => {
     let lenis: import("lenis").default | null = null;
+    let tickerCallback: ((time: number) => void) | null = null;
 
     async function init() {
       const { default: Lenis } = await import("lenis");
@@ -21,16 +22,17 @@ export function SmoothScrollProvider({ children }: { children: React.ReactNode }
 
       lenis.on("scroll", ScrollTrigger.update);
 
-      gsap.ticker.add((time: number) => {
+      tickerCallback = (time: number) => {
         lenis?.raf(time * 1000);
-      });
-
+      };
+      gsap.ticker.add(tickerCallback);
       gsap.ticker.lagSmoothing(0);
     }
 
     init();
 
     return () => {
+      if (tickerCallback) gsap.ticker.remove(tickerCallback);
       lenis?.destroy();
     };
   }, []);
