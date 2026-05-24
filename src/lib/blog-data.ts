@@ -14,7 +14,8 @@ export const BLOG_POSTS: BlogPost[] = [
   {
     slug: "building-scalable-microservices-with-golang",
     title: "Building Scalable Microservices with Golang",
-    excerpt: "A deep dive into designing and implementing production-ready microservices using Go, covering patterns like circuit breakers, rate limiting, and graceful degradation.",
+    excerpt:
+      "A deep dive into designing and implementing production-ready microservices using Go, covering patterns like circuit breakers, rate limiting, and graceful degradation.",
     date: "2024-12-15",
     readTime: "12 min read",
     category: "Backend",
@@ -225,7 +226,8 @@ The beauty of Go is that it forces you to handle errors explicitly. There's no h
   {
     slug: "advanced-typescript-patterns-for-large-codebases",
     title: "Advanced TypeScript Patterns for Large Codebases",
-    excerpt: "Exploring advanced type-level programming in TypeScript — branded types, template literal types, conditional types, and patterns that make large codebases maintainable.",
+    excerpt:
+      "Exploring advanced type-level programming in TypeScript — branded types, template literal types, conditional types, and patterns that make large codebases maintainable.",
     date: "2024-11-28",
     readTime: "15 min read",
     category: "TypeScript",
@@ -445,7 +447,8 @@ Type-level programming isn't about showing off — it's about making invalid sta
   {
     slug: "kubernetes-zero-downtime-deployments",
     title: "Zero-Downtime Deployments on Kubernetes",
-    excerpt: "A practical guide to achieving true zero-downtime deployments with Kubernetes, covering rolling updates, health checks, PodDisruptionBudgets, and blue-green strategies.",
+    excerpt:
+      "A practical guide to achieving true zero-downtime deployments with Kubernetes, covering rolling updates, health checks, PodDisruptionBudgets, and blue-green strategies.",
     date: "2024-11-10",
     readTime: "10 min read",
     category: "DevOps",
@@ -641,7 +644,8 @@ Zero-downtime deployments aren't a single feature — they're the result of mult
   {
     slug: "react-server-components-deep-dive",
     title: "React Server Components: A Mental Model",
-    excerpt: "Understanding the paradigm shift of React Server Components — how they work under the hood, when to use them, and how they change the way we think about React applications.",
+    excerpt:
+      "Understanding the paradigm shift of React Server Components — how they work under the hood, when to use them, and how they change the way we think about React applications.",
     date: "2024-10-22",
     readTime: "14 min read",
     category: "React",
@@ -841,7 +845,8 @@ The mental model shift takes time, but once it clicks, you'll wonder how we live
   {
     slug: "designing-event-driven-systems-with-kafka",
     title: "Designing Event-Driven Systems with Apache Kafka",
-    excerpt: "From event sourcing to CQRS, a comprehensive guide to building robust event-driven architectures using Kafka — with real-world patterns, pitfalls, and production lessons.",
+    excerpt:
+      "From event sourcing to CQRS, a comprehensive guide to building robust event-driven architectures using Kafka — with real-world patterns, pitfalls, and production lessons.",
     date: "2024-10-05",
     readTime: "16 min read",
     category: "Architecture",
@@ -1769,7 +1774,9 @@ Confidence comes from diff quality, not migration speed.
 ];
 
 export function getFeaturedPosts(): BlogPost[] {
-  return BLOG_POSTS.filter((p) => p.featured);
+  return [...BLOG_POSTS]
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    .slice(0, 3);
 }
 
 export function getPostBySlug(slug: string): BlogPost | undefined {

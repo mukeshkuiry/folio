@@ -188,7 +188,7 @@ function FeaturedBlog() {
         ))}
       </div>
       <div style={{ marginTop: "4vw", paddingTop: "3vw", borderTop: "1px solid var(--color-grey-light)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <span className="t-caption" style={{ color: "var(--color-grey-mid)" }}>SHOWING {featured.length} OF {total}</span>
+        <span className="t-caption" style={{ color: "var(--color-grey-mid)" }}>SHOWING {Math.min(featured.length, total)} OF {total}</span>
         <MagneticButton>
           <a href={blogIndexUrl()} className="view-all-btn">
             Read All Articles <span>→</span>
@@ -282,7 +282,7 @@ export default function HomePage() {
           {PROJECTS.slice(0, 3).map((p) => <ProjectItem key={p.slug} project={p} />)}
         </div>
         <div style={{ marginTop: "4vw", paddingTop: "3vw", borderTop: "1px solid var(--color-grey-light)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <span className="t-caption" style={{ color: "var(--color-grey-mid)" }}>SHOWING 3 OF {PROJECTS.length}</span>
+          <span className="t-caption" style={{ color: "var(--color-grey-mid)" }}>SHOWING {Math.min(3, PROJECTS.length)} OF {PROJECTS.length}</span>
           <MagneticButton>
             <Link href="/work" className="view-all-btn">
               View All Works <span>→</span>
