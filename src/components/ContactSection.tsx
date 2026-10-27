@@ -2,7 +2,9 @@
 
 import { FormButton, type FormButtonVariant } from "@/components/FormButton";
 import { SocialIcon } from "@/components/SocialIcon";
-import { PROFILE, SOCIALS } from "@/lib/data";
+import { WordReveal } from "@/components/WordReveal";
+import { SOCIALS } from "@/lib/data";
+import { motion } from "framer-motion";
 import { type FormEvent, useState } from "react";
 
 export function ContactSection() {
@@ -50,39 +52,62 @@ export function ContactSection() {
       <div className="majd-contact-layout">
         <div className="majd-contact-left">
           <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-            <h2 className="majd-h2-section">Let’s talk.</h2>
-            <p
+            <WordReveal
+              text="Let’s talk."
+              as="h2"
+              className="majd-h2-section"
+              trigger="inView"
+              blurPx={10}
+              duration={1.8}
+            />
+            <WordReveal
+              text="Have a project or need help? Fill out the form, and we'll get back to you soon."
+              as="p"
               className="majd-p-body"
-              style={{ color: "#111111", maxWidth: "460px" }}
-            >
-              Have a distributed systems challenge, product idea, or engineering role?
-              Fill out the form or reach out directly at{" "}
-              <a
-                href={`mailto:${PROFILE.email}`}
-                style={{ textDecoration: "underline", textUnderlineOffset: "3px" }}
-              >
-                {PROFILE.email}
-              </a>
-              .
-            </p>
+              trigger="inView"
+              blurPx={6}
+              duration={1.4}
+              staggerDelay={0.03}
+            />
           </div>
 
           <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-            {SOCIALS.map((social) => (
-              <SocialIcon
+            {SOCIALS.map((social, idx) => (
+              <motion.div
                 key={social.label}
-                label={social.label}
-                href={social.href}
-                iconPath={social.iconPath}
-              />
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.5 }}
+                transition={{
+                  type: "spring",
+                  bounce: 0,
+                  duration: 1.6,
+                  delay: 0.2 + idx * 0.1,
+                }}
+              >
+                <SocialIcon
+                  label={social.label}
+                  href={social.href}
+                  iconPath={social.iconPath}
+                />
+              </motion.div>
             ))}
           </div>
         </div>
 
-        <form
+        <motion.form
           onSubmit={handleSubmit}
           className="majd-contact-form-card"
           aria-label="Contact Form"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.35 }}
+          transition={{
+            type: "spring",
+            bounce: 0,
+            delay: 0.2,
+            duration: 1.6,
+          }}
         >
           <label className="majd-form-label">
             <span className="majd-form-label-text">Name</span>
@@ -121,7 +146,7 @@ export function ContactSection() {
             <textarea
               name="Project"
               required
-              placeholder="Tell me about your project or opportunity"
+              placeholder="Tell us about your project"
               className="majd-textarea"
               value={message}
               onChange={(e) => {
@@ -132,7 +157,7 @@ export function ContactSection() {
           </label>
 
           <FormButton variant={status} label="Submit" />
-        </form>
+        </motion.form>
       </div>
     </section>
   );

@@ -113,18 +113,18 @@ mark {
   padding: 0;
 }
 
-/* === GLOBAL NOISE OVERLAY (Noise.js replica) === */
+/* === GLOBAL NOISE OVERLAY (Noise.js replica — absolute over page to avoid fixed-layer scroll repaint lag) === */
 .framer-noise-overlay {
-  position: fixed;
+  position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   background-image: url("/images/noise.png");
   background-size: 161px 161px;
   background-repeat: repeat;
-  opacity: 0.04;
+  opacity: 0.055;
   pointer-events: none;
-  z-index: 50;
+  z-index: 10;
 }
 
 /* === TYPOGRAPHY PRESETS (Exact Framer Responsive Scale) === */
@@ -351,23 +351,13 @@ mark {
 .majd-navbar-wrap {
   position: fixed;
   top: 30px;
-  left: 50%;
-  transform: translateX(-50%);
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
   z-index: 60;
   width: 320px;
   will-change: transform, opacity;
-  animation: majd-appear-nav 1s var(--ease-spring) 0.2s both;
-}
-
-@keyframes majd-appear-nav {
-  from {
-    opacity: 0;
-    transform: translateX(-50%) translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-  }
 }
 
 @media (max-width: 809.98px) {
@@ -375,18 +365,6 @@ mark {
     left: 20px;
     right: 20px;
     width: auto;
-    transform: none;
-    animation: majd-appear-nav-mobile 1s var(--ease-spring) 0.2s both;
-  }
-  @keyframes majd-appear-nav-mobile {
-    from {
-      opacity: 0;
-      transform: translateY(10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
   }
 }
 
@@ -798,8 +776,6 @@ mark {
   width: 400px;
   height: 456px;
   aspect-ratio: 0.8771929825 / 1;
-  perspective: 1200px;
-  transform-style: preserve-3d;
   will-change: transform;
 }
 
@@ -813,16 +789,6 @@ mark {
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   will-change: transform;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.14);
-}
-
-.majd-avatar-front {
-  filter: grayscale(1) contrast(1.08);
-  -webkit-filter: grayscale(1) contrast(1.08);
-}
-
-.majd-avatar-back {
-  transform: rotateY(180deg);
 }
 
 .majd-hero-bio-content {
@@ -1311,19 +1277,6 @@ mark {
   position: relative;
   width: 100%;
   height: 340px;
-  perspective: 1200px;
-}
-
-.majd-flip-card-inner {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  transform-style: preserve-3d;
-  transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.majd-flip-card.is-flipped .majd-flip-card-inner {
-  transform: rotateY(180deg);
 }
 
 .majd-flip-face {
@@ -1336,24 +1289,24 @@ mark {
   border-radius: 20px;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
-  padding: 20px;
+  will-change: transform;
 }
 
-/* Initial obscured face (Back Face with Logo) */
-.majd-flip-back {
+.majd-flip-front-layer {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  z-index: 1;
+}
+
+.majd-flip-back-layer {
+  padding: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 12px;
-}
-
-/* Revealed Front Face (Quote + Author / PR Details) */
-.majd-flip-front {
-  transform: rotateY(180deg);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  z-index: 1;
 }
 
 /* === BLOG CARDS 3-COLUMN GRID (rnettFmGc.js replica) === */

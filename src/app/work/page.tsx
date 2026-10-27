@@ -3,6 +3,7 @@
 import { OpenSourceCard } from "@/components/OpenSourceCard";
 import { ProjectCard } from "@/components/ProjectCard";
 import { RollingText } from "@/components/RollingText";
+import { WordReveal } from "@/components/WordReveal";
 import { CATEGORIES, OPEN_SOURCE_CONTRIBUTIONS, PROJECTS } from "@/lib/data";
 import { useState } from "react";
 
@@ -40,20 +41,32 @@ export default function WorkPage() {
             display: "flex",
             flexDirection: "column",
             alignItems: "flex-start",
-            gap: "12px",
+            gap: "10px",
           }}
         >
-          <h1 className="majd-h1-page" style={{ maxWidth: "620px" }}>
-            My Brightest Creations
-          </h1>
-          <p
-            className="majd-p-body"
-            style={{ color: "#111111", maxWidth: "480px" }}
-          >
-            A showcase of my latest production systems, native macOS utilities,
-            and distributed backends—highlighting clean architecture and
-            real-world impact.
-          </p>
+          <div style={{ maxWidth: "620px" }}>
+            <WordReveal
+              text="My Brightest Creations"
+              as="h1"
+              className="majd-h1-page"
+              trigger="mount"
+              blurPx={10}
+              duration={1.8}
+              startDelay={0}
+            />
+          </div>
+          <div style={{ maxWidth: "460px" }}>
+            <WordReveal
+              text="A showcase of my latest projects, highlighting thoughtful architecture, clear strategy, and impactful results."
+              as="p"
+              className="majd-p-body"
+              trigger="mount"
+              blurPx={10}
+              duration={0.8}
+              startDelay={0.2}
+              staggerDelay={0.03}
+            />
+          </div>
         </div>
 
         {/* Category Filter Pills */}
@@ -116,7 +129,14 @@ export default function WorkPage() {
         }}
       >
         <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-          <h2 className="majd-h2-display">Open Source Contributions</h2>
+          <WordReveal
+            text="Open Source Contributions"
+            as="h2"
+            className="majd-h2-display"
+            trigger="inView"
+            blurPx={10}
+            duration={1.8}
+          />
           <p className="majd-p-body" style={{ color: "var(--ink-muted)" }}>
             Merged pull requests and architectural improvements across CNCF and
             open-source ecosystems.

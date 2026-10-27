@@ -283,6 +283,25 @@ export default function WorkDetailPage() {
           ))}
         </div>
 
+        {/* Full-Width Image 4 (Replicating .framer-pv0p7v aspect-ratio 1.455 / 1) */}
+        <div
+          style={{
+            width: "100%",
+            aspectRatio: "1.455 / 1",
+            borderRadius: "20px",
+            overflow: "hidden",
+            backgroundColor: "#111111",
+          }}
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={project.outroImage}
+            alt={`${project.title} full showcase`}
+            style={{ width: "100%", height: "100%", objectFit: "cover" }}
+            loading="lazy"
+          />
+        </div>
+
         {/* Outro Content (max-width: 740px) */}
         <div
           style={{

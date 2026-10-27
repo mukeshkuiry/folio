@@ -2,6 +2,7 @@
 
 import { RollingText } from "@/components/RollingText";
 import { PROFILE } from "@/lib/data";
+import { motion } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -9,16 +10,16 @@ import { useEffect, useState } from "react";
 interface NavLinkItem {
   label: string;
   href: string;
-  delayMs: number;
+  delaySec: number;
 }
 
 const NAV_LINKS: NavLinkItem[] = [
-  { label: "About Me", href: "/#bio-section", delayMs: 60 },
-  { label: "Services", href: "/#services", delayMs: 120 },
-  { label: "Experience", href: "/#experience", delayMs: 180 },
-  { label: "Projects", href: "/work#hero-section", delayMs: 240 },
-  { label: "Blog", href: "/blog#hero-section", delayMs: 300 },
-  { label: "Contact", href: "/#contact", delayMs: 360 },
+  { label: "About Me", href: "/#bio-section", delaySec: 0.1 },
+  { label: "Services", href: "/#services", delaySec: 0.2 },
+  { label: "Projects", href: "/work#hero-section", delaySec: 0.3 },
+  { label: "Experience", href: "/#experience", delaySec: 0.35 },
+  { label: "Blog", href: "/blog#hero-section", delaySec: 0.4 },
+  { label: "Contact", href: "/#contact", delaySec: 0.45 },
 ];
 
 export function Header() {
@@ -46,13 +47,25 @@ export function Header() {
 
   return (
     <>
-      <div className="majd-navbar-wrap">
-        <nav
+      <motion.div
+        className="majd-navbar-wrap"
+        initial={{ opacity: 0.001, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{
+          type: "spring",
+          bounce: 0,
+          delay: 1.4,
+          duration: 1.6,
+        }}
+      >
+        <motion.nav
+          layout
+          transition={{ type: "spring", bounce: 0, duration: 0.8 }}
           className={`majd-navbar${isOpen ? " is-open" : ""}`}
           aria-label="Primary Navigation"
         >
-          <div className="majd-navbar-inner">
-            <div className="majd-navbar-top">
+          <motion.div layout className="majd-navbar-inner">
+            <motion.div layout="position" className="majd-navbar-top">
               <Link
                 href="/#hero-section"
                 className="majd-navbar-logo"
@@ -65,38 +78,48 @@ export function Header() {
                 className={`majd-hamburger${isOpen ? " is-open" : ""}`}
                 onClick={toggleMenu}
                 aria-expanded={isOpen}
-                aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
+                aria-label={
+                  isOpen ? "Close navigation menu" : "Open navigation menu"
+                }
               >
                 <span className="majd-hamburger-dot" />
                 <span className="majd-hamburger-dot" />
                 <span className="majd-hamburger-dot" />
               </button>
-            </div>
+            </motion.div>
 
             {isOpen && (
               <div className="majd-navbar-dropdown">
                 {NAV_LINKS.map((item) => (
-                  <Link
+                  <motion.div
                     key={item.label}
-                    href={item.href}
-                    className="majd-nav-pill"
-                    onClick={closeMenu}
-                    style={{
-                      animation: `majd-slide-link 0.5s cubic-bezier(0.16, 1, 0.3, 1) ${item.delayMs}ms both`,
+                    initial={{ opacity: 0.001, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{
+                      type: "spring",
+                      bounce: 0.2,
+                      duration: 0.8,
+                      delay: item.delaySec,
                     }}
                   >
-                    <RollingText
-                      text={item.label}
-                      color="#111111"
-                      padding="8px 16px"
-                    />
-                  </Link>
+                    <Link
+                      href={item.href}
+                      className="majd-nav-pill"
+                      onClick={closeMenu}
+                    >
+                      <RollingText
+                        text={item.label}
+                        color="#111111"
+                        padding="8px 16px"
+                      />
+                    </Link>
+                  </motion.div>
                 ))}
               </div>
             )}
-          </div>
-        </nav>
-      </div>
+          </motion.div>
+        </motion.nav>
+      </motion.div>
 
       {/* Floating Bottom-Right Action Pills (Replicating Main template d_uHRxjHw.js) */}
       <div className="majd-floating-ctas">

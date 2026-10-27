@@ -62,6 +62,8 @@ export interface OpenSourceContribution {
   year: string;
   quote: string;
   logoText: string;
+  logoSrc: string;
+  avatarSrc: string;
   accentColor: string;
 }
 

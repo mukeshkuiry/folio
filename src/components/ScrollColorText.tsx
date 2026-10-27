@@ -1,10 +1,7 @@
 "use client";
 
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useEffect, useRef, useState } from "react";
-
-gsap.registerPlugin(ScrollTrigger);
+import { useMotionValueEvent, useScroll } from "framer-motion";
+import { useEffect, useRef } from "react";
 
 export interface ScrollColorTextProps {
   text: string;
@@ -20,50 +17,57 @@ export function ScrollColorText(props: ScrollColorTextProps) {
   } = props;
 
   const containerRef = useRef<HTMLDivElement>(null);
-  const [scrollProgress, setScrollProgress] = useState(0);
-
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-
-    const trigger = ScrollTrigger.create({
-      trigger: el,
-      start: "top 80%",
-      end: "top 15%",
-      scrub: 0.3,
-      onUpdate: (self) => {
-        setScrollProgress(self.progress);
-      },
-    });
-
-    return () => {
-      trigger.kill();
-    };
-  }, []);
+  const wordRefs = useRef<(HTMLSpanElement | null)[]>([]);
+  const lastFilledRef = useRef<number>(-1);
 
   const words = text.split(" ");
   const total = words.length;
-  const filledWords = Math.floor(scrollProgress * total);
+
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start 85%", "start 15%"],
+  });
+
+  const updateWordColors = (progress: number) => {
+    const filledCount = Math.floor(progress * total);
+    if (filledCount === lastFilledRef.current) return;
+    lastFilledRef.current = filledCount;
+
+    for (let i = 0; i < total; i++) {
+      const span = wordRefs.current[i];
+      if (span) {
+        span.style.color = i <= filledCount ? fillColor : startColor;
+      }
+    }
+  };
+
+  useMotionValueEvent(scrollYProgress, "change", (latest) => {
+    updateWordColors(latest);
+  });
+
+  useEffect(() => {
+    updateWordColors(scrollYProgress.get());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div ref={containerRef} className="majd-p-quote">
-      {words.map((word, index) => {
-        const isFilled = index <= filledWords;
-        return (
-          <span
-            key={index}
-            style={{
-              display: "inline-block",
-              color: isFilled ? fillColor : startColor,
-              transition: "color 0.3s linear",
-              willChange: "color",
-              marginRight: "0.25em",
-            }}
-          >
-            {word}
-          </span>
-        );
-      })}
+      {words.map((word, index) => (
+        <span
+          key={index}
+          ref={(el) => {
+            wordRefs.current[index] = el;
+          }}
+          style={{
+            display: "inline-block",
+            color: index === 0 ? fillColor : startColor,
+            transition: "color 0.28s linear",
+            marginRight: "0.25em",
+          }}
+        >
+          {word}
+        </span>
+      ))}
     </div>
   );
 }

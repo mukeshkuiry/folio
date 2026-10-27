@@ -1,10 +1,6 @@
 "use client";
 
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { type ReactNode, useEffect } from "react";
-
-gsap.registerPlugin(ScrollTrigger);
 
 export interface SmoothScrollProviderProps {
   children: ReactNode;
@@ -15,29 +11,55 @@ export function SmoothScrollProvider(props: SmoothScrollProviderProps) {
 
   useEffect(() => {
     let lenisInstance: import("lenis").default | null = null;
-    let tickerCallback: ((time: number) => void) | null = null;
+    let rafId = 0;
 
     async function initLenis() {
       const { default: Lenis } = await import("lenis");
       lenisInstance = new Lenis({
-        duration: 1.6,
+        duration: 1.1,
+        lerp: 0.11,
         smoothWheel: true,
+        syncTouch: false,
       });
 
-      lenisInstance.on("scroll", ScrollTrigger.update);
-
-      tickerCallback = (time: number) => {
-        lenisInstance?.raf(time * 1000);
+      const raf = (time: number) => {
+        if (lenisInstance) {
+          lenisInstance.raf(time);
+          rafId = requestAnimationFrame(raf);
+        }
       };
-      gsap.ticker.add(tickerCallback);
-      gsap.ticker.lagSmoothing(0);
+
+      rafId = requestAnimationFrame(raf);
     }
 
     void initLenis();
 
+    const handleAnchorClick = (event: MouseEvent) => {
+      const target = event.target as HTMLElement | null;
+      const anchor = target?.closest("a[href]") as HTMLAnchorElement | null;
+      if (!anchor || !lenisInstance) return;
+      const href = anchor.getAttribute("href") ?? "";
+      if (!href.includes("#")) return;
+
+      const [pathPart, hashPart] = href.split("#");
+      const isCurrentPage =
+        !pathPart || pathPart === "/" || pathPart === window.location.pathname;
+
+      if (isCurrentPage && hashPart) {
+        const targetEl = document.getElementById(hashPart);
+        if (targetEl) {
+          event.preventDefault();
+          lenisInstance.scrollTo(targetEl, { offset: 0 });
+        }
+      }
+    };
+
+    document.addEventListener("click", handleAnchorClick);
+
     return () => {
-      if (tickerCallback) {
-        gsap.ticker.remove(tickerCallback);
+      document.removeEventListener("click", handleAnchorClick);
+      if (rafId) {
+        cancelAnimationFrame(rafId);
       }
       lenisInstance?.destroy();
     };

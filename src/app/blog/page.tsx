@@ -1,6 +1,7 @@
 "use client";
 
 import { BlogCard } from "@/components/BlogCard";
+import { WordReveal } from "@/components/WordReveal";
 import { BLOG_POSTS } from "@/lib/blog-data";
 
 export default function BlogListPage() {
@@ -32,16 +33,29 @@ export default function BlogListPage() {
             gap: "10px",
           }}
         >
-          <h1 className="majd-h1-page" style={{ maxWidth: "620px" }}>
-            My Brightest Thoughts
-          </h1>
-          <p
-            className="majd-p-body"
-            style={{ color: "#111111", maxWidth: "460px" }}
-          >
-            Deep-dive articles on distributed consensus, Golang microservices,
-            database internals, and cloud-native architecture.
-          </p>
+          <div style={{ maxWidth: "620px" }}>
+            <WordReveal
+              text="My Brightest Thoughts"
+              as="h1"
+              className="majd-h1-page"
+              trigger="mount"
+              blurPx={10}
+              duration={1.8}
+              startDelay={0}
+            />
+          </div>
+          <div style={{ maxWidth: "460px" }}>
+            <WordReveal
+              text="Deep-dive articles on distributed consensus, Golang microservices, database internals, and cloud-native architecture."
+              as="p"
+              className="majd-p-body"
+              trigger="mount"
+              blurPx={10}
+              duration={0.8}
+              startDelay={0.2}
+              staggerDelay={0.03}
+            />
+          </div>
         </div>
 
         {/* 3-Column Blog Card Grid (matching HpHbG8OLS.js .framer-bv39vk) */}

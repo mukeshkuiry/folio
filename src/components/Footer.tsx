@@ -1,55 +1,93 @@
 "use client";
 
 import { RollingText } from "@/components/RollingText";
+import { WordReveal } from "@/components/WordReveal";
 import { PROFILE } from "@/lib/data";
+import { motion } from "framer-motion";
 import Link from "next/link";
 
 const FOOTER_LINKS = [
-  { label: "Home", href: "/#hero-section" },
-  { label: "About Me", href: "/#bio-section" },
-  { label: "Services", href: "/#services" },
-  { label: "Experience", href: "/#experience" },
-  { label: "Works", href: "/work#hero-section" },
-  { label: "Blog", href: "/blog#hero-section" },
-  { label: "Contact", href: "/#contact" },
+  { label: "Home", href: "/#hero-section", delay: 0.2 },
+  { label: "About Me", href: "/#bio-section", delay: 0.3 },
+  { label: "Services", href: "/#services", delay: 0.4 },
+  { label: "Works", href: "/work#hero-section", delay: 0.5 },
+  { label: "Contact", href: "/#contact", delay: 0.6 },
 ];
 
 export function Footer() {
   return (
     <footer className="majd-footer" data-theme="dark">
       <div className="majd-footer-container">
-        <h2
-          className="majd-h2-display"
-          style={{ color: "#faf7f3", maxWidth: "360px" }}
-        >
-          Scaling
-          <br />
-          Systems for Growth.
-        </h2>
+        <div style={{ maxWidth: "340px" }}>
+          <WordReveal
+            text="Scaling Start-ups for Growth."
+            as="h2"
+            className="majd-h2-display"
+            color="#faf7f3"
+            trigger="inView"
+            blurPx={10}
+            duration={1.8}
+          />
+        </div>
 
         <div className="majd-footer-columns">
           <div className="majd-footer-col">
-            <h4 className="majd-h4-col">/Quick links</h4>
+            <WordReveal
+              text="/Quick links"
+              as="h4"
+              className="majd-h4-col"
+              color="#faf7f3"
+              trigger="inView"
+              blurPx={10}
+              duration={1.8}
+            />
             <div className="majd-footer-links-wrap">
               {FOOTER_LINKS.map((item) => (
-                <Link
+                <motion.div
                   key={item.label}
-                  href={item.href}
-                  className="majd-nav-pill"
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.5 }}
+                  transition={{
+                    type: "spring",
+                    bounce: 0,
+                    duration: 1.6,
+                    delay: item.delay,
+                  }}
                 >
-                  <RollingText
-                    text={item.label}
-                    color="#111111"
-                    padding="8px 16px"
-                  />
-                </Link>
+                  <Link href={item.href} className="majd-nav-pill">
+                    <RollingText
+                      text={item.label}
+                      color="#111111"
+                      padding="8px 16px"
+                    />
+                  </Link>
+                </motion.div>
               ))}
             </div>
           </div>
 
           <div className="majd-footer-col">
-            <h4 className="majd-h4-col">/Contact</h4>
-            <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+            <WordReveal
+              text="/Contact"
+              as="h4"
+              className="majd-h4-col"
+              color="#faf7f3"
+              trigger="inView"
+              blurPx={10}
+              duration={1.8}
+            />
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.5 }}
+              transition={{
+                type: "spring",
+                bounce: 0,
+                duration: 1.6,
+                delay: 0.2,
+              }}
+            >
               <a
                 href={`mailto:${PROFILE.email}`}
                 className="majd-p-body"
@@ -61,39 +99,44 @@ export function Footer() {
               >
                 {PROFILE.email}
               </a>
-              <p
-                className="majd-p-small"
-                style={{ color: "rgba(250, 247, 243, 0.5)" }}
-              >
-                {PROFILE.location}
-              </p>
-            </div>
+            </motion.div>
           </div>
         </div>
       </div>
 
-      {/* Giant Watermark (Replicating .framer-3vb2n7 viewBox="0 0 1200 375") */}
-      <div className="majd-footer-watermark" aria-hidden="true">
+      {/* Giant Watermark (Replicating .framer-3vb2n7 viewBox="0 0 1200 375" with transition8) */}
+      <motion.div
+        className="majd-footer-watermark"
+        aria-hidden="true"
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: false, amount: 0.35 }}
+        transition={{
+          type: "spring",
+          bounce: 0,
+          duration: 2.2,
+        }}
+      >
         <svg
-          viewBox="0 0 1200 300"
+          viewBox="0 0 1200 375"
           width="100%"
           height="auto"
           style={{ display: "block", overflow: "visible" }}
         >
           <text
-            x="50%"
-            y="245"
+            x="600"
+            y="320"
             textAnchor="middle"
             fill="rgba(250, 247, 243, 0.1)"
             fontFamily="var(--font-archivo)"
             fontWeight="700"
-            fontSize="268"
+            fontSize="278"
             letterSpacing="-0.02em"
           >
             MUKESH
           </text>
         </svg>
-      </div>
+      </motion.div>
     </footer>
   );
 }

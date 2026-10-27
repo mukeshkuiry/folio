@@ -1,6 +1,7 @@
 "use client";
 
 import type { OpenSourceContribution } from "@/types/portfolio.interfaces";
+import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 
 export interface OpenSourceCardProps {
@@ -10,7 +11,7 @@ export interface OpenSourceCardProps {
 export function OpenSourceCard(props: OpenSourceCardProps) {
   const { item } = props;
   const cardRef = useRef<HTMLDivElement>(null);
-  const [isFlipped, setIsFlipped] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     const el = cardRef.current;
@@ -20,109 +21,126 @@ export function OpenSourceCard(props: OpenSourceCardProps) {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            setIsFlipped(true);
+            setIsVisible(true);
             observer.disconnect();
           }
         });
       },
-      { threshold: 0.45 }
+      { threshold: 0.5 }
     );
 
     observer.observe(el);
     return () => observer.disconnect();
   }, []);
 
+  // Exact Framer transition1 from bnnFJdSAG.js: { bounce: 0.2, delay: 0, duration: 1.6, type: "spring" }
+  const flipTransition = {
+    type: "spring" as const,
+    bounce: 0.2,
+    delay: 0,
+    duration: 1.6,
+  };
+
   return (
-    <div
-      ref={cardRef}
-      className={`majd-flip-card${isFlipped ? " is-flipped" : ""}`}
-    >
-      <div className="majd-flip-card-inner">
-        {/* Back Face (Initial obscured state with centered Logo — bnnFJdSAG.js NQ4gmArur) */}
-        <div className="majd-flip-face majd-flip-back">
+    <div ref={cardRef} className="majd-flip-card">
+      {/* Front Face (Quote + Author — rotates from -180deg to 0deg when visible) */}
+      <motion.div
+        className="majd-flip-face majd-flip-front-layer"
+        initial={{ rotateY: -180, transformPerspective: 1200 }}
+        animate={{
+          rotateY: isVisible ? 0 : -180,
+          transformPerspective: 1200,
+        }}
+        transition={flipTransition}
+      >
+        <p className="majd-p-body" style={{ color: "#faf7f3" }}>
+          {item.quote}
+        </p>
+
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+            width: "100%",
+          }}
+        >
+          {/* 50x50 circular avatar (border-radius: 226px in bnnFJdSAG.js) */}
           <div
             style={{
-              width: 60,
-              height: 60,
-              borderRadius: 16,
-              backgroundColor: "rgba(250, 247, 243, 0.1)",
-              border: `1.5px solid ${item.accentColor}`,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontFamily: "var(--font-archivo)",
-              fontWeight: 800,
-              fontSize: 22,
-              color: item.accentColor,
+              width: 50,
+              height: 50,
+              borderRadius: 226,
+              overflow: "hidden",
+              flexShrink: 0,
             }}
           >
-            {item.logoText}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={item.avatarSrc}
+              alt={item.project}
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                display: "block",
+              }}
+              loading="lazy"
+            />
           </div>
-          <span className="majd-p-small" style={{ color: "rgba(250, 247, 243, 0.6)" }}>
-            {item.project}
-          </span>
-        </div>
-
-        {/* Front Face (Revealed on 180deg flip — bnnFJdSAG.js LxTYbZf1i) */}
-        <div className="majd-flip-face majd-flip-front">
-          <p className="majd-p-body" style={{ color: "#faf7f3" }}>
-            {item.quote}
-          </p>
 
           <div
             style={{
               display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              gap: "8px",
-              width: "100%",
+              flexDirection: "column",
+              gap: "0px",
+              minWidth: 0,
             }}
           >
-            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-              <div
-                style={{
-                  width: 50,
-                  height: 50,
-                  borderRadius: 226,
-                  backgroundColor: "rgba(250, 247, 243, 0.08)",
-                  border: `1.5px solid ${item.accentColor}`,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontFamily: "var(--font-archivo)",
-                  fontWeight: 700,
-                  fontSize: 16,
-                  color: item.accentColor,
-                  flexShrink: 0,
-                }}
-              >
-                {item.logoText}
-              </div>
-              <div style={{ display: "flex", flexDirection: "column", gap: "0px" }}>
-                <a
-                  href={item.prUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="majd-p-small"
-                  style={{
-                    color: "#faf7f3",
-                    textDecoration: "underline",
-                    textUnderlineOffset: "3px",
-                  }}
-                >
-                  {item.project} ({item.prNumber})
-                </a>
-                <p
-                  className="majd-p-light"
-                  style={{ color: "rgba(250, 247, 243, 0.75)" }}
-                >
-                  {item.role}
-                </p>
-              </div>
-            </div>
+            <a
+              href={item.prUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="majd-p-small"
+              style={{
+                color: "#faf7f3",
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              }}
+            >
+              {item.project} · {item.prNumber}
+            </a>
+            <p className="majd-p-light" style={{ color: "#faf7f3" }}>
+              {item.role}
+            </p>
           </div>
         </div>
-      </div>
+      </motion.div>
+
+      {/* Back Face (Centered 60x60 Logo — rotates from 0deg to 180deg when visible) */}
+      <motion.div
+        className="majd-flip-face majd-flip-back-layer"
+        initial={{ rotateY: 0, transformPerspective: 1200 }}
+        animate={{
+          rotateY: isVisible ? 180 : 0,
+          transformPerspective: 1200,
+        }}
+        transition={flipTransition}
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={item.logoSrc}
+          alt=""
+          style={{
+            width: 60,
+            height: 60,
+            objectFit: "contain",
+            display: "block",
+          }}
+          loading="lazy"
+        />
+      </motion.div>
     </div>
   );
 }

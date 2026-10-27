@@ -27,8 +27,8 @@ export const PROFILE = {
   linkedinUrl: "https://linkedin.com/in/mukeshkuiry",
   twitterUrl: "https://x.com/mukeshkuiry7",
   instagramUrl: "https://instagram.com/mukesh_kuiry_",
-  avatarFront: "/images/mukesh-avatar.jpg",
-  avatarBack: "/images/mukesh-avatar.jpg",
+  avatarFront: "/images/framer/avatar-front-bw.png",
+  avatarBack: "/images/framer/haSjyjpt7FyCjJUBvXtmzCMSEQg.png",
   bioHeading: "Hey!",
   bioLead:
     "I’m Mukesh Kuiry, a Software Engineer based in Bengaluru, India, building high-throughput FinTech & distributed backend systems at Refyne.",
@@ -160,8 +160,8 @@ export const OPEN_SOURCE_CONTRIBUTIONS: OpenSourceContribution[] = [
     id: "kubevirt",
     project: "KubeVirt",
     org: "CNCF / kubevirt",
-    role: "Kubernetes Virtualization Contributor",
-    prNumber: "PR #11831 · #11278",
+    role: "Kubernetes Virtualization",
+    prNumber: "PR #11831",
     prTitle: "Optimize IsKubeVirtServiceAccount namespace resolution in admission webhooks",
     prUrl: "https://github.com/kubevirt/kubevirt/pull/11831",
     repoUrl: "https://github.com/kubevirt/kubevirt",
@@ -170,14 +170,16 @@ export const OPEN_SOURCE_CONTRIBUTIONS: OpenSourceContribution[] = [
     quote:
       "Eliminated redundant per-request namespace file reads inside KubeVirt's webhook admission controller (IsKubeVirtServiceAccount) by caching service account prefix resolution in Go.",
     logoText: "KV",
-    accentColor: "#38BDF8",
+    logoSrc: "/images/framer/MG7SSqT3AUbDDMeyGynYFWvAWI.png",
+    avatarSrc: "/images/framer/kAftuUN9iRKwIt9M6RqZo9NS314.jpg",
+    accentColor: "#faf7f3",
   },
   {
     id: "meshery",
     project: "Meshery",
     org: "CNCF / Layer5",
-    role: "Cloud Native UI & Go Contributor",
-    prNumber: "PR #8707 · #8908",
+    role: "Cloud Native Manager",
+    prNumber: "PR #8707",
     prTitle: "Migrate UserPreferences, MesheryChart & MesheryChartDialog to React functional hooks",
     prUrl: "https://github.com/meshery/meshery/pull/8707",
     repoUrl: "https://github.com/meshery/meshery",
@@ -186,13 +188,15 @@ export const OPEN_SOURCE_CONTRIBUTIONS: OpenSourceContribution[] = [
     quote:
       "Refactored legacy class-based telemetry charts and user preference state containers in Meshery's cloud-native management plane into clean, hook-driven functional components.",
     logoText: "MS",
-    accentColor: "#10B981",
+    logoSrc: "/images/framer/yceQCLz3chOtgu2oZRjmfEKjY.png",
+    avatarSrc: "/images/framer/HqoHkPp6dpJFdgMqUKIaAXmy7o.jpg",
+    accentColor: "#faf7f3",
   },
   {
     id: "forge-build",
     project: "Forge Build",
     org: "forge-build / forge",
-    role: "Core Go & K8s Maintainer",
+    role: "Go & K8s Controller",
     prNumber: "PR #28 · #27",
     prTitle: "Add Go crypto/ssh package & InfrastructureRef Kubernetes build status conditions",
     prUrl: "https://github.com/forge-build/forge/pull/28",
@@ -202,14 +206,16 @@ export const OPEN_SOURCE_CONTRIBUTIONS: OpenSourceContribution[] = [
     quote:
       "Built the internal Go SSH machine transport layer and defined InfrastructureRef, MachineReady, and ProvisionersReady Kubernetes CRD lifecycle states with full unit test coverage.",
     logoText: "FG",
-    accentColor: "#F59E0B",
+    logoSrc: "/images/framer/gN85dqTeMmVvE57UMiHhgeL4P4.png",
+    avatarSrc: "/images/framer/Y9KmJAQ4w53hsc4jJojfokLZ7D8.jpg",
+    accentColor: "#faf7f3",
   },
   {
     id: "flexauth-blocksuite",
-    project: "FlexAuth & BlockSuite",
+    project: "FlexAuth & Freeflow",
     org: "Rajdip019 · toeverything",
-    role: "Auth & Editor Contributor",
-    prNumber: "PR #57 · #49 · #4611",
+    role: "Auth & Product Systems",
+    prNumber: "35+ Merged PRs",
     prTitle: "Implement X_API_KEY auth middleware, unique email guards & BlockSuite contributions",
     prUrl: "https://github.com/Rajdip019/flexauth/pull/57",
     repoUrl: "https://github.com/Rajdip019/flexauth",
@@ -218,7 +224,9 @@ export const OPEN_SOURCE_CONTRIBUTIONS: OpenSourceContribution[] = [
     quote:
       "Shipped API key authentication middleware (with_api_key) and unique email identity constraints in FlexAuth, plus 35+ merged product PRs across Freeflow and Clueless UI.",
     logoText: "FA",
-    accentColor: "#EC4899",
+    logoSrc: "/images/framer/WsYTUG4cqmLIU4lwbMUQX7FdOY.png",
+    avatarSrc: "/images/framer/HH8KrojyxZx6X20z1r13CSwiiWE.jpg",
+    accentColor: "#faf7f3",
   },
 ];
 
@@ -240,9 +248,12 @@ export const PROJECTS: Project[] = [
       { label: "Install Flow", value: "Brew Tap + Auto-Agent" },
       { label: "Auth Storage", value: "macOS Keychain OAuth" },
     ],
-    heroImage: "/images/projects/runway-1.svg",
-    galleryImages: ["/images/projects/runway-2.svg", "/images/projects/runway-3.svg"],
-    outroImage: "/images/projects/runway-1.svg",
+    heroImage: "/images/framer/VNXQLcPHw9VbVzy6BDpZ8pUsaU.png",
+    galleryImages: [
+      "/images/framer/173P7WbvHMc1Z9lNpSNy6GIYif8.png",
+      "/images/framer/UmXfpYfVhYqoqb1DnbFpIC98OIo.png",
+    ],
+    outroImage: "/images/framer/rRp1KaDwStpJ6Pxo05Doj1IjSU.png",
     featured: true,
     introBlocks: [
       {
@@ -295,9 +306,12 @@ export const PROJECTS: Project[] = [
       { label: "TCC Permissions", value: "0 Required" },
       { label: "Memory Overhead", value: "12 MB Native" },
     ],
-    heroImage: "/images/projects/clipbro-1.svg",
-    galleryImages: ["/images/projects/clipbro-2.svg", "/images/projects/clipbro-3.svg"],
-    outroImage: "/images/projects/clipbro-1.svg",
+    heroImage: "/images/framer/WgEHVRrQs62rgxlzrnXJJ8rr4.png",
+    galleryImages: [
+      "/images/framer/ujTNOAyihWs0g4ns3ZEmKQBW6M.jpeg",
+      "/images/framer/v1SmiICbdgfuSlTYmhS054D8sI.jpeg",
+    ],
+    outroImage: "/images/framer/ixj3l3ntKSbk66sf6KZmqHxXWi0.jpeg",
     featured: true,
     introBlocks: [
       {
@@ -343,9 +357,12 @@ export const PROJECTS: Project[] = [
       { label: "Inter-Service RPC", value: "gRPC / Protobuf" },
       { label: "Rating Model", value: "ACID Elo Ledger" },
     ],
-    heroImage: "/images/projects/codearena-1.svg",
-    galleryImages: ["/images/projects/codearena-2.svg", "/images/projects/codearena-3.svg"],
-    outroImage: "/images/projects/codearena-1.svg",
+    heroImage: "/images/framer/I3azeVtkvdKBGl9TX38tUdXEb0.png",
+    galleryImages: [
+      "/images/framer/J0VwtYHHXMhL1FV3jH8iWEtAVk.webp",
+      "/images/framer/8UEzK68Cuo7xH5PuKC44uAV0ckY.webp",
+    ],
+    outroImage: "/images/framer/Ks48TT9awwpT9gdcWgZd8ev1WY.webp",
     featured: true,
     introBlocks: [
       {
@@ -391,9 +408,12 @@ export const PROJECTS: Project[] = [
       { label: "Message Broker", value: "RabbitMQ AMQP" },
       { label: "Consistency", value: "Transactional Stock" },
     ],
-    heroImage: "/images/projects/order-processor-1.svg",
-    galleryImages: ["/images/projects/order-processor-2.svg", "/images/projects/order-processor-3.svg"],
-    outroImage: "/images/projects/order-processor-1.svg",
+    heroImage: "/images/framer/e3DxUGJWqt7CIVVQIA0VZoy09FQ.png",
+    galleryImages: [
+      "/images/framer/TYjXSgMIzqcCLynoQQYhbF7aeM.webp",
+      "/images/framer/AmqdjgheRojNIWusBddw5GXHErc.webp",
+    ],
+    outroImage: "/images/framer/Kwfcsb5AKYGhAjNC9ZFvtVn7cU.webp",
     featured: true,
     introBlocks: [
       {
@@ -439,9 +459,12 @@ export const PROJECTS: Project[] = [
       { label: "Ranking Formula", value: "0.7*Vel + 0.3*Com" },
       { label: "Video Engine", value: "FFmpeg 9:16 Pipeline" },
     ],
-    heroImage: "/images/projects/reel-automation-1.svg",
-    galleryImages: ["/images/projects/reel-automation-2.svg", "/images/projects/reel-automation-3.svg"],
-    outroImage: "/images/projects/reel-automation-1.svg",
+    heroImage: "/images/framer/l08IN6OxWS7DxFD28fNZXjCT4.png",
+    galleryImages: [
+      "/images/framer/N7dtL6bcw7MBEpYrA8GCYU1bIY.webp",
+      "/images/framer/HGArSkPIhysxjkfAUbQ7UBw5EcQ.webp",
+    ],
+    outroImage: "/images/framer/f5mIs8ybPXTLDkmTnN1bJL3xaU.webp",
     featured: false,
     introBlocks: [
       {
@@ -487,9 +510,12 @@ export const PROJECTS: Project[] = [
       { label: "Default Rule", value: "6-Month Capitalize" },
       { label: "Architecture", value: "Expo App + REST API" },
     ],
-    heroImage: "/images/projects/committee-khata-1.svg",
-    galleryImages: ["/images/projects/committee-khata-2.svg", "/images/projects/committee-khata-3.svg"],
-    outroImage: "/images/projects/committee-khata-1.svg",
+    heroImage: "/images/framer/IBHqRDPghoZPLzWsGC2SWmPo.png",
+    galleryImages: [
+      "/images/framer/YT4HqGR2CJLRQpCrIlsUf8crU.webp",
+      "/images/framer/lSXxeEVPppxwb724jqEYgrTtv8.webp",
+    ],
+    outroImage: "/images/framer/iTQWsWIUAn02uPq2Xa9LxHOoZY.webp",
     featured: false,
     introBlocks: [
       {
@@ -535,9 +561,12 @@ export const PROJECTS: Project[] = [
       { label: "Grouping Scope", value: "Per-Window Hostname" },
       { label: "Event Latency", value: "< 1ms Background" },
     ],
-    heroImage: "/images/projects/smart-tab-grouper-1.svg",
-    galleryImages: ["/images/projects/smart-tab-grouper-2.svg", "/images/projects/smart-tab-grouper-3.svg"],
-    outroImage: "/images/projects/smart-tab-grouper-1.svg",
+    heroImage: "/images/framer/173P7WbvHMc1Z9lNpSNy6GIYif8.png",
+    galleryImages: [
+      "/images/framer/UmXfpYfVhYqoqb1DnbFpIC98OIo.png",
+      "/images/framer/rRp1KaDwStpJ6Pxo05Doj1IjSU.png",
+    ],
+    outroImage: "/images/framer/VNXQLcPHw9VbVzy6BDpZ8pUsaU.png",
     featured: false,
     introBlocks: [
       {

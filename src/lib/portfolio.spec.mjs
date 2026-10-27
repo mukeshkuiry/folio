@@ -5,8 +5,8 @@ import { describe, it } from "node:test";
 
 const ROOT = path.resolve(import.meta.dirname, "../..");
 
-describe("Portfolio Data, Assets & Architecture Verification", () => {
-  it("verifies all 7 curated projects, 4 experiences, 4 services, and 4 open-source contributions exist with zero placeholders", () => {
+describe("Portfolio Data, Framer Assets & Architecture Verification", () => {
+  it("verifies all 7 curated projects, 4 experiences, 4 services, and 4 open-source contributions exist with real Framer images", () => {
     const dataSource = fs.readFileSync(
       path.join(ROOT, "src/lib/data.ts"),
       "utf-8"
@@ -33,32 +33,42 @@ describe("Portfolio Data, Assets & Architecture Verification", () => {
         dataSource.includes(`slug: "${slug}"`),
         `Missing curated project slug: ${slug}`
       );
-      for (const idx of [1, 2, 3]) {
-        const svgPath = path.join(
-          ROOT,
-          `public/images/projects/${slug}-${idx}.svg`
-        );
-        assert.ok(
-          fs.existsSync(svgPath),
-          `Missing project visual asset: ${svgPath}`
-        );
-      }
+    }
+
+    const imagePaths = [
+      ...dataSource.matchAll(/["'](\/images\/framer\/[^"']+)["']/g),
+    ].map((m) => m[1]);
+
+    assert.ok(
+      imagePaths.length >= 25,
+      `Expected at least 25 Framer image references in data.ts, found ${imagePaths.length}`
+    );
+
+    for (const relImg of imagePaths) {
+      const fullPath = path.join(ROOT, "public", relImg);
+      assert.ok(
+        fs.existsSync(fullPath) && fs.statSync(fullPath).size > 0,
+        `Missing or empty Framer image asset: ${fullPath}`
+      );
     }
   });
 
-  it("verifies all blog posts have corresponding generated SVG cover assets", () => {
+  it("verifies all blog cover images exist in public/images/framer", () => {
     const blogSource = fs.readFileSync(
       path.join(ROOT, "src/lib/blog-data.ts"),
       "utf-8"
     );
-    const slugs = [...blogSource.matchAll(/slug:\s*"([^"]+)"/g)].map(
-      (m) => m[1]
-    );
-    assert.ok(slugs.length >= 16, `Expected at least 16 blog posts, got ${slugs.length}`);
+    const coverImages = [
+      ...blogSource.matchAll(/["'](\/images\/framer\/[^"']+)["']/g),
+    ].map((m) => m[1]);
 
-    for (const slug of slugs) {
-      const svgPath = path.join(ROOT, `public/images/blog/${slug}.svg`);
-      assert.ok(fs.existsSync(svgPath), `Missing blog cover SVG: ${svgPath}`);
+    assert.equal(coverImages.length, 7, "Expected 7 Framer blog cover images");
+    for (const relImg of coverImages) {
+      const fullPath = path.join(ROOT, "public", relImg);
+      assert.ok(
+        fs.existsSync(fullPath) && fs.statSync(fullPath).size > 0,
+        `Missing blog cover image: ${fullPath}`
+      );
     }
   });
 
@@ -88,7 +98,8 @@ describe("Portfolio Data, Assets & Architecture Verification", () => {
       "public/images/noise.png",
       "public/images/holo-triangle-1.png",
       "public/images/holo-triangle-2.png",
-      "public/images/mukesh-avatar.jpg",
+      "public/images/framer/avatar-front-bw.png",
+      "public/images/framer/haSjyjpt7FyCjJUBvXtmzCMSEQg.png",
     ];
 
     for (const relPath of coreImages) {

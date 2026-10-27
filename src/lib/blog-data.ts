@@ -1786,8 +1786,20 @@ export function getRelatedPosts(currentSlug: string, count = 3): BlogPost[] {
     .slice(0, count);
 }
 
+const FRAMER_BLOG_COVERS = [
+  "/images/framer/lxtBXj3G7Bloek83WxPY1ZUuw0Q.png",
+  "/images/framer/ic9k42rYytbJtnRUJXdcNxCHSc.png",
+  "/images/framer/MWSFsHfw8FDzKSMZllibGDMY4CU.png",
+  "/images/framer/Mirnh1WfdeIPhnjStrfY33WLFo8.png",
+  "/images/framer/xgMwYRclJvAhqaJhMbQm8kpRv0.png",
+  "/images/framer/VIMRfiZ27XChz1XOgjss4EmUoDM.png",
+  "/images/framer/HH3YKlPdNvuWQdn3ypOgOThmOk.png",
+];
+
 export function getPostCoverImage(slug: string): string {
-  return `/images/blog/${slug}.svg`;
+  const index = BLOG_POSTS.findIndex((p) => p.slug === slug);
+  const resolvedIndex = index >= 0 ? index : 0;
+  return FRAMER_BLOG_COVERS[resolvedIndex % FRAMER_BLOG_COVERS.length];
 }
 
 export function getPostBySlug(slug: string): BlogPost | undefined {
