@@ -5,8 +5,8 @@ import { describe, it } from "node:test";
 
 const ROOT = path.resolve(import.meta.dirname, "../..");
 
-describe("Portfolio Data, Framer Assets & Architecture Verification", () => {
-  it("verifies all 7 curated projects, 4 experiences, 4 services, and 4 open-source contributions exist with real Framer images", () => {
+describe("Mukesh Kuiry Portfolio Data, Branded Assets & Architecture Verification", () => {
+  it("verifies all 7 curated projects, 4 experiences, and 4 open-source contributions exist with Mukesh's custom PNG assets", () => {
     const dataSource = fs.readFileSync(
       path.join(ROOT, "src/lib/data.ts"),
       "utf-8"
@@ -14,8 +14,8 @@ describe("Portfolio Data, Framer Assets & Architecture Verification", () => {
 
     assert.ok(!dataSource.includes("TODO"), "data.ts must not contain TODO");
     assert.ok(
-      !dataSource.toLowerCase().includes("lorem ipsum"),
-      "data.ts must not contain lorem ipsum"
+      !dataSource.toLowerCase().includes("majd"),
+      "data.ts must not contain any Majd references"
     );
 
     const expectedSlugs = [
@@ -33,49 +33,55 @@ describe("Portfolio Data, Framer Assets & Architecture Verification", () => {
         dataSource.includes(`slug: "${slug}"`),
         `Missing curated project slug: ${slug}`
       );
+      for (const idx of [1, 2, 3]) {
+        const pngPath = path.join(
+          ROOT,
+          `public/images/projects/${slug}-${idx}.png`
+        );
+        assert.ok(
+          fs.existsSync(pngPath) && fs.statSync(pngPath).size > 0,
+          `Missing project PNG asset: ${pngPath}`
+        );
+      }
     }
 
-    const imagePaths = [
-      ...dataSource.matchAll(/["'](\/images\/framer\/[^"']+)["']/g),
-    ].map((m) => m[1]);
+    for (const osKey of ["kubevirt", "meshery", "forge", "flexauth"]) {
+      const logoPath = path.join(
+        ROOT,
+        `public/images/opensource/${osKey}-logo.png`
+      );
+      const avatarPath = path.join(
+        ROOT,
+        `public/images/opensource/${osKey}-avatar.png`
+      );
+      assert.ok(fs.existsSync(logoPath), `Missing OS logo: ${logoPath}`);
+      assert.ok(fs.existsSync(avatarPath), `Missing OS avatar: ${avatarPath}`);
+    }
+  });
 
-    assert.ok(
-      imagePaths.length >= 25,
-      `Expected at least 25 Framer image references in data.ts, found ${imagePaths.length}`
-    );
-
-    for (const relImg of imagePaths) {
-      const fullPath = path.join(ROOT, "public", relImg);
+  it("verifies all blog cover PNGs exist in public/images/blog", () => {
+    for (let i = 1; i <= 7; i++) {
+      const coverPath = path.join(ROOT, `public/images/blog/cover-${i}.png`);
       assert.ok(
-        fs.existsSync(fullPath) && fs.statSync(fullPath).size > 0,
-        `Missing or empty Framer image asset: ${fullPath}`
+        fs.existsSync(coverPath) && fs.statSync(coverPath).size > 0,
+        `Missing blog cover PNG: ${coverPath}`
       );
     }
   });
 
-  it("verifies all blog cover images exist in public/images/framer", () => {
-    const blogSource = fs.readFileSync(
-      path.join(ROOT, "src/lib/blog-data.ts"),
-      "utf-8"
-    );
-    const coverImages = [
-      ...blogSource.matchAll(/["'](\/images\/framer\/[^"']+)["']/g),
-    ].map((m) => m[1]);
-
-    assert.equal(coverImages.length, 7, "Expected 7 Framer blog cover images");
-    for (const relImg of coverImages) {
-      const fullPath = path.join(ROOT, "public", relImg);
-      assert.ok(
-        fs.existsSync(fullPath) && fs.statSync(fullPath).size > 0,
-        `Missing blog cover image: ${fullPath}`
-      );
-    }
-  });
-
-  it("verifies all Majd-Framer design tokens and core assets exist", () => {
+  it("verifies Mukesh's portrait faces and design tokens exist and Services section is removed", () => {
     const cssSource = fs.readFileSync(
       path.join(ROOT, "src/app/globals.css"),
       "utf-8"
+    );
+    const homeSource = fs.readFileSync(
+      path.join(ROOT, "src/app/page.tsx"),
+      "utf-8"
+    );
+
+    assert.ok(
+      !homeSource.includes('id="services"'),
+      "Home page must not include Services section"
     );
 
     const requiredTokens = [
@@ -98,8 +104,9 @@ describe("Portfolio Data, Framer Assets & Architecture Verification", () => {
       "public/images/noise.png",
       "public/images/holo-triangle-1.png",
       "public/images/holo-triangle-2.png",
-      "public/images/framer/avatar-front-bw.png",
-      "public/images/framer/haSjyjpt7FyCjJUBvXtmzCMSEQg.png",
+      "public/images/mukesh-avatar.jpg",
+      "public/images/mukesh-front-bw.png",
+      "public/images/mukesh-back-color.png",
     ];
 
     for (const relPath of coreImages) {

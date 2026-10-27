@@ -7,7 +7,6 @@ import { HeroBioSection } from "@/components/HeroBioSection";
 import { OpenSourceCard } from "@/components/OpenSourceCard";
 import { ProjectCard } from "@/components/ProjectCard";
 import { ScrollColorText } from "@/components/ScrollColorText";
-import { ServiceCard } from "@/components/ServiceCard";
 import { TextArrowButton } from "@/components/TextArrowButton";
 import { WordReveal } from "@/components/WordReveal";
 import { getFeaturedPosts } from "@/lib/blog-data";
@@ -16,7 +15,6 @@ import {
   OPEN_SOURCE_CONTRIBUTIONS,
   PROFILE,
   PROJECTS,
-  SERVICES,
 } from "@/lib/data";
 import { blogIndexUrl } from "@/lib/site";
 import { motion } from "framer-motion";
@@ -27,7 +25,7 @@ export default function HomePage() {
 
   return (
     <>
-      {/* 1. Shared 200vh Hero & Bio Sections + Sticky 3D Flipping Avatar */}
+      {/* 1. Shared 200vh Hero & Bio Sections + Sticky 3D Flipping Avatar of Mukesh */}
       <HeroBioSection />
 
       {/* 2. Scroll-Scrubbed Manifesto Quote Section (150vh track) */}
@@ -41,26 +39,10 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 3. Services / Core Engineering Domains Section */}
-      <section id="services" className="majd-section majd-section-Flush">
-        <div className="majd-container">
-          <WordReveal
-            text="Services"
-            as="h2"
-            className="majd-h2-section"
-            trigger="inView"
-            blurPx={10}
-            duration={1.8}
-          />
-          <div className="majd-services-list">
-            {SERVICES.map((service) => (
-              <ServiceCard key={service.id} service={service} />
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* 3. Work Experience Timeline */}
+      <ExperienceSection experiences={EXPERIENCES} />
 
-      {/* 4. Featured Projects Section (2x2 Grid matching XQuJCztg5.js limit: 4) */}
+      {/* 4. Featured Projects Section (2x2 Grid) */}
       <section id="projects" className="majd-section">
         <div className="majd-container">
           <div className="majd-section-header-row">
@@ -89,10 +71,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 5. Work Experience Timeline */}
-      <ExperienceSection experiences={EXPERIENCES} />
-
-      {/* 6. Open Source & Engineering Impact (4-Column 3D Scroll-Flip Cards) */}
+      {/* 5. Open Source & Engineering Impact (4-Column 3D Scroll-Flip Cards) */}
       <section id="open-source" className="majd-section">
         <div className="majd-container">
           <WordReveal
@@ -112,7 +91,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 7. Thoughts / Technical Articles Section (2 Blog Cards + 1 Dark All Posts Card) */}
+      {/* 6. Thoughts / Technical Articles Section (2 Blog Cards + 1 Dark All Posts Card) */}
       <section id="thoughts" className="majd-section">
         <div className="majd-container">
           <WordReveal
@@ -142,7 +121,7 @@ export default function HomePage() {
               }}
             >
               <WordReveal
-                text="See how we shape systems with clarity and craft— explore our blog"
+                text="Deep-dive notes on distributed systems, databases & Go— explore my blog"
                 as="p"
                 className="majd-p-display"
                 color="#faf7f3"
@@ -152,7 +131,7 @@ export default function HomePage() {
                 staggerDelay={0.04}
               />
               <TextArrowButton
-                title="View All Work"
+                title="View All Articles"
                 href={`${blogIndexUrl()}#hero-section`}
                 variant="white"
               />
@@ -161,7 +140,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 8. Contact Section */}
+      {/* 7. Contact Section */}
       <ContactSection />
     </>
   );

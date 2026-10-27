@@ -9,8 +9,9 @@ import Link from "next/link";
 const FOOTER_LINKS = [
   { label: "Home", href: "/#hero-section", delay: 0.2 },
   { label: "About Me", href: "/#bio-section", delay: 0.3 },
-  { label: "Services", href: "/#services", delay: 0.4 },
-  { label: "Works", href: "/work#hero-section", delay: 0.5 },
+  { label: "Experience", href: "/#experience", delay: 0.35 },
+  { label: "Works", href: "/work#hero-section", delay: 0.45 },
+  { label: "Blog", href: "/blog#hero-section", delay: 0.55 },
   { label: "Contact", href: "/#contact", delay: 0.6 },
 ];
 
@@ -18,9 +19,9 @@ export function Footer() {
   return (
     <footer className="majd-footer" data-theme="dark">
       <div className="majd-footer-container">
-        <div style={{ maxWidth: "340px" }}>
+        <div style={{ maxWidth: "360px" }}>
           <WordReveal
-            text="Scaling Start-ups for Growth."
+            text="Engineering Systems for Scale."
             as="h2"
             className="majd-h2-display"
             color="#faf7f3"

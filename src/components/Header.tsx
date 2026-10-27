@@ -15,9 +15,9 @@ interface NavLinkItem {
 
 const NAV_LINKS: NavLinkItem[] = [
   { label: "About Me", href: "/#bio-section", delaySec: 0.1 },
-  { label: "Services", href: "/#services", delaySec: 0.2 },
+  { label: "Experience", href: "/#experience", delaySec: 0.2 },
   { label: "Projects", href: "/work#hero-section", delaySec: 0.3 },
-  { label: "Experience", href: "/#experience", delaySec: 0.35 },
+  { label: "Open Source", href: "/#open-source", delaySec: 0.35 },
   { label: "Blog", href: "/blog#hero-section", delaySec: 0.4 },
   { label: "Contact", href: "/#contact", delaySec: 0.45 },
 ];

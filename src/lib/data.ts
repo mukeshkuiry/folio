@@ -27,8 +27,8 @@ export const PROFILE = {
   linkedinUrl: "https://linkedin.com/in/mukeshkuiry",
   twitterUrl: "https://x.com/mukeshkuiry7",
   instagramUrl: "https://instagram.com/mukesh_kuiry_",
-  avatarFront: "/images/framer/avatar-front-bw.png",
-  avatarBack: "/images/framer/haSjyjpt7FyCjJUBvXtmzCMSEQg.png",
+  avatarFront: "/images/mukesh-front-bw.png",
+  avatarBack: "/images/mukesh-back-color.png",
   bioHeading: "Hey!",
   bioLead:
     "I’m Mukesh Kuiry, a Software Engineer based in Bengaluru, India, building high-throughput FinTech & distributed backend systems at Refyne.",
@@ -170,8 +170,8 @@ export const OPEN_SOURCE_CONTRIBUTIONS: OpenSourceContribution[] = [
     quote:
       "Eliminated redundant per-request namespace file reads inside KubeVirt's webhook admission controller (IsKubeVirtServiceAccount) by caching service account prefix resolution in Go.",
     logoText: "KV",
-    logoSrc: "/images/framer/MG7SSqT3AUbDDMeyGynYFWvAWI.png",
-    avatarSrc: "/images/framer/kAftuUN9iRKwIt9M6RqZo9NS314.jpg",
+    logoSrc: "/images/opensource/kubevirt-logo.png",
+    avatarSrc: "/images/opensource/kubevirt-avatar.png",
     accentColor: "#faf7f3",
   },
   {
@@ -188,8 +188,8 @@ export const OPEN_SOURCE_CONTRIBUTIONS: OpenSourceContribution[] = [
     quote:
       "Refactored legacy class-based telemetry charts and user preference state containers in Meshery's cloud-native management plane into clean, hook-driven functional components.",
     logoText: "MS",
-    logoSrc: "/images/framer/yceQCLz3chOtgu2oZRjmfEKjY.png",
-    avatarSrc: "/images/framer/HqoHkPp6dpJFdgMqUKIaAXmy7o.jpg",
+    logoSrc: "/images/opensource/meshery-logo.png",
+    avatarSrc: "/images/opensource/meshery-avatar.png",
     accentColor: "#faf7f3",
   },
   {
@@ -206,8 +206,8 @@ export const OPEN_SOURCE_CONTRIBUTIONS: OpenSourceContribution[] = [
     quote:
       "Built the internal Go SSH machine transport layer and defined InfrastructureRef, MachineReady, and ProvisionersReady Kubernetes CRD lifecycle states with full unit test coverage.",
     logoText: "FG",
-    logoSrc: "/images/framer/gN85dqTeMmVvE57UMiHhgeL4P4.png",
-    avatarSrc: "/images/framer/Y9KmJAQ4w53hsc4jJojfokLZ7D8.jpg",
+    logoSrc: "/images/opensource/forge-logo.png",
+    avatarSrc: "/images/opensource/forge-avatar.png",
     accentColor: "#faf7f3",
   },
   {
@@ -224,8 +224,8 @@ export const OPEN_SOURCE_CONTRIBUTIONS: OpenSourceContribution[] = [
     quote:
       "Shipped API key authentication middleware (with_api_key) and unique email identity constraints in FlexAuth, plus 35+ merged product PRs across Freeflow and Clueless UI.",
     logoText: "FA",
-    logoSrc: "/images/framer/WsYTUG4cqmLIU4lwbMUQX7FdOY.png",
-    avatarSrc: "/images/framer/HH8KrojyxZx6X20z1r13CSwiiWE.jpg",
+    logoSrc: "/images/opensource/flexauth-logo.png",
+    avatarSrc: "/images/opensource/flexauth-avatar.png",
     accentColor: "#faf7f3",
   },
 ];
@@ -248,12 +248,12 @@ export const PROJECTS: Project[] = [
       { label: "Install Flow", value: "Brew Tap + Auto-Agent" },
       { label: "Auth Storage", value: "macOS Keychain OAuth" },
     ],
-    heroImage: "/images/framer/VNXQLcPHw9VbVzy6BDpZ8pUsaU.png",
+    heroImage: "/images/projects/runway-1.png",
     galleryImages: [
-      "/images/framer/173P7WbvHMc1Z9lNpSNy6GIYif8.png",
-      "/images/framer/UmXfpYfVhYqoqb1DnbFpIC98OIo.png",
+      "/images/projects/runway-2.png",
+      "/images/projects/runway-3.png",
     ],
-    outroImage: "/images/framer/rRp1KaDwStpJ6Pxo05Doj1IjSU.png",
+    outroImage: "/images/projects/runway-1.png",
     featured: true,
     introBlocks: [
       {
@@ -306,12 +306,12 @@ export const PROJECTS: Project[] = [
       { label: "TCC Permissions", value: "0 Required" },
       { label: "Memory Overhead", value: "12 MB Native" },
     ],
-    heroImage: "/images/framer/WgEHVRrQs62rgxlzrnXJJ8rr4.png",
+    heroImage: "/images/projects/clipbro-1.png",
     galleryImages: [
-      "/images/framer/ujTNOAyihWs0g4ns3ZEmKQBW6M.jpeg",
-      "/images/framer/v1SmiICbdgfuSlTYmhS054D8sI.jpeg",
+      "/images/projects/clipbro-2.png",
+      "/images/projects/clipbro-3.png",
     ],
-    outroImage: "/images/framer/ixj3l3ntKSbk66sf6KZmqHxXWi0.jpeg",
+    outroImage: "/images/projects/clipbro-1.png",
     featured: true,
     introBlocks: [
       {
@@ -357,12 +357,12 @@ export const PROJECTS: Project[] = [
       { label: "Inter-Service RPC", value: "gRPC / Protobuf" },
       { label: "Rating Model", value: "ACID Elo Ledger" },
     ],
-    heroImage: "/images/framer/I3azeVtkvdKBGl9TX38tUdXEb0.png",
+    heroImage: "/images/projects/codearena-1.png",
     galleryImages: [
-      "/images/framer/J0VwtYHHXMhL1FV3jH8iWEtAVk.webp",
-      "/images/framer/8UEzK68Cuo7xH5PuKC44uAV0ckY.webp",
+      "/images/projects/codearena-2.png",
+      "/images/projects/codearena-3.png",
     ],
-    outroImage: "/images/framer/Ks48TT9awwpT9gdcWgZd8ev1WY.webp",
+    outroImage: "/images/projects/codearena-1.png",
     featured: true,
     introBlocks: [
       {
@@ -408,12 +408,12 @@ export const PROJECTS: Project[] = [
       { label: "Message Broker", value: "RabbitMQ AMQP" },
       { label: "Consistency", value: "Transactional Stock" },
     ],
-    heroImage: "/images/framer/e3DxUGJWqt7CIVVQIA0VZoy09FQ.png",
+    heroImage: "/images/projects/order-processor-1.png",
     galleryImages: [
-      "/images/framer/TYjXSgMIzqcCLynoQQYhbF7aeM.webp",
-      "/images/framer/AmqdjgheRojNIWusBddw5GXHErc.webp",
+      "/images/projects/order-processor-2.png",
+      "/images/projects/order-processor-3.png",
     ],
-    outroImage: "/images/framer/Kwfcsb5AKYGhAjNC9ZFvtVn7cU.webp",
+    outroImage: "/images/projects/order-processor-1.png",
     featured: true,
     introBlocks: [
       {
@@ -459,12 +459,12 @@ export const PROJECTS: Project[] = [
       { label: "Ranking Formula", value: "0.7*Vel + 0.3*Com" },
       { label: "Video Engine", value: "FFmpeg 9:16 Pipeline" },
     ],
-    heroImage: "/images/framer/l08IN6OxWS7DxFD28fNZXjCT4.png",
+    heroImage: "/images/projects/reel-automation-1.png",
     galleryImages: [
-      "/images/framer/N7dtL6bcw7MBEpYrA8GCYU1bIY.webp",
-      "/images/framer/HGArSkPIhysxjkfAUbQ7UBw5EcQ.webp",
+      "/images/projects/reel-automation-2.png",
+      "/images/projects/reel-automation-3.png",
     ],
-    outroImage: "/images/framer/f5mIs8ybPXTLDkmTnN1bJL3xaU.webp",
+    outroImage: "/images/projects/reel-automation-1.png",
     featured: false,
     introBlocks: [
       {
@@ -510,12 +510,12 @@ export const PROJECTS: Project[] = [
       { label: "Default Rule", value: "6-Month Capitalize" },
       { label: "Architecture", value: "Expo App + REST API" },
     ],
-    heroImage: "/images/framer/IBHqRDPghoZPLzWsGC2SWmPo.png",
+    heroImage: "/images/projects/committee-khata-1.png",
     galleryImages: [
-      "/images/framer/YT4HqGR2CJLRQpCrIlsUf8crU.webp",
-      "/images/framer/lSXxeEVPppxwb724jqEYgrTtv8.webp",
+      "/images/projects/committee-khata-2.png",
+      "/images/projects/committee-khata-3.png",
     ],
-    outroImage: "/images/framer/iTQWsWIUAn02uPq2Xa9LxHOoZY.webp",
+    outroImage: "/images/projects/committee-khata-1.png",
     featured: false,
     introBlocks: [
       {
@@ -561,12 +561,12 @@ export const PROJECTS: Project[] = [
       { label: "Grouping Scope", value: "Per-Window Hostname" },
       { label: "Event Latency", value: "< 1ms Background" },
     ],
-    heroImage: "/images/framer/173P7WbvHMc1Z9lNpSNy6GIYif8.png",
+    heroImage: "/images/projects/smart-tab-grouper-1.png",
     galleryImages: [
-      "/images/framer/UmXfpYfVhYqoqb1DnbFpIC98OIo.png",
-      "/images/framer/rRp1KaDwStpJ6Pxo05Doj1IjSU.png",
+      "/images/projects/smart-tab-grouper-2.png",
+      "/images/projects/smart-tab-grouper-3.png",
     ],
-    outroImage: "/images/framer/VNXQLcPHw9VbVzy6BDpZ8pUsaU.png",
+    outroImage: "/images/projects/smart-tab-grouper-1.png",
     featured: false,
     introBlocks: [
       {
