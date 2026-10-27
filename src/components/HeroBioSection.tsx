@@ -10,41 +10,53 @@ interface DraggableShapeProps {
   src: string;
   className: string;
   initialRotate: number;
+  floatDelay?: number;
 }
 
 function DraggableHoloShape(props: DraggableShapeProps) {
-  const { src, className, initialRotate } = props;
+  const { src, className, initialRotate, floatDelay = 0 } = props;
 
   return (
     <motion.div
       className={`majd-holo-shape ${className}`}
       drag
       dragMomentum={true}
-      dragTransition={{ bounceStiffness: 400, bounceDamping: 30 }}
-      initial={{ opacity: 0.001, y: 10, rotate: 0 }}
-      animate={{ opacity: 1, y: 0, rotate: initialRotate }}
+      dragTransition={{ bounceStiffness: 400, bounceDamping: 28 }}
+      initial={{ opacity: 0.001, y: 14, rotate: initialRotate - 8, scale: 0.92 }}
+      animate={{ opacity: 1, y: 0, rotate: initialRotate, scale: 1 }}
       transition={{
-        type: "spring",
-        bounce: 0,
-        delay: 1.4,
-        duration: 1.6,
+        duration: 0.9,
+        delay: 0.35 + floatDelay,
+        ease: [0.16, 1, 0.3, 1],
       }}
-      whileTap={{ cursor: "grabbing", scale: 0.96 }}
+      whileHover={{ scale: 1.06, rotate: initialRotate + 6 }}
+      whileTap={{ cursor: "grabbing", scale: 0.95 }}
       onMouseDown={(e) => e.preventDefault()}
     >
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={src}
-        alt=""
-        draggable={false}
-        style={{
-          width: "100%",
-          height: "100%",
-          objectFit: "contain",
-          pointerEvents: "none",
-          userSelect: "none",
+      <motion.div
+        animate={{ y: [0, -7, 0], rotate: [0, 3, 0] }}
+        transition={{
+          duration: 4.6,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: floatDelay,
         }}
-      />
+        style={{ width: "100%", height: "100%" }}
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={src}
+          alt=""
+          draggable={false}
+          style={{
+            width: "100%",
+            height: "100%",
+            objectFit: "contain",
+            pointerEvents: "none",
+            userSelect: "none",
+          }}
+        />
+      </motion.div>
     </motion.div>
   );
 }
@@ -52,14 +64,22 @@ function DraggableHoloShape(props: DraggableShapeProps) {
 export function HeroBioSection() {
   const bioSectionRef = useRef<HTMLElement>(null);
   const [isDesktop, setIsDesktop] = useState(true);
+  const [mobileFlipped, setMobileFlipped] = useState(false);
 
   useEffect(() => {
     const checkViewport = () => {
-      setIsDesktop(window.innerWidth >= 1280);
+      setIsDesktop(window.innerWidth >= 1100);
     };
     checkViewport();
     window.addEventListener("resize", checkViewport, { passive: true });
     return () => window.removeEventListener("resize", checkViewport);
+  }, []);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      setMobileFlipped(true);
+    }, 1350);
+    return () => window.clearTimeout(timer);
   }, []);
 
   // Exact Framer scroll transform targeting Bio Section (ref1 in XQuJCztg5.js)
@@ -68,140 +88,85 @@ export function HeroBioSection() {
     offset: ["start end", "end end"],
   });
 
-  // Exact Framer spring: { bounce: 0, damping: 60, mass: 1, stiffness: 500 }
+  // Tuned spring for buttery 120fps scroll-linked 3D flip
   const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 500,
-    damping: 60,
-    mass: 1,
+    stiffness: 380,
+    damping: 46,
+    mass: 0.8,
   });
 
-  const desktopScale = useTransform(smoothProgress, [0, 1], [0.5, 1]);
-  const desktopY = useTransform(smoothProgress, [0, 1], [114, 0]);
+  const desktopScale = useTransform(smoothProgress, [0, 1], [0.52, 1]);
+  const desktopY = useTransform(smoothProgress, [0, 1], [104, 0]);
   const desktopRotateYFront = useTransform(smoothProgress, [0, 1], [0, 180]);
   const desktopRotateYBack = useTransform(smoothProgress, [0, 1], [-180, 0]);
 
   return (
     <div className="majd-hero-bio-wrapper">
-      {/* Sticky Avatar Wrap (200vh track on Desktop) */}
-      <div className="majd-sticky-avatar-track">
-        <div className="majd-sticky-avatar-viewport">
-          <motion.div
-            className="majd-avatar-card"
-            initial={{ opacity: 0.001, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-              type: "spring",
-              bounce: 0,
-              delay: 1,
-              duration: 1.6,
-            }}
-          >
-            {isDesktop ? (
-              <>
-                {/* Desktop Scroll-Linked Back Face (Crimson-Red Studio Portrait) */}
-                <motion.div
-                  className="majd-avatar-face"
+      {/* Sticky Avatar Wrap (200vh track on Desktop >=1100px) */}
+      {isDesktop && (
+        <div className="majd-sticky-avatar-track">
+          <div className="majd-sticky-avatar-viewport">
+            <motion.div
+              className="majd-avatar-card"
+              initial={{ opacity: 0.001, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 0.9,
+                delay: 0.25,
+                ease: [0.16, 1, 0.3, 1],
+              }}
+            >
+              {/* Desktop Scroll-Linked Back Face (Full-Color Studio Portrait) */}
+              <motion.div
+                className="majd-avatar-face"
+                style={{
+                  scale: desktopScale,
+                  y: desktopY,
+                  rotateY: desktopRotateYBack,
+                  transformPerspective: 1200,
+                }}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={PROFILE.avatarBack}
+                  alt="Portrait of Mukesh Kuiry – color view"
                   style={{
-                    scale: desktopScale,
-                    y: desktopY,
-                    rotateY: desktopRotateYBack,
-                    transformPerspective: 1200,
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    display: "block",
                   }}
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={PROFILE.avatarBack}
-                    alt="Portrait of portfolio creator – back view"
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover",
-                      display: "block",
-                    }}
-                  />
-                </motion.div>
+                />
+              </motion.div>
 
-                {/* Desktop Scroll-Linked Front Face (Grayscale Studio Portrait) */}
-                <motion.div
-                  className="majd-avatar-face"
+              {/* Desktop Scroll-Linked Front Face (Grayscale Studio Portrait) */}
+              <motion.div
+                className="majd-avatar-face"
+                style={{
+                  scale: desktopScale,
+                  y: desktopY,
+                  rotateY: desktopRotateYFront,
+                  transformPerspective: 1200,
+                }}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={PROFILE.avatarFront}
+                  alt="Portrait of Mukesh Kuiry – monochrome view"
                   style={{
-                    scale: desktopScale,
-                    y: desktopY,
-                    rotateY: desktopRotateYFront,
-                    transformPerspective: 1200,
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    display: "block",
                   }}
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={PROFILE.avatarFront}
-                    alt="Portrait of portfolio creator – front view"
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover",
-                      display: "block",
-                    }}
-                  />
-                </motion.div>
-              </>
-            ) : (
-              <>
-                {/* Tablet/Phone Delayed Mount Flip Back Face (animation2/animation3 in XQuJCztg5.js) */}
-                <motion.div
-                  className="majd-avatar-face"
-                  initial={{ rotateY: -180, transformPerspective: 1200 }}
-                  animate={{ rotateY: 0, transformPerspective: 1200 }}
-                  transition={{
-                    type: "spring",
-                    bounce: 0,
-                    delay: 2,
-                    duration: 1.6,
-                  }}
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={PROFILE.avatarBack}
-                    alt="Portrait of portfolio creator – back view"
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover",
-                      display: "block",
-                    }}
-                  />
-                </motion.div>
-
-                {/* Tablet/Phone Delayed Mount Flip Front Face (animation4/animation5 in XQuJCztg5.js) */}
-                <motion.div
-                  className="majd-avatar-face"
-                  initial={{ rotateY: 0, transformPerspective: 1200 }}
-                  animate={{ rotateY: 180, transformPerspective: 1200 }}
-                  transition={{
-                    type: "spring",
-                    bounce: 0,
-                    delay: 2,
-                    duration: 1.6,
-                  }}
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={PROFILE.avatarFront}
-                    alt="Portrait of portfolio creator – front view"
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover",
-                      display: "block",
-                    }}
-                  />
-                </motion.div>
-              </>
-            )}
-          </motion.div>
+                />
+              </motion.div>
+            </motion.div>
+          </div>
         </div>
-      </div>
+      )}
 
-      {/* Foreground Content: Hero Section (100vh) + Bio Section (100vh) */}
+      {/* Foreground Content: Hero Section + Bio Section */}
       <div className="majd-hero-bio-content">
         {/* HERO SECTION */}
         <section id="hero-section" className="majd-hero-section">
@@ -211,36 +176,117 @@ export function HeroBioSection() {
                 src="/images/holo-triangle-2.png"
                 className="majd-holo-tl"
                 initialRotate={0}
+                floatDelay={0}
               />
               <DraggableHoloShape
                 src="/images/holo-triangle-1.png"
                 className="majd-holo-br"
                 initialRotate={16}
+                floatDelay={0.35}
               />
               <WordReveal
                 text={PROFILE.role}
                 as="h1"
                 className="majd-h1-hero"
                 trigger="mount"
-                blurPx={2}
-                duration={2.8}
-                startDelay={0.25}
-                staggerDelay={0.12}
+                blurPx={4}
+                duration={0.95}
+                startDelay={0.08}
+                staggerDelay={0.08}
               />
             </div>
+
+            {/* Mobile & Tablet Interactive 3D Flip Portrait (cleanly in flow, zero overlap) */}
+            {!isDesktop && (
+              <motion.div
+                className="majd-mobile-avatar-stage"
+                initial={{ opacity: 0, y: 18, scale: 0.94 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{
+                  duration: 0.75,
+                  delay: 0.25,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
+              >
+                <div
+                  className="majd-avatar-card majd-avatar-card-mobile"
+                  onClick={() => setMobileFlipped((prev) => !prev)}
+                  role="button"
+                  tabIndex={0}
+                  aria-label="Flip portrait"
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      setMobileFlipped((prev) => !prev);
+                    }
+                  }}
+                >
+                  <motion.div
+                    className="majd-avatar-face"
+                    initial={false}
+                    animate={{
+                      rotateY: mobileFlipped ? 0 : -180,
+                      transformPerspective: 1200,
+                    }}
+                    transition={{
+                      type: "spring",
+                      stiffness: 180,
+                      damping: 22,
+                    }}
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={PROFILE.avatarBack}
+                      alt="Portrait of Mukesh Kuiry – color view"
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                        display: "block",
+                      }}
+                    />
+                  </motion.div>
+
+                  <motion.div
+                    className="majd-avatar-face"
+                    initial={false}
+                    animate={{
+                      rotateY: mobileFlipped ? 180 : 0,
+                      transformPerspective: 1200,
+                    }}
+                    transition={{
+                      type: "spring",
+                      stiffness: 180,
+                      damping: 22,
+                    }}
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={PROFILE.avatarFront}
+                      alt="Portrait of Mukesh Kuiry – monochrome view"
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                        display: "block",
+                      }}
+                    />
+                  </motion.div>
+                </div>
+              </motion.div>
+            )}
 
             <motion.div
               className="majd-hero-bottom-bar"
               initial={{ opacity: 0.001, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{
-                type: "spring",
-                bounce: 0,
-                delay: 1.4,
-                duration: 1.6,
+                duration: 0.75,
+                delay: 0.4,
+                ease: [0.16, 1, 0.3, 1],
               }}
             >
-              <h2 className="majd-h2-hero-year majd-hero-year-hide-mobile">
+              <h2 className="majd-h2-hero-year">
                 <mark>{PROFILE.yearBadge}</mark>
               </h2>
               <p className="majd-p-body">
@@ -257,21 +303,37 @@ export function HeroBioSection() {
           ref={bioSectionRef}
         >
           <div className="majd-bio-container">
-            <div className="majd-bio-left">
+            <motion.div
+              className="majd-bio-left"
+              initial={{ opacity: 0, y: 18 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+            >
               <WordReveal
                 text={PROFILE.bioHeading}
                 as="h2"
                 className="majd-h2-section"
                 trigger="inView"
-                blurPx={10}
-                duration={1.8}
+                blurPx={6}
+                duration={0.9}
               />
               <p className="majd-p-lead" style={{ color: "#111111" }}>
                 {PROFILE.bioLead}
               </p>
-            </div>
+            </motion.div>
 
-            <div className="majd-bio-right">
+            <motion.div
+              className="majd-bio-right"
+              initial={{ opacity: 0, y: 18 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{
+                duration: 0.65,
+                delay: 0.08,
+                ease: [0.16, 1, 0.3, 1],
+              }}
+            >
               <div
                 style={{
                   display: "flex",
@@ -295,7 +357,7 @@ export function HeroBioSection() {
                 href="/#contact"
                 variant="primary"
               />
-            </div>
+            </motion.div>
           </div>
         </section>
       </div>

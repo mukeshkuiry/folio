@@ -24,18 +24,17 @@ export function ExperienceSection(props: ExperienceSectionProps) {
         />
 
         <div className="majd-services-list">
-          {experiences.map((item) => (
+          {experiences.map((item, idx) => (
             <motion.div
               key={item.id}
               className="majd-experience-card"
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 18 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.35 }}
+              viewport={{ once: true, amount: 0.15 }}
               transition={{
-                type: "spring",
-                bounce: 0,
-                delay: 0.1,
-                duration: 1.2,
+                duration: 0.7,
+                delay: idx * 0.06,
+                ease: [0.16, 1, 0.3, 1],
               }}
             >
               <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
@@ -44,8 +43,12 @@ export function ExperienceSection(props: ExperienceSectionProps) {
                     href={item.companyUrl}
                     target="_blank"
                     rel="noopener noreferrer"
+                    className="majd-exp-company-link"
                   >
-                    {item.company}
+                    <span>{item.company}</span>
+                    <span className="majd-exp-arrow" aria-hidden="true">
+                      ↗
+                    </span>
                   </a>
                 </h3>
                 <p className="majd-p-body" style={{ color: "#111111" }}>

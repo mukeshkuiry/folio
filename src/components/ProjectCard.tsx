@@ -6,21 +6,21 @@ import Link from "next/link";
 
 export interface ProjectCardProps {
   project: Project;
+  index?: number;
 }
 
 export function ProjectCard(props: ProjectCardProps) {
-  const { project } = props;
+  const { project, index = 0 } = props;
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.35 }}
+      viewport={{ once: true, amount: 0.12 }}
       transition={{
-        type: "spring",
-        bounce: 0,
-        delay: 0.2,
-        duration: 1.6,
+        duration: 0.72,
+        delay: (index % 2) * 0.07,
+        ease: [0.16, 1, 0.3, 1],
       }}
       style={{ width: "100%" }}
     >
@@ -36,6 +36,21 @@ export function ProjectCard(props: ProjectCardProps) {
             className="majd-project-img"
             loading="lazy"
           />
+          <span className="majd-project-corner-pill" aria-hidden="true">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M7 17L17 7" />
+              <path d="M7 7h10v10" />
+            </svg>
+          </span>
         </div>
         <div className="majd-project-meta">
           <div

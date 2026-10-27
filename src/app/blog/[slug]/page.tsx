@@ -59,39 +59,11 @@ export default function BlogPostPage() {
   };
 
   return (
-    <div
-      style={{
-        width: "100%",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        padding: "140px 20px 140px 20px",
-        gap: "120px",
-      }}
-    >
-      {/* Article Section (Replicating AyF_zYQaO.js 2-column layout max-width: 1080px) */}
-      <section
-        id="article-section"
-        style={{
-          width: "100%",
-          maxWidth: "1080px",
-          paddingTop: "60px",
-          display: "flex",
-          flexWrap: "wrap",
-          alignItems: "flex-start",
-          gap: "40px",
-        }}
-      >
+    <div className="majd-subpage-shell">
+      {/* Article Section */}
+      <section id="article-section" className="majd-article-layout">
         {/* Left Main Article Column */}
-        <div
-          style={{
-            flex: "1 1 640px",
-            minWidth: 0,
-            display: "flex",
-            flexDirection: "column",
-            gap: "24px",
-          }}
-        >
+        <div className="majd-article-main-col">
           <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
             <Link
               href={blogIndexUrl()}
@@ -151,16 +123,8 @@ export default function BlogPostPage() {
           <MarkdownRenderer content={post.content} />
         </div>
 
-        {/* Right Sticky Newsletter Card (Replicating .framer-1s2dz28 / .framer-1q32mfl) */}
-        <aside
-          style={{
-            width: "100%",
-            maxWidth: "300px",
-            position: "sticky",
-            top: "110px",
-            alignSelf: "flex-start",
-          }}
-        >
+        {/* Right Sticky Newsletter Card */}
+        <aside className="majd-article-sidebar">
           <div
             style={{
               backgroundColor: "#111111",
@@ -221,8 +185,8 @@ export default function BlogPostPage() {
       >
         <h2 className="majd-h2-article">More Articles</h2>
         <div className="majd-blog-grid" style={{ gap: "20px" }}>
-          {relatedPosts.map((related) => (
-            <BlogCard key={related.slug} post={related} />
+          {relatedPosts.map((related, idx) => (
+            <BlogCard key={related.slug} post={related} index={idx} />
           ))}
         </div>
       </section>

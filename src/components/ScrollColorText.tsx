@@ -29,15 +29,16 @@ export function ScrollColorText(props: ScrollColorTextProps) {
   });
 
   const updateWordColors = (progress: number) => {
-    const filledCount = Math.floor(progress * total);
-    if (filledCount === lastFilledRef.current) return;
-    lastFilledRef.current = filledCount;
+    const exactIndex = progress * total;
 
     for (let i = 0; i < total; i++) {
       const span = wordRefs.current[i];
-      if (span) {
-        span.style.color = i <= filledCount ? fillColor : startColor;
-      }
+      if (!span) continue;
+
+      const delta = exactIndex - i;
+      const ratio = Math.min(Math.max(delta / 1.8, 0), 1);
+      const opacity = 0.12 + ratio * 0.88;
+      span.style.opacity = opacity.toFixed(3);
     }
   };
 
@@ -60,8 +61,9 @@ export function ScrollColorText(props: ScrollColorTextProps) {
           }}
           style={{
             display: "inline-block",
-            color: index === 0 ? fillColor : startColor,
-            transition: "color 0.28s linear",
+            color: fillColor,
+            opacity: index === 0 ? 1 : 0.12,
+            transition: "opacity 0.14s linear",
             marginRight: "0.25em",
           }}
         >

@@ -64,8 +64,8 @@ export default function HomePage() {
           </div>
 
           <div className="majd-projects-grid">
-            {featuredProjects.map((project) => (
-              <ProjectCard key={project.slug} project={project} />
+            {featuredProjects.map((project, idx) => (
+              <ProjectCard key={project.slug} project={project} index={idx} />
             ))}
           </div>
         </div>
@@ -92,8 +92,8 @@ export default function HomePage() {
           </div>
 
           <div className="majd-flip-grid">
-            {OPEN_SOURCE_CONTRIBUTIONS.map((item) => (
-              <OpenSourceCard key={item.id} item={item} />
+            {OPEN_SOURCE_CONTRIBUTIONS.map((item, idx) => (
+              <OpenSourceCard key={item.id} item={item} index={idx} />
             ))}
           </div>
         </div>
@@ -112,20 +112,19 @@ export default function HomePage() {
           />
 
           <div className="majd-blog-grid">
-            {featuredPosts.map((post) => (
-              <BlogCard key={post.slug} post={post} />
+            {featuredPosts.map((post, idx) => (
+              <BlogCard key={post.slug} post={post} index={idx} />
             ))}
 
             <motion.div
               className="majd-all-posts-card"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.35 }}
+              viewport={{ once: true, amount: 0.15 }}
               transition={{
-                type: "spring",
-                bounce: 0.2,
-                delay: 0,
-                duration: 1.4,
+                duration: 0.7,
+                delay: 0.12,
+                ease: [0.16, 1, 0.3, 1],
               }}
             >
               <WordReveal

@@ -16,32 +16,14 @@ export default function WorkPage() {
       : PROJECTS.filter((project) => project.category === activeCategory);
 
   return (
-    <section
-      id="hero-section"
-      style={{
-        width: "100%",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        padding: "180px 20px 120px 20px",
-        gap: "120px",
-      }}
-    >
-      <div
-        style={{
-          width: "100%",
-          maxWidth: "1180px",
-          display: "flex",
-          flexDirection: "column",
-          gap: "60px",
-        }}
-      >
+    <section id="hero-section" className="majd-subpage-shell">
+      <div className="majd-container">
         <div
           style={{
             display: "flex",
             flexDirection: "column",
             alignItems: "flex-start",
-            gap: "10px",
+            gap: "12px",
           }}
         >
           <div style={{ maxWidth: "620px" }}>
@@ -50,32 +32,28 @@ export default function WorkPage() {
               as="h1"
               className="majd-h1-page"
               trigger="mount"
-              blurPx={10}
-              duration={1.8}
+              blurPx={6}
+              duration={1.0}
               startDelay={0}
             />
           </div>
-          <div style={{ maxWidth: "460px" }}>
+          <div style={{ maxWidth: "480px" }}>
             <WordReveal
               text="A showcase of my latest projects, highlighting thoughtful architecture, clear strategy, and impactful results."
               as="p"
               className="majd-p-body"
               trigger="mount"
-              blurPx={10}
+              blurPx={4}
               duration={0.8}
-              startDelay={0.2}
-              staggerDelay={0.03}
+              startDelay={0.12}
+              staggerDelay={0.025}
             />
           </div>
         </div>
 
         {/* Category Filter Pills */}
         <div
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            gap: "10px",
-          }}
+          className="majd-filter-pills-row"
           role="tablist"
           aria-label="Filter projects by category"
         >
@@ -106,36 +84,28 @@ export default function WorkPage() {
           })}
         </div>
 
-        {/* 2-Column Projects Grid (matching CcTy8bqan.js gap: 20px) */}
+        {/* 2-Column Projects Grid */}
         <div
           className="majd-projects-grid"
-          style={{ gap: "20px" }}
+          style={{ gap: "24px" }}
           role="tabpanel"
         >
-          {filteredProjects.map((project) => (
-            <ProjectCard key={project.slug} project={project} />
+          {filteredProjects.map((project, idx) => (
+            <ProjectCard key={project.slug} project={project} index={idx} />
           ))}
         </div>
       </div>
 
       {/* Open Source Contributions Showcase */}
-      <div
-        style={{
-          width: "100%",
-          maxWidth: "1180px",
-          display: "flex",
-          flexDirection: "column",
-          gap: "40px",
-        }}
-      >
+      <div className="majd-container" style={{ gap: "40px" }}>
         <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
           <WordReveal
             text="Open Source Contributions"
             as="h2"
             className="majd-h2-display"
             trigger="inView"
-            blurPx={10}
-            duration={1.8}
+            blurPx={6}
+            duration={1.0}
           />
           <p className="majd-p-body" style={{ color: "var(--ink-muted)" }}>
             Merged pull requests and architectural improvements across CNCF and
@@ -143,8 +113,8 @@ export default function WorkPage() {
           </p>
         </div>
         <div className="majd-flip-grid">
-          {OPEN_SOURCE_CONTRIBUTIONS.map((item) => (
-            <OpenSourceCard key={item.id} item={item} />
+          {OPEN_SOURCE_CONTRIBUTIONS.map((item, idx) => (
+            <OpenSourceCard key={item.id} item={item} index={idx} />
           ))}
         </div>
       </div>

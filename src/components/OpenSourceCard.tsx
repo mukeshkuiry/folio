@@ -6,10 +6,11 @@ import { useEffect, useRef, useState } from "react";
 
 export interface OpenSourceCardProps {
   item: OpenSourceContribution;
+  index?: number;
 }
 
 export function OpenSourceCard(props: OpenSourceCardProps) {
-  const { item } = props;
+  const { item, index = 0 } = props;
   const cardRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
 
@@ -26,23 +27,29 @@ export function OpenSourceCard(props: OpenSourceCardProps) {
           }
         });
       },
-      { threshold: 0.5 }
+      { threshold: 0.2 }
     );
 
     observer.observe(el);
     return () => observer.disconnect();
   }, []);
 
-  // Exact Framer transition1 from bnnFJdSAG.js: { bounce: 0.2, delay: 0, duration: 1.6, type: "spring" }
   const flipTransition = {
     type: "spring" as const,
-    bounce: 0.2,
-    delay: 0,
-    duration: 1.6,
+    stiffness: 115,
+    damping: 18,
+    mass: 0.9,
+    delay: index * 0.08,
   };
 
   return (
-    <div ref={cardRef} className="majd-flip-card">
+    <motion.div
+      ref={cardRef}
+      className="majd-flip-card"
+      whileHover={{ y: -5 }}
+      whileTap={{ scale: 0.985 }}
+      transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+    >
       {/* Front Face (Quote + Author — rotates from -180deg to 0deg when visible) */}
       <motion.a
         href={item.prUrl}
@@ -183,6 +190,6 @@ export function OpenSourceCard(props: OpenSourceCardProps) {
           loading="lazy"
         />
       </motion.div>
-    </div>
+    </motion.div>
   );
 }

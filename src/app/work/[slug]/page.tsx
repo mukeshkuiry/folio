@@ -36,37 +36,11 @@ export default function WorkDetailPage() {
   const relatedProjects = getRelatedProjects(project.slug, 2);
 
   return (
-    <div
-      style={{
-        width: "100%",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        padding: "140px 20px 140px 20px",
-        gap: "120px",
-      }}
-    >
-      {/* Work Detail Section (Replicating mDmuV5aTK.js max-width: 1080px) */}
-      <section
-        id="work-section"
-        style={{
-          width: "100%",
-          maxWidth: "1080px",
-          paddingTop: "60px",
-          display: "flex",
-          flexDirection: "column",
-          gap: "40px",
-        }}
-      >
+    <div className="majd-subpage-shell">
+      {/* Work Detail Section */}
+      <section id="work-section" className="majd-detail-container">
         {/* Header: Title + Category / Year / Live Link + Description */}
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "80px",
-            width: "100%",
-          }}
-        >
+        <div className="majd-detail-header">
           <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
             <Link
               href="/work"
@@ -91,7 +65,7 @@ export default function WorkDetailPage() {
               flexWrap: "wrap",
               alignItems: "flex-end",
               justifyContent: "space-between",
-              gap: "40px",
+              gap: "32px",
               width: "100%",
             }}
           >
@@ -228,15 +202,8 @@ export default function WorkDetailPage() {
           ))}
         </div>
 
-        {/* 2-Up Side-by-Side Images (aspect-ratio 1.333 / 1, gap: 40px) */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-            gap: "40px",
-            width: "100%",
-          }}
-        >
+        {/* 2-Up Side-by-Side Images */}
+        <div className="majd-detail-gallery-grid">
           {project.galleryImages.map((imgSrc, idx) => (
             <div
               key={idx}

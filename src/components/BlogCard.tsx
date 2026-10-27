@@ -8,22 +8,22 @@ import Link from "next/link";
 
 export interface BlogCardProps {
   post: Omit<BlogPost, "coverImage">;
+  index?: number;
 }
 
 export function BlogCard(props: BlogCardProps) {
-  const { post } = props;
+  const { post, index = 0 } = props;
   const coverSrc = getPostCoverImage(post.slug);
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.35 }}
+      viewport={{ once: true, amount: 0.12 }}
       transition={{
-        type: "spring",
-        bounce: 0.2,
-        delay: 0,
-        duration: 1.4,
+        duration: 0.7,
+        delay: (index % 3) * 0.06,
+        ease: [0.16, 1, 0.3, 1],
       }}
       style={{ width: "100%" }}
     >
@@ -38,6 +38,10 @@ export function BlogCard(props: BlogCardProps) {
           className="majd-blog-card-img"
           loading="lazy"
         />
+        <div className="majd-blog-card-top-meta">
+          <span className="majd-blog-top-pill">{post.category}</span>
+          <span className="majd-blog-top-pill">{post.readTime}</span>
+        </div>
         <div className="majd-blog-card-overlay" />
         <div className="majd-blog-card-content">
           <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
