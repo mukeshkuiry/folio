@@ -1216,57 +1216,177 @@ mark {
   }
 }
 
-/* === UNIFIED WORK EXPERIENCE LIST (Majd Framer Design Language) === */
+/* === UNIFIED WORK EXPERIENCE CARDS (Balanced 2-Column Editorial Layout) === */
 .majd-experience-list {
   display: flex;
   flex-direction: column;
+  gap: 20px;
   width: 100%;
-  border-top: 1px solid var(--border-subtle);
 }
 
 .majd-experience-card {
-  display: grid;
-  grid-template-columns: 320px 1fr;
-  align-items: flex-start;
-  gap: 56px;
-  padding: 44px 0;
-  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 36px 40px;
+  border-radius: 20px;
+  background-color: rgba(17, 17, 17, 0.03);
+  border: 1px solid rgba(17, 17, 17, 0.09);
   width: 100%;
-  transition: border-color 0.3s ease;
+  transition: border-color 0.3s ease, background-color 0.3s ease;
 }
 
 .majd-experience-card:hover {
-  border-bottom-color: var(--ink-dark);
+  background-color: rgba(17, 17, 17, 0.045);
+  border-color: rgba(17, 17, 17, 0.24);
 }
 
-.majd-exp-left {
+/* Card Top Header Row */
+.majd-exp-card-header {
   display: flex;
-  flex-direction: column;
-  gap: 6px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid rgba(17, 17, 17, 0.09);
+  flex-wrap: wrap;
 }
 
-.majd-exp-link {
+.majd-exp-header-titles {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.majd-exp-role-heading {
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 1.15em;
+  letter-spacing: -0.025em;
+  color: var(--ink-dark);
+}
+
+.majd-exp-company-anchor {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  transition: opacity 0.2s ease;
+  gap: 5px;
+  font-family: var(--font-archivo);
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--ink-muted);
+  transition: color 0.2s ease;
 }
 
-.majd-exp-link:hover {
-  opacity: 0.7;
+.majd-exp-company-anchor:hover {
+  color: var(--ink-dark);
 }
 
-.majd-exp-right {
+.majd-exp-header-badges {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.majd-exp-tenure-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 8px;
+  background-color: rgba(17, 17, 17, 0.07);
+  color: var(--ink-dark);
+  font-family: var(--font-archivo);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+.majd-exp-tenure-pill.is-active {
+  background-color: var(--ink-dark);
+  color: var(--bg-cream);
+}
+
+.majd-exp-active-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background-color: #34d399;
+}
+
+.majd-exp-location-pill {
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(17, 17, 17, 0.1);
+  color: var(--ink-muted);
+  font-family: var(--font-archivo);
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+
+/* Balanced 2-Column Card Body */
+.majd-exp-card-body {
+  display: grid;
+  grid-template-columns: 1fr 1.35fr;
+  align-items: flex-start;
+  gap: 48px;
+  width: 100%;
+}
+
+.majd-exp-body-left {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  justify-content: space-between;
+  gap: 20px;
+  height: 100%;
+}
+
+.majd-exp-overview {
+  font-family: var(--font-archivo);
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.5em;
+  letter-spacing: -0.025em;
+  color: var(--ink-dark);
+}
+
+.majd-exp-metrics-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.majd-exp-metric-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 8px;
+  background-color: var(--ink-dark);
+  color: var(--bg-cream);
+  font-family: var(--font-archivo);
+  font-size: 13.5px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+.majd-exp-stack-bar {
+  margin-top: auto;
+  padding-top: 4px;
+}
+
+.majd-exp-body-right {
+  display: flex;
+  flex-direction: column;
 }
 
 .majd-exp-points {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 14px;
   padding: 0;
   margin: 0;
 }
@@ -1278,19 +1398,46 @@ mark {
 }
 
 .majd-exp-point-dot {
-  margin-top: 8px;
+  margin-top: 9px;
 }
 
 .majd-exp-point-text {
+  font-family: var(--font-archivo);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.55em;
+  letter-spacing: -0.02em;
   color: rgba(17, 17, 17, 0.72);
-  line-height: 1.52em;
+}
+
+.majd-exp-point-strong {
+  color: var(--ink-dark);
+  font-weight: 600;
 }
 
 @media (max-width: 960px) {
   .majd-experience-card {
+    padding: 28px 24px;
+  }
+  .majd-exp-card-body {
     grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+
+@media (max-width: 809.98px) {
+  .majd-experience-card {
+    padding: 24px 20px;
     gap: 20px;
-    padding: 32px 0;
+  }
+  .majd-exp-role-heading {
+    font-size: 24px;
+  }
+  .majd-exp-company-anchor {
+    font-size: 18px;
+  }
+  .majd-exp-overview {
+    font-size: 17px;
   }
 }
 

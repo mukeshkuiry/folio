@@ -93,19 +93,18 @@ export const SERVICES: ServiceItem[] = [
 export const EXPERIENCES: ExperienceItem[] = [
   {
     id: "refyne-india",
-    role: "Software Development Engineer I (SDE-1)",
+    role: "Software Development Engineer I",
     company: "Refyne India",
     companyUrl: "https://refyne.co.in",
     period: "Jun 2025 – Present",
-    location: "Bengaluru, India · 380+ Merged PRs",
+    location: "Bengaluru, India",
     summary:
-      "Core backend, FinOps, and platform engineer shipping 380+ merged pull requests across 13 production repositories (core-server, lms-server, reframe, fynebridge, fyne-kit, lambdas, central-business-portal, audit-engine).",
+      "Core backend and FinTech platform engineer owning payment collections, recurring mandate automation, loan ledger reconciliation, and KYC verification microservices at scale.",
     achievements: [
-      "Repayments, Collections & Settlement Engine: Architected automated Unallocated User Repayment (UR) & Commitment (URC) settlement pipelines, deterministic excess-repayment categorization (Implicit FnF, Foreclosure, Top-up, Debit Note), in-app repayment orchestrators (terminated & Government/GOR flows), and Razorpay/Cashfree payment link integrations.",
-      "eNACH, UPI Autopay & E-Stamp Infrastructure: Engineered generic (user + lender) eNACH & UPI Autopay mandate capture and bulk charging v2 across 35,000+ accounts, plus end-to-end Digio e-stamp procurement, stamp-duty computation, and PDF agreement stitching.",
-      "LMS v2 KYC Engine, Risk & Audit Platform: Built the v2 LMS KYC Engine (AdminReviewService, ReviewMetadataService, borrower loan audit trail, VKYC risk-standing guards, PII masking) and cross-system verification rules in audit-engine.",
-      "Event Streaming, Statements & Developer Tooling: Built fynebridge (Redis Streams master/worker event broker & @refyne/fyne-kit SDK + xirr360 financial math), optimized Python reframe billing statement & QC-1/FnF engines, upgraded lms-server to Node.js 24, and authored custom TypeScript AST rules in @refyne/eslint-plugin.",
-      "Central Business Portal & AI Automation: Shipped the production Central Business Portal (FinOps refunds, debit notes, B2B collections, GRM, and user repayments triage hub) and server-to-server MCP + Slack file automation in deep-agent.",
+      "Payment & Mandate Automation: Architected user-level eNACH and UPI Autopay mandate capture and bulk debit scheduling across Digio and Cashfree, scaling recurring collections to 35,000+ active borrower accounts.",
+      "Automated Ledger & Refund Engine: Built the end-to-end repayment settlement pipeline and FinOps operations portal, automating excess-payment categorization and instant refund payouts to cut manual effort by 90%.",
+      "KYC, Risk & Digital Stamping: Engineered the v2 KYC verification engine, automated Digio e-stamp procurement with PDF agreement stitching, and borrower audit trails with strict PII masking.",
+      "Distributed Systems & High Velocity: Shipped 380+ merged production PRs across 13 microservices—building a Redis Streams event broker, BullMQ retry infrastructure, Python billing statement pipelines, and Node.js 24 upgrades.",
     ],
     techStack: [
       "TypeScript",
@@ -125,12 +124,12 @@ export const EXPERIENCES: ExperienceItem[] = [
     company: "Alchemyst AI",
     companyUrl: "https://github.com/Alchemyst-ai",
     period: "2024",
-    location: "Remote · Cloud & AI Platform",
+    location: "Remote",
     summary:
-      "Engineered cloud-native backend APIs, containerized deployment workflows, and responsive product web experiences for enterprise AI agent orchestration.",
+      "Engineered cloud-native backend APIs, containerized deployment pipelines, and responsive web interfaces for an enterprise multi-agent AI platform.",
     achievements: [
-      "Platform & Web Architecture: Built and shipped production web and API surfaces for Alchemyst AI's core platform and landing architecture with responsive cross-device layouts.",
-      "Container & Workflow Orchestration: Optimized Docker deployment pipelines and backend service integrations powering multi-agent AI workflows.",
+      "Multi-Agent API & Web Architecture: Built and shipped production web and REST API surfaces powering enterprise AI agent workflows with responsive cross-device layouts.",
+      "Containerized Cloud Delivery: Streamlined Docker build pipelines and backend service integrations to improve deployment reliability and environment parity.",
     ],
     techStack: ["TypeScript", "Next.js", "Node.js", "Docker", "Cloud Infrastructure"],
   },
@@ -140,12 +139,12 @@ export const EXPERIENCES: ExperienceItem[] = [
     company: "Forge Build & JustK8s",
     companyUrl: "https://github.com/forge-build/forge",
     period: "2024",
-    location: "Remote · Go & K8s Controllers",
+    location: "Remote",
     summary:
-      "Developed Kubernetes custom resource definitions (CRDs), reconciliation lifecycle controllers, and native Golang SSH provisioning packages.",
+      "Developed Kubernetes custom resource definitions (CRDs), reconciliation controllers, and native Golang SSH provisioning libraries for cloud-native build infrastructure.",
     achievements: [
-      "Native Go SSH Transport (PR #27): Implemented the internal Golang crypto/ssh client package (pkg/ssh) for remote machine provisioning and automated command execution with unit test coverage.",
-      "Kubernetes Build CRD Lifecycle (PR #28): Extended Build CRD specs with InfrastructureRef and MachineReady, Connected, and ProvisionersReady reconciliation status conditions.",
+      "Native Golang SSH Provisioner: Built the core Go crypto/ssh transport package to automate secure remote machine provisioning and command execution with full unit test coverage.",
+      "Kubernetes Operator Lifecycle: Designed Build CRD specifications and controller reconciliation state machines (MachineReady, Connected, ProvisionersReady) for automated cluster orchestration.",
     ],
     techStack: ["Golang", "Kubernetes", "CRDs", "Controller-Runtime", "crypto/ssh"],
   },
@@ -155,12 +154,12 @@ export const EXPERIENCES: ExperienceItem[] = [
     company: "Freeflow & Detectbox",
     companyUrl: "https://freeflow.to",
     period: "2023 – 2024",
-    location: "Remote · 35+ Merged PRs",
+    location: "Remote",
     summary:
-      "Full-stack product and authentication engineering for collaborative design workflow and security platforms, shipping 35+ merged production pull requests.",
+      "Full-stack engineer across collaborative workflow and security SaaS platforms, delivering 35+ merged production pull requests across frontend, backend, and authentication systems.",
     achievements: [
-      "Workspace & Access Control: Built workspace collaboration modules including user invitations, role-based permissions, storage quota tracking, and real-time link previews.",
-      "Interactive Kanban & Auth Infrastructure: Engineered drag-and-drop Kanban task boards, custom right-click context menus, full-screen dropzone uploads, and X_API_KEY auth middleware + unique email guards in FlexAuth.",
+      "Collaborative Workspace Systems: Built multi-tenant workspace modules including role-based access control (RBAC), team invitations, storage quota enforcement, and live link previews.",
+      "Interactive Product & Auth Flows: Engineered drag-and-drop Kanban boards, custom context menus, full-screen file uploaders, and API-key authentication middleware with identity guards.",
     ],
     techStack: ["TypeScript", "React", "Next.js", "Golang", "Tailwind CSS", "REST APIs"],
   },
