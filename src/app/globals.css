@@ -1216,410 +1216,81 @@ mark {
   }
 }
 
-/* === WORK EXPERIENCE BENTO SHOWCASE (Flagship Dark Card + 3-Col Bento Cards) === */
-.majd-exp-bento-wrap {
+/* === UNIFIED WORK EXPERIENCE LIST (Majd Framer Design Language) === */
+.majd-experience-list {
   display: flex;
   flex-direction: column;
-  gap: 20px;
   width: 100%;
+  border-top: 1px solid var(--border-subtle);
 }
 
-/* 1. Full-Width Flagship Dark Card (Refyne India) */
-.majd-exp-flagship-card {
-  position: relative;
-  width: 100%;
-  background-color: var(--ink-dark);
-  color: var(--bg-cream);
-  border-radius: 24px;
-  padding: 40px;
-  display: flex;
-  flex-direction: column;
-  gap: 36px;
-  box-shadow: 0 24px 52px rgba(17, 17, 17, 0.14);
-  overflow: hidden;
-}
-
-.majd-exp-flagship-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-.majd-exp-flagship-badges {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.majd-exp-live-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 14px;
-  border-radius: 999px;
-  background-color: rgba(52, 211, 153, 0.14);
-  border: 1px solid rgba(52, 211, 153, 0.35);
-  color: #34d399;
-  font-family: var(--font-clash);
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-}
-
-.majd-exp-live-pulse {
-  width: 7px;
-  height: 7px;
-  border-radius: 999px;
-  background-color: #34d399;
-  box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.25);
-}
-
-.majd-exp-meta-pill {
-  padding: 6px 14px;
-  border-radius: 999px;
-  background-color: rgba(250, 247, 243, 0.08);
-  border: 1px solid rgba(250, 247, 243, 0.12);
-  color: rgba(250, 247, 243, 0.8);
-  font-family: var(--font-archivo);
-  font-size: 13px;
-  font-weight: 500;
-}
-
-.majd-exp-flagship-hero {
+.majd-experience-card {
   display: grid;
-  grid-template-columns: 1fr 1.15fr;
-  align-items: flex-end;
-  gap: 40px;
-  padding-bottom: 8px;
+  grid-template-columns: 320px 1fr;
+  align-items: flex-start;
+  gap: 56px;
+  padding: 44px 0;
+  border-bottom: 1px solid var(--border-subtle);
+  width: 100%;
+  transition: border-color 0.3s ease;
 }
 
-.majd-exp-flagship-identity {
+.majd-experience-card:hover {
+  border-bottom-color: var(--ink-dark);
+}
+
+.majd-exp-left {
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
 
-.majd-exp-card-index {
-  font-family: var(--font-clash);
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  color: rgba(250, 247, 243, 0.45);
-}
-
-.majd-exp-flagship-company {
-  font-family: var(--font-archivo);
-  font-size: clamp(36px, 4vw, 52px);
-  font-weight: 700;
-  line-height: 1.02em;
-  letter-spacing: -0.03em;
-  color: var(--bg-cream);
-}
-
-.majd-exp-flagship-role {
-  font-family: var(--font-archivo);
-  font-size: 20px;
-  font-weight: 500;
-  color: rgba(250, 247, 243, 0.72);
-  letter-spacing: -0.02em;
-}
-
-.majd-exp-flagship-summary {
-  font-family: var(--font-archivo);
-  font-size: 19px;
-  line-height: 1.5em;
-  letter-spacing: -0.02em;
-  color: rgba(250, 247, 243, 0.88);
-}
-
-/* 3 Architectural Impact Sub-Cards inside Flagship */
-.majd-exp-impact-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 16px;
-  width: 100%;
-}
-
-.majd-exp-impact-subcard {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 24px;
-  border-radius: 18px;
-  background-color: rgba(250, 247, 243, 0.05);
-  border: 1px solid rgba(250, 247, 243, 0.1);
-  transition: background-color 0.3s ease, border-color 0.3s ease,
-    transform 0.3s var(--ease-spring);
-}
-
-.majd-exp-impact-subcard:hover {
-  background-color: rgba(250, 247, 243, 0.085);
-  border-color: rgba(250, 247, 243, 0.24);
-  transform: translateY(-3px);
-}
-
-.majd-exp-impact-subcard-top {
-  display: flex;
+.majd-exp-link {
+  display: inline-flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 8px;
+  gap: 6px;
+  transition: opacity 0.2s ease;
 }
 
-.majd-exp-impact-metric {
-  padding: 4px 10px;
-  border-radius: 6px;
-  background-color: var(--bg-cream);
-  color: var(--ink-dark);
-  font-family: var(--font-archivo);
-  font-size: 12.5px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
+.majd-exp-link:hover {
+  opacity: 0.7;
 }
 
-.majd-exp-impact-num {
-  font-family: var(--font-clash);
-  font-size: 13px;
-  font-weight: 600;
-  color: rgba(250, 247, 243, 0.35);
-}
-
-.majd-exp-impact-title {
-  font-family: var(--font-archivo);
-  font-size: 19px;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  color: var(--bg-cream);
-  margin-top: 4px;
-}
-
-.majd-exp-impact-desc {
-  font-family: var(--font-archivo);
-  font-size: 14.5px;
-  line-height: 1.52em;
-  color: rgba(250, 247, 243, 0.68);
-}
-
-.majd-exp-flagship-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  padding-top: 24px;
-  border-top: 1px solid rgba(250, 247, 243, 0.1);
-  flex-wrap: wrap;
-}
-
-.majd-exp-stack-label {
-  font-family: var(--font-clash);
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  color: rgba(250, 247, 243, 0.45);
-}
-
-.majd-exp-pills-wrap {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.majd-exp-dark-pill {
-  padding: 6px 14px;
-  border-radius: 8px;
-  background-color: rgba(250, 247, 243, 0.1);
-  color: var(--bg-cream);
-  font-family: var(--font-archivo);
-  font-size: 13.5px;
-  font-weight: 500;
-  letter-spacing: -0.01em;
-}
-
-/* 2. Prior Roles 3-Column Bento Card Grid */
-.majd-exp-cards-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 20px;
-  width: 100%;
-}
-
-.majd-exp-bento-card {
+.majd-exp-right {
   display: flex;
   flex-direction: column;
   gap: 18px;
-  padding: 28px;
-  border-radius: 22px;
-  background-color: #ffffff;
-  border: 1px solid rgba(17, 17, 17, 0.1);
-  box-shadow: 0 10px 28px rgba(17, 17, 17, 0.04);
-  transition: transform 0.35s var(--ease-spring),
-    border-color 0.3s ease, box-shadow 0.35s ease;
 }
 
-.majd-exp-bento-card:hover {
-  transform: translateY(-5px);
-  border-color: var(--ink-dark);
-  box-shadow: 0 20px 42px rgba(17, 17, 17, 0.09);
-}
-
-.majd-exp-bento-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.majd-exp-bento-meta {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.majd-exp-bento-num {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-  border-radius: 8px;
-  background-color: var(--ink-dark);
-  color: var(--bg-cream);
-  font-family: var(--font-clash);
-  font-size: 12px;
-  font-weight: 600;
-}
-
-.majd-exp-bento-period {
-  font-family: var(--font-archivo);
-  font-size: 13.5px;
-  font-weight: 500;
-  color: var(--ink-muted);
-}
-
-.majd-exp-bento-card:hover .majd-exp-bento-arrow .majd-arrow-bg {
-  width: 42px;
-  height: 42px;
-}
-
-.majd-exp-bento-card:hover .majd-exp-bento-arrow .majd-arrow-icon-primary {
-  left: calc(100% + 14px);
-  top: -14px;
-}
-
-.majd-exp-bento-card:hover .majd-exp-bento-arrow .majd-arrow-icon-secondary {
-  left: 50%;
-  bottom: auto;
-  top: 50%;
-  transform: translate(-50%, -50%) rotate(-45deg);
-}
-
-.majd-exp-bento-header {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.majd-exp-bento-company {
-  font-family: var(--font-archivo);
-  font-size: 26px;
-  font-weight: 700;
-  line-height: 1.15em;
-  letter-spacing: -0.025em;
-  color: var(--ink-dark);
-}
-
-.majd-exp-bento-role {
-  font-family: var(--font-archivo);
-  font-size: 15.5px;
-  font-weight: 500;
-  color: var(--ink-muted);
-}
-
-.majd-exp-bento-highlight {
-  display: inline-flex;
-  width: fit-content;
-  margin-top: 4px;
-  padding: 4px 10px;
-  border-radius: 6px;
-  background-color: rgba(17, 17, 17, 0.06);
-  color: var(--ink-dark);
-  font-family: var(--font-clash);
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-}
-
-.majd-exp-bento-summary {
-  font-family: var(--font-archivo);
-  font-size: 15.5px;
-  line-height: 1.5em;
-  color: var(--ink-dark);
-}
-
-.majd-exp-bento-list {
+.majd-exp-points {
   list-style: none;
   display: flex;
   flex-direction: column;
   gap: 10px;
   padding: 0;
   margin: 0;
-  flex: 1;
 }
 
-.majd-exp-bento-listitem {
+.majd-exp-point {
   display: flex;
   align-items: flex-start;
-  gap: 10px;
-  font-family: var(--font-archivo);
-  font-size: 14px;
-  line-height: 1.48em;
+  gap: 12px;
+}
+
+.majd-exp-point-dot {
+  margin-top: 8px;
+}
+
+.majd-exp-point-text {
   color: rgba(17, 17, 17, 0.72);
+  line-height: 1.52em;
 }
 
-.majd-exp-bento-dot {
-  width: 5px;
-  height: 5px;
-  border-radius: 999px;
-  background-color: var(--ink-dark);
-  margin-top: 7px;
-  flex-shrink: 0;
-}
-
-.majd-exp-bento-footer {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  padding-top: 14px;
-  border-top: 1px solid var(--border-subtle);
-  margin-top: auto;
-}
-
-@media (max-width: 1120px) {
-  .majd-exp-flagship-hero {
+@media (max-width: 960px) {
+  .majd-experience-card {
     grid-template-columns: 1fr;
-    gap: 18px;
-  }
-  .majd-exp-impact-grid {
-    grid-template-columns: 1fr;
-  }
-  .majd-exp-cards-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (max-width: 809.98px) {
-  .majd-exp-flagship-card {
-    padding: 24px 20px;
-    border-radius: 20px;
-    gap: 24px;
-  }
-  .majd-exp-cards-grid {
-    grid-template-columns: 1fr;
-  }
-  .majd-exp-bento-card {
-    padding: 22px 20px;
+    gap: 20px;
+    padding: 32px 0;
   }
 }
 
