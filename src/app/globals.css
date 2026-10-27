@@ -1216,302 +1216,197 @@ mark {
   }
 }
 
-/* === WORK EXPERIENCE CARDS (Premium Majd 3-Column Editorial Showcase) === */
-.majd-exp-header-bar {
-  padding-bottom: 24px;
-  border-bottom: 1px solid var(--ink-dark);
-}
-
-.majd-exp-header-meta {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  font-family: var(--font-clash);
-  font-size: 14px;
-  font-weight: 500;
-  letter-spacing: 0.04em;
-  color: var(--ink-dark);
-}
-
-.majd-exp-live-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 999px;
-  background-color: var(--ink-dark);
-}
-
-.majd-experience-list {
+/* === WORK EXPERIENCE ACCORDION (Pure Majd Service-Row Aesthetic) === */
+.majd-exp-accordion {
   display: flex;
   flex-direction: column;
   width: 100%;
+  border-top: 1px solid var(--border-subtle);
 }
 
-.majd-experience-card {
-  position: relative;
-  display: grid;
-  grid-template-columns: 180px 300px 1fr;
-  align-items: flex-start;
-  gap: 48px;
-  padding: 48px 16px;
+.majd-exp-item {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
   border-bottom: 1px solid var(--border-subtle);
-  width: 100%;
-  transition: padding-left 0.45s var(--ease-spring),
-    background-color 0.35s ease;
+  transition: border-color 0.3s ease;
 }
 
-.majd-experience-card::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -1px;
+.majd-exp-item:hover,
+.majd-exp-item.is-open {
+  border-bottom-color: var(--ink-dark);
+}
+
+.majd-exp-trigger {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  min-height: 112px;
+  padding: 24px 0;
   width: 100%;
-  height: 1.5px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.majd-exp-trigger-left {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.majd-exp-title {
+  margin: 0;
+}
+
+.majd-exp-role-inline {
+  font-family: var(--font-archivo);
+  font-size: 18px;
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  color: var(--ink-muted);
+}
+
+.majd-exp-trigger-right {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 28px;
+  flex-shrink: 0;
+}
+
+.majd-exp-period-label {
+  font-family: var(--font-archivo);
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  color: var(--ink-muted);
+  min-width: 115px;
+  text-align: right;
+}
+
+.majd-exp-toggle-icon {
+  position: relative;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  border: 1px solid var(--ink-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background-color 0.3s var(--ease-spring),
+    color 0.3s var(--ease-spring);
+}
+
+.majd-exp-trigger:hover .majd-exp-toggle-icon,
+.majd-exp-item.is-open .majd-exp-toggle-icon {
   background-color: var(--ink-dark);
-  transform: scaleX(0);
-  transform-origin: left center;
-  transition: transform 0.55s var(--ease-spring);
+  color: var(--bg-cream);
 }
 
-.majd-experience-card:hover {
-  padding-left: 24px;
-  background-color: rgba(17, 17, 17, 0.018);
+.majd-exp-plus-h,
+.majd-exp-plus-v {
+  position: absolute;
+  background-color: currentColor;
+  border-radius: 2px;
+  transition: transform 0.35s var(--ease-spring), opacity 0.25s ease;
 }
 
-.majd-experience-card:hover::after {
-  transform: scaleX(1);
+.majd-exp-plus-h {
+  width: 12px;
+  height: 1.5px;
 }
 
-/* Col 1: Index & Timeline */
-.majd-exp-col-index {
+.majd-exp-plus-v {
+  width: 1.5px;
+  height: 12px;
+}
+
+.majd-exp-toggle-icon.is-open .majd-exp-plus-v {
+  transform: rotate(90deg);
+  opacity: 0;
+}
+
+.majd-exp-panel-wrap {
+  overflow: hidden;
+  width: 100%;
+}
+
+.majd-exp-panel {
+  display: grid;
+  grid-template-columns: 1fr 1.25fr;
+  gap: 48px;
+  padding: 4px 0 36px 0;
+  width: 100%;
+}
+
+.majd-exp-panel-left {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 16px;
+  gap: 24px;
 }
 
-.majd-exp-num {
-  font-family: var(--font-clash);
-  font-size: 44px;
-  font-weight: 600;
-  line-height: 0.95em;
-  letter-spacing: -0.03em;
-  color: rgba(17, 17, 17, 0.18);
-  transition: color 0.35s ease, transform 0.35s var(--ease-spring);
-}
-
-.majd-experience-card:hover .majd-exp-num {
-  color: var(--ink-dark);
-  transform: translateX(4px);
-}
-
-.majd-exp-time-group {
+.majd-exp-panel-meta {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  align-items: flex-start;
+  gap: 14px;
 }
 
-.majd-exp-period {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  font-family: var(--font-archivo);
-  font-size: 15px;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  color: var(--ink-dark);
-}
-
-.majd-exp-period.is-current {
-  padding: 4px 10px;
-  border-radius: 999px;
-  background-color: var(--ink-dark);
-  color: var(--bg-cream);
-  width: fit-content;
-  font-size: 13px;
-}
-
-.majd-exp-current-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 999px;
-  background-color: #34d399;
-}
-
-.majd-exp-loc {
-  font-family: var(--font-archivo);
-  font-size: 14px;
-  color: var(--ink-muted);
-  letter-spacing: -0.02em;
-}
-
-/* Col 2: Company & Role */
-.majd-exp-col-company {
+.majd-exp-panel-right {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 14px;
 }
 
-.majd-exp-company-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  width: fit-content;
-}
-
-.majd-exp-company-name {
-  font-family: var(--font-archivo);
-  font-size: 32px;
-  font-weight: 600;
-  line-height: 1.12em;
-  letter-spacing: -0.03em;
-  color: var(--ink-dark);
-}
-
-.majd-exp-arrow-box {
-  width: 28px;
-  height: 28px;
-  flex-shrink: 0;
-}
-
-.majd-experience-card:hover .majd-exp-arrow-box .majd-arrow-bg {
-  width: 42px;
-  height: 42px;
-}
-
-.majd-experience-card:hover .majd-exp-arrow-box .majd-arrow-icon-primary {
-  left: calc(100% + 14px);
-  top: -14px;
-}
-
-.majd-experience-card:hover .majd-exp-arrow-box .majd-arrow-icon-secondary {
-  left: 50%;
-  bottom: auto;
-  top: 50%;
-  transform: translate(-50%, -50%) rotate(-45deg);
-}
-
-.majd-exp-role-title {
-  font-family: var(--font-archivo);
-  font-size: 17px;
-  font-weight: 500;
-  line-height: 1.35em;
-  letter-spacing: -0.02em;
-  color: rgba(17, 17, 17, 0.68);
-}
-
-/* Col 3: Impact & Stack */
-.majd-exp-col-impact {
-  display: flex;
-  flex-direction: column;
-  gap: 22px;
-}
-
-.majd-exp-lead-summary {
-  font-family: var(--font-archivo);
-  font-size: 20px;
-  font-weight: 500;
-  line-height: 1.42em;
-  letter-spacing: -0.025em;
-  color: var(--ink-dark);
-}
-
-.majd-exp-impact-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  padding-left: 16px;
+.majd-exp-bullet {
+  color: rgba(17, 17, 17, 0.72);
+  padding-left: 14px;
   border-left: 1.5px solid var(--border-subtle);
-  transition: border-color 0.35s ease;
-}
-
-.majd-experience-card:hover .majd-exp-impact-list {
-  border-left-color: var(--ink-dark);
-}
-
-.majd-exp-impact-row {
-  display: flex;
-  align-items: baseline;
-  gap: 12px;
-}
-
-.majd-exp-impact-idx {
-  font-family: var(--font-clash);
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--ink-muted);
-  flex-shrink: 0;
-}
-
-.majd-exp-impact-text {
-  font-family: var(--font-archivo);
-  font-size: 16px;
   line-height: 1.5em;
-  letter-spacing: -0.02em;
-  color: rgba(17, 17, 17, 0.76);
 }
 
-.majd-exp-stack-row {
+.majd-exp-tags {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  padding-top: 4px;
+  padding-top: 6px;
 }
 
-.majd-exp-tech-pill {
-  display: inline-flex;
-  align-items: center;
-  padding: 6px 13px;
-  border-radius: 8px;
-  background-color: rgba(17, 17, 17, 0.055);
-  color: var(--ink-dark);
-  font-family: var(--font-archivo);
-  font-size: 14px;
-  font-weight: 500;
-  letter-spacing: -0.02em;
-  transition: background-color 0.25s ease, color 0.25s ease;
-}
-
-.majd-exp-tech-pill:hover {
-  background-color: var(--ink-dark);
-  color: var(--bg-cream);
-}
-
-@media (max-width: 1080px) {
-  .majd-experience-card {
-    grid-template-columns: 260px 1fr;
-    gap: 32px;
-    padding: 36px 8px;
+@media (max-width: 1023.98px) {
+  .majd-exp-inline-tech {
+    display: none;
   }
-  .majd-exp-col-index {
-    grid-column: 1 / -1;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    padding-bottom: 8px;
-  }
-  .majd-exp-time-group {
-    align-items: flex-end;
-    text-align: right;
+  .majd-exp-panel {
+    grid-template-columns: 1fr;
+    gap: 24px;
   }
 }
 
 @media (max-width: 809.98px) {
-  .majd-experience-card {
-    grid-template-columns: 1fr;
-    gap: 20px;
-    padding: 32px 0;
+  .majd-exp-trigger {
+    min-height: 88px;
+    padding: 20px 0;
+    align-items: flex-start;
   }
-  .majd-experience-card:hover {
-    padding-left: 0;
+  .majd-exp-trigger-left {
+    flex-direction: column;
+    gap: 4px;
   }
-  .majd-exp-num {
-    font-size: 34px;
+  .majd-exp-role-inline {
+    font-size: 16px;
   }
-  .majd-exp-company-name {
-    font-size: 26px;
+  .majd-exp-trigger-right {
+    gap: 12px;
   }
-  .majd-exp-lead-summary {
-    font-size: 18px;
+  .majd-exp-period-label {
+    font-size: 14px;
+    min-width: auto;
   }
 }
 

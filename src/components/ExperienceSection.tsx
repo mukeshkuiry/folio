@@ -1,8 +1,10 @@
 "use client";
 
+import { TextArrowButton } from "@/components/TextArrowButton";
 import { WordReveal } from "@/components/WordReveal";
 import type { ExperienceItem } from "@/types/portfolio.interfaces";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
+import { useState } from "react";
 
 export interface ExperienceSectionProps {
   experiences: ExperienceItem[];
@@ -10,128 +12,147 @@ export interface ExperienceSectionProps {
 
 export function ExperienceSection(props: ExperienceSectionProps) {
   const { experiences } = props;
+  const [openId, setOpenId] = useState<string | null>(
+    experiences[0]?.id ?? null
+  );
+
+  const toggleRow = (id: string) => {
+    setOpenId((prev) => (prev === id ? null : id));
+  };
 
   return (
     <section id="experience" className="majd-section">
-      <div className="majd-container majd-container-exp">
-        <div className="majd-section-header-row majd-exp-header-bar">
-          <WordReveal
-            text="Experience"
-            as="h2"
-            className="majd-h2-section"
-            trigger="inView"
-            blurPx={6}
-            duration={0.9}
-          />
-          <div className="majd-exp-header-meta">
-            <span className="majd-exp-live-dot" aria-hidden="true" />
-            <span>2023 — PRESENT · 4 PRODUCTION ROLES</span>
-          </div>
-        </div>
+      <div className="majd-container">
+        <WordReveal
+          text="Experience"
+          as="h2"
+          className="majd-h2-section"
+          trigger="inView"
+          blurPx={6}
+          duration={0.9}
+        />
 
-        <div className="majd-experience-list">
+        <div className="majd-exp-accordion">
           {experiences.map((item, idx) => {
-            const isCurrent = item.period.toLowerCase().includes("present");
-            const indexLabel = String(idx + 1).padStart(2, "0");
+            const isOpen = openId === item.id;
 
             return (
-              <motion.article
+              <motion.div
                 key={item.id}
-                className="majd-experience-card"
-                initial={{ opacity: 0, y: 20 }}
+                className={`majd-exp-item${isOpen ? " is-open" : ""}`}
+                initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.15 }}
                 transition={{
-                  duration: 0.72,
-                  delay: idx * 0.06,
+                  duration: 0.65,
+                  delay: idx * 0.05,
                   ease: [0.16, 1, 0.3, 1],
                 }}
               >
-                {/* Col 1: Sculptural Index & Timeline */}
-                <div className="majd-exp-col-index">
-                  <span className="majd-exp-num">/{indexLabel}</span>
-                  <div className="majd-exp-time-group">
-                    <span
-                      className={`majd-exp-period${isCurrent ? " is-current" : ""}`}
-                    >
-                      {isCurrent && (
-                        <span
-                          className="majd-exp-current-dot"
-                          aria-hidden="true"
-                        />
-                      )}
-                      {item.period}
-                    </span>
-                    <span className="majd-exp-loc">{item.location}</span>
+                <button
+                  type="button"
+                  className="majd-exp-trigger"
+                  onClick={() => toggleRow(item.id)}
+                  aria-expanded={isOpen}
+                >
+                  <div className="majd-exp-trigger-left">
+                    <h3 className="majd-h3-card majd-exp-title">
+                      {item.company}
+                    </h3>
+                    <span className="majd-exp-role-inline">{item.role}</span>
                   </div>
-                </div>
 
-                {/* Col 2: Company & Role Identity */}
-                <div className="majd-exp-col-company">
-                  <a
-                    href={item.companyUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="majd-exp-company-link"
-                  >
-                    <h3 className="majd-exp-company-name">{item.company}</h3>
-                    <span className="majd-arrow-box majd-exp-arrow-box" aria-hidden="true">
-                      <span className="majd-arrow-bg" />
-                      <svg
-                        className="majd-arrow-icon-primary"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <line x1="5" y1="12" x2="19" y2="12" />
-                        <polyline points="12 5 19 12 12 19" />
-                      </svg>
-                      <svg
-                        className="majd-arrow-icon-secondary"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <line x1="5" y1="12" x2="19" y2="12" />
-                        <polyline points="12 5 19 12 12 19" />
-                      </svg>
-                    </span>
-                  </a>
-                  <p className="majd-exp-role-title">{item.role}</p>
-                </div>
-
-                {/* Col 3: Engineering Impact & Tech Stack */}
-                <div className="majd-exp-col-impact">
-                  <p className="majd-exp-lead-summary">{item.summary}</p>
-
-                  {item.achievements.length > 0 && (
-                    <div className="majd-exp-impact-list">
-                      {item.achievements.map((ach, aIdx) => (
-                        <div key={aIdx} className="majd-exp-impact-row">
-                          <span className="majd-exp-impact-idx">
-                            0{aIdx + 1}
-                          </span>
-                          <p className="majd-exp-impact-text">{ach}</p>
-                        </div>
+                  <div className="majd-exp-trigger-right">
+                    <div className="majd-service-categories majd-exp-inline-tech">
+                      {item.techStack.slice(0, 3).map((tech, tIdx) => (
+                        <span
+                          key={tech}
+                          style={{
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: "10px",
+                          }}
+                        >
+                          {tIdx > 0 && (
+                            <span
+                              className="majd-service-dot"
+                              aria-hidden="true"
+                            />
+                          )}
+                          <span className="majd-p-body">{tech}</span>
+                        </span>
                       ))}
                     </div>
-                  )}
 
-                  <div className="majd-exp-stack-row">
-                    {item.techStack.map((tech) => (
-                      <span key={tech} className="majd-exp-tech-pill">
-                        {tech}
-                      </span>
-                    ))}
+                    <span className="majd-exp-period-label">{item.period}</span>
+
+                    <span
+                      className={`majd-exp-toggle-icon${isOpen ? " is-open" : ""}`}
+                      aria-hidden="true"
+                    >
+                      <span className="majd-exp-plus-h" />
+                      <span className="majd-exp-plus-v" />
+                    </span>
                   </div>
-                </div>
-              </motion.article>
+                </button>
+
+                <AnimatePresence initial={false}>
+                  {isOpen && (
+                    <motion.div
+                      key="content"
+                      className="majd-exp-panel-wrap"
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{
+                        duration: 0.38,
+                        ease: [0.16, 1, 0.3, 1],
+                      }}
+                    >
+                      <div className="majd-exp-panel">
+                        <div className="majd-exp-panel-left">
+                          <p className="majd-p-body" style={{ color: "#111111" }}>
+                            {item.summary}
+                          </p>
+                          <div className="majd-exp-panel-meta">
+                            <span
+                              className="majd-p-small"
+                              style={{ color: "var(--ink-muted)" }}
+                            >
+                              {item.period} · {item.location}
+                            </span>
+                            <TextArrowButton
+                              title="Company Website"
+                              href={item.companyUrl}
+                              variant="primary"
+                              newTab
+                            />
+                          </div>
+                        </div>
+
+                        <div className="majd-exp-panel-right">
+                          {item.achievements.map((ach, aIdx) => (
+                            <p
+                              key={aIdx}
+                              className="majd-p-small majd-exp-bullet"
+                            >
+                              {ach}
+                            </p>
+                          ))}
+
+                          <div className="majd-exp-tags">
+                            {item.techStack.map((tech) => (
+                              <span key={tech} className="majd-pill-badge">
+                                {tech}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
             );
           })}
         </div>
