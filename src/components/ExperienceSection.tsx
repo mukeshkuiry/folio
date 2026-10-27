@@ -14,101 +14,126 @@ export function ExperienceSection(props: ExperienceSectionProps) {
   return (
     <section id="experience" className="majd-section">
       <div className="majd-container majd-container-exp">
-        <WordReveal
-          text="Experience"
-          as="h2"
-          className="majd-h2-section"
-          trigger="inView"
-          blurPx={10}
-          duration={1.8}
-        />
+        <div className="majd-section-header-row majd-exp-header-bar">
+          <WordReveal
+            text="Experience"
+            as="h2"
+            className="majd-h2-section"
+            trigger="inView"
+            blurPx={6}
+            duration={0.9}
+          />
+          <div className="majd-exp-header-meta">
+            <span className="majd-exp-live-dot" aria-hidden="true" />
+            <span>2023 — PRESENT · 4 PRODUCTION ROLES</span>
+          </div>
+        </div>
 
-        <div className="majd-services-list">
-          {experiences.map((item, idx) => (
-            <motion.div
-              key={item.id}
-              className="majd-experience-card"
-              initial={{ opacity: 0, y: 18 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.15 }}
-              transition={{
-                duration: 0.7,
-                delay: idx * 0.06,
-                ease: [0.16, 1, 0.3, 1],
-              }}
-            >
-              <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-                <h3 className="majd-h3-card">
+        <div className="majd-experience-list">
+          {experiences.map((item, idx) => {
+            const isCurrent = item.period.toLowerCase().includes("present");
+            const indexLabel = String(idx + 1).padStart(2, "0");
+
+            return (
+              <motion.article
+                key={item.id}
+                className="majd-experience-card"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.15 }}
+                transition={{
+                  duration: 0.72,
+                  delay: idx * 0.06,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
+              >
+                {/* Col 1: Sculptural Index & Timeline */}
+                <div className="majd-exp-col-index">
+                  <span className="majd-exp-num">/{indexLabel}</span>
+                  <div className="majd-exp-time-group">
+                    <span
+                      className={`majd-exp-period${isCurrent ? " is-current" : ""}`}
+                    >
+                      {isCurrent && (
+                        <span
+                          className="majd-exp-current-dot"
+                          aria-hidden="true"
+                        />
+                      )}
+                      {item.period}
+                    </span>
+                    <span className="majd-exp-loc">{item.location}</span>
+                  </div>
+                </div>
+
+                {/* Col 2: Company & Role Identity */}
+                <div className="majd-exp-col-company">
                   <a
                     href={item.companyUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="majd-exp-company-link"
                   >
-                    <span>{item.company}</span>
-                    <span className="majd-exp-arrow" aria-hidden="true">
-                      ↗
+                    <h3 className="majd-exp-company-name">{item.company}</h3>
+                    <span className="majd-arrow-box majd-exp-arrow-box" aria-hidden="true">
+                      <span className="majd-arrow-bg" />
+                      <svg
+                        className="majd-arrow-icon-primary"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <line x1="5" y1="12" x2="19" y2="12" />
+                        <polyline points="12 5 19 12 12 19" />
+                      </svg>
+                      <svg
+                        className="majd-arrow-icon-secondary"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <line x1="5" y1="12" x2="19" y2="12" />
+                        <polyline points="12 5 19 12 12 19" />
+                      </svg>
                     </span>
                   </a>
-                </h3>
-                <p className="majd-p-body" style={{ color: "#111111" }}>
-                  {item.role}
-                </p>
-                <p className="majd-p-small" style={{ color: "var(--ink-muted)" }}>
-                  {item.period} · {item.location}
-                </p>
-              </div>
+                  <p className="majd-exp-role-title">{item.role}</p>
+                </div>
 
-              <div style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
-                <p className="majd-p-body" style={{ color: "#111111" }}>
-                  {item.summary}
-                </p>
+                {/* Col 3: Engineering Impact & Tech Stack */}
+                <div className="majd-exp-col-impact">
+                  <p className="majd-exp-lead-summary">{item.summary}</p>
 
-                {item.achievements.length > 0 && (
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "8px",
-                    }}
-                  >
-                    {item.achievements.slice(0, 2).map((ach, aIdx) => (
-                      <p
-                        key={aIdx}
-                        className="majd-p-small"
-                        style={{ color: "var(--ink-muted)" }}
-                      >
-                        — {ach}
-                      </p>
-                    ))}
-                  </div>
-                )}
+                  {item.achievements.length > 0 && (
+                    <div className="majd-exp-impact-list">
+                      {item.achievements.map((ach, aIdx) => (
+                        <div key={aIdx} className="majd-exp-impact-row">
+                          <span className="majd-exp-impact-idx">
+                            0{aIdx + 1}
+                          </span>
+                          <p className="majd-exp-impact-text">{ach}</p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
 
-                <div className="majd-service-categories">
-                  {item.techStack.slice(0, 6).map((tech, idx) => (
-                    <span
-                      key={tech}
-                      style={{
-                        display: "inline-flex",
-                        alignItems: "center",
-                        gap: "10px",
-                      }}
-                    >
-                      {idx > 0 && (
-                        <span className="majd-service-dot" aria-hidden="true" />
-                      )}
-                      <span
-                        className="majd-p-body"
-                        style={{ color: "var(--ink-muted)" }}
-                      >
+                  <div className="majd-exp-stack-row">
+                    {item.techStack.map((tech) => (
+                      <span key={tech} className="majd-exp-tech-pill">
                         {tech}
                       </span>
-                    </span>
-                  ))}
+                    ))}
+                  </div>
                 </div>
-              </div>
-            </motion.div>
-          ))}
+              </motion.article>
+            );
+          })}
         </div>
       </div>
     </section>
