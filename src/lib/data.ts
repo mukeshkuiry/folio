@@ -392,57 +392,6 @@ export const PROJECTS: Project[] = [
     ],
   },
   {
-    slug: "committee-khata",
-    title: "Committee Khata",
-    shortDescription: "Community Lending Pool & Reducing-Balance Ledger",
-    description:
-      "A full-stack community lending and savings pool platform (React Native Expo + Express/MongoDB API) featuring reducing-balance interest accrual, 6-month interest capitalization, and a 4-tier payment waterfall.",
-    category: "FinTech Full-Stack",
-    year: "2026",
-    client: "Community Micro-Lending",
-    liveUrl: "https://github.com/mukeshkuiry/committee",
-    repoUrl: "https://github.com/mukeshkuiry/committee-khata-api",
-    techStack: ["React Native", "Expo Router", "TypeScript", "Express.js", "MongoDB", "Zod"],
-    metrics: [
-      { label: "Payment Waterfall", value: "Fine→Int→Prin→Pool" },
-      { label: "Default Rule", value: "6-Month Capitalize" },
-      { label: "Architecture", value: "Expo App + REST API" },
-    ],
-    heroImage: "/images/projects/committee-khata-1.png",
-    galleryImages: [
-      "/images/projects/committee-khata-2.png",
-      "/images/projects/committee-khata-3.png",
-    ],
-    outroImage: "/images/projects/committee-khata-1.png",
-    featured: true,
-    introBlocks: [
-      {
-        heading: "Digitizing Community Savings & Lending Pools",
-        paragraphs: [
-          "Traditional community lending committees track monthly member contributions, pool loans, reducing-balance interest, and late fines in paper notebooks prone to calculation errors.",
-          "Committee Khata provides both an offline-first React Native Expo mobile ledger and a hardened Express + MongoDB + Zod REST API (committee-khata-api) for deterministic financial accounting.",
-        ],
-      },
-    ],
-    bodyBlocks: [
-      {
-        heading: "Deterministic Monthly Engine & Payment Waterfall",
-        paragraphs: [
-          "The core financial engine enforces strict payment allocation priority: Fines → Unpaid Interest → Principal → Monthly Contribution, with real-time breakdown previews before committing a transaction.",
-          "During monthly lifecycle processing, active loans accrue reducing-balance interest, missed contributions accumulate monthly fines, and 6 consecutive months of unpaid interest automatically capitalize into principal.",
-        ],
-      },
-    ],
-    outroBlocks: [
-      {
-        heading: "Audit-Grade Clarity on Mobile",
-        paragraphs: [
-          "Every member's historical ledger, active loan state, and pool liquidity is computed deterministically, eliminating disputes in community micro-finance.",
-        ],
-      },
-    ],
-  },
-  {
     slug: "codearena",
     title: "CodeArena",
     shortDescription: "1v1 Real-Time Competitive Coding & gRPC Rating Engine",
@@ -489,6 +438,57 @@ export const PROJECTS: Project[] = [
         heading: "Built for Low-Latency Competition",
         paragraphs: [
           "By combining Go's lightweight concurrency primitives with gRPC service boundaries, CodeArena delivers snappy real-time matchmaking and audit-grade rating persistence.",
+        ],
+      },
+    ],
+  },
+  {
+    slug: "committee-khata",
+    title: "Committee Khata",
+    shortDescription: "Community Lending Pool & Reducing-Balance Ledger",
+    description:
+      "A full-stack community lending and savings pool platform (React Native Expo + Express/MongoDB API) featuring reducing-balance interest accrual, 6-month interest capitalization, and a 4-tier payment waterfall.",
+    category: "FinTech Full-Stack",
+    year: "2026",
+    client: "Community Micro-Lending",
+    liveUrl: "https://github.com/mukeshkuiry/committee",
+    repoUrl: "https://github.com/mukeshkuiry/committee-khata-api",
+    techStack: ["React Native", "Expo Router", "TypeScript", "Express.js", "MongoDB", "Zod"],
+    metrics: [
+      { label: "Payment Waterfall", value: "Fine→Int→Prin→Pool" },
+      { label: "Default Rule", value: "6-Month Capitalize" },
+      { label: "Architecture", value: "Expo App + REST API" },
+    ],
+    heroImage: "/images/projects/committee-khata-1.png",
+    galleryImages: [
+      "/images/projects/committee-khata-2.png",
+      "/images/projects/committee-khata-3.png",
+    ],
+    outroImage: "/images/projects/committee-khata-1.png",
+    featured: true,
+    introBlocks: [
+      {
+        heading: "Digitizing Community Savings & Lending Pools",
+        paragraphs: [
+          "Traditional community lending committees track monthly member contributions, pool loans, reducing-balance interest, and late fines in paper notebooks prone to calculation errors.",
+          "Committee Khata provides both an offline-first React Native Expo mobile ledger and a hardened Express + MongoDB + Zod REST API (committee-khata-api) for deterministic financial accounting.",
+        ],
+      },
+    ],
+    bodyBlocks: [
+      {
+        heading: "Deterministic Monthly Engine & Payment Waterfall",
+        paragraphs: [
+          "The core financial engine enforces strict payment allocation priority: Fines → Unpaid Interest → Principal → Monthly Contribution, with real-time breakdown previews before committing a transaction.",
+          "During monthly lifecycle processing, active loans accrue reducing-balance interest, missed contributions accumulate monthly fines, and 6 consecutive months of unpaid interest automatically capitalize into principal.",
+        ],
+      },
+    ],
+    outroBlocks: [
+      {
+        heading: "Audit-Grade Clarity on Mobile",
+        paragraphs: [
+          "Every member's historical ledger, active loan state, and pool liquidity is computed deterministically, eliminating disputes in community micro-finance.",
         ],
       },
     ],

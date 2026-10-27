@@ -1774,288 +1774,36 @@ Confidence comes from diff quality, not migration speed.
 ];
 
 export function getFeaturedPosts(count = 2): BlogPost[] {
-  const curatedSlugs = [
-    "building-scalable-microservices-with-golang",
-    "zero-downtime-postgresql-migrations-at-scale",
-    "designing-idempotent-payment-apis",
-    "inside-raft-consensus-leader-election-log-replication",
-  ];
-  const curated = curatedSlugs
-    .map((slug) => BLOG_POSTS.find((p) => p.slug === slug))
-    .filter((p): p is BlogPost => Boolean(p));
-
-  if (curated.length >= count) {
-    return curated.slice(0, count);
+  const featured = BLOG_POSTS.filter((p) => p.featured);
+  if (featured.length >= count) {
+    return featured.slice(0, count);
   }
-
   return [...BLOG_POSTS]
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
     .slice(0, count);
 }
 
 export function getRelatedPosts(currentSlug: string, count = 3): BlogPost[] {
-  const current = BLOG_POSTS.find((p) => p.slug === currentSlug);
-  const pool = BLOG_POSTS.filter((p) => p.slug !== currentSlug);
-  const sameCategory = current
-    ? pool.filter((p) => p.category === current.category)
-    : [];
-  const others = current
-    ? pool.filter((p) => p.category !== current.category)
-    : pool;
-
-  return [...sameCategory, ...others].slice(0, count);
+  return [...BLOG_POSTS]
+    .filter((p) => p.slug !== currentSlug)
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    .slice(0, count);
 }
 
-export function getBlogCategories(): string[] {
-  const set = new Set<string>(["All"]);
-  for (const post of BLOG_POSTS) {
-    set.add(post.category);
-  }
-  return Array.from(set);
-}
-
-interface CoverPalette {
-  bgStart: string;
-  bgEnd: string;
-  accent: string;
-  accentSecondary: string;
-  label: string;
-}
-
-const COVER_PALETTES: CoverPalette[] = [
-  {
-    bgStart: "#0B1320",
-    bgEnd: "#132238",
-    accent: "#38BDF8",
-    accentSecondary: "#818CF8",
-    label: "SYSTEMS // GO RUNTIME",
-  },
-  {
-    bgStart: "#12101B",
-    bgEnd: "#1E1930",
-    accent: "#F59E0B",
-    accentSecondary: "#FB7185",
-    label: "CONSENSUS // TOPOLOGY",
-  },
-  {
-    bgStart: "#0A1713",
-    bgEnd: "#112821",
-    accent: "#10B981",
-    accentSecondary: "#38BDF8",
-    label: "STORAGE // ENGINE",
-  },
-  {
-    bgStart: "#161118",
-    bgEnd: "#26182A",
-    accent: "#F472B6",
-    accentSecondary: "#C084FC",
-    label: "DISTRIBUTED // PIPELINE",
-  },
-  {
-    bgStart: "#141413",
-    bgEnd: "#23211E",
-    accent: "#FB923C",
-    accentSecondary: "#FBBF24",
-    label: "FINTECH // LEDGER",
-  },
-  {
-    bgStart: "#0D1520",
-    bgEnd: "#172536",
-    accent: "#2DD4BF",
-    accentSecondary: "#60A5FA",
-    label: "CLOUD // KUBERNETES",
-  },
+const BLOG_COVERS = [
+  "/images/blog/cover-1.png",
+  "/images/blog/cover-2.png",
+  "/images/blog/cover-3.png",
+  "/images/blog/cover-4.png",
+  "/images/blog/cover-5.png",
+  "/images/blog/cover-6.png",
+  "/images/blog/cover-7.png",
 ];
-
-function buildDiagramMarkup(variant: number, accent: string, accent2: string): string {
-  switch (variant % 6) {
-    case 0:
-      // Service Mesh & Circuit Breaker Node Graph
-      return `
-        <g transform="translate(420, 48)">
-          <rect x="20" y="20" width="320" height="220" rx="14" fill="#090D16" fill-opacity="0.72" stroke="${accent}" stroke-opacity="0.28" stroke-width="1.2"/>
-          <line x1="20" y1="54" x2="340" y2="54" stroke="${accent}" stroke-opacity="0.16" stroke-width="1"/>
-          <circle cx="42" cy="37" r="4.5" fill="#EF4444" fill-opacity="0.8"/>
-          <circle cx="58" cy="37" r="4.5" fill="#F59E0B" fill-opacity="0.8"/>
-          <circle cx="74" cy="37" r="4.5" fill="#10B981" fill-opacity="0.8"/>
-          <text x="96" y="41" fill="#FAF7F3" fill-opacity="0.55" font-family="monospace" font-size="11">rpc://mesh.ingress:9090</text>
-          <path d="M90 140 C 145 90, 215 90, 270 140" fill="none" stroke="${accent}" stroke-width="2" stroke-dasharray="5 4"/>
-          <path d="M90 140 C 145 190, 215 190, 270 140" fill="none" stroke="${accent2}" stroke-width="1.8" stroke-opacity="0.75"/>
-          <line x1="90" y1="140" x2="270" y2="140" stroke="#FAF7F3" stroke-opacity="0.22" stroke-width="1.5"/>
-          <circle cx="90" cy="140" r="22" fill="#0F172A" stroke="${accent}" stroke-width="2.2"/>
-          <circle cx="90" cy="140" r="7" fill="${accent}"/>
-          <circle cx="180" cy="102" r="16" fill="#0F172A" stroke="${accent}" stroke-width="1.8"/>
-          <circle cx="180" cy="178" r="16" fill="#0F172A" stroke="${accent2}" stroke-width="1.8"/>
-          <circle cx="270" cy="140" r="22" fill="#0F172A" stroke="${accent2}" stroke-width="2.2"/>
-          <circle cx="270" cy="140" r="7" fill="${accent2}"/>
-          <text x="64" y="182" fill="#FAF7F3" fill-opacity="0.65" font-family="monospace" font-size="10">GATEWAY</text>
-          <text x="158" y="80" fill="${accent}" font-family="monospace" font-size="10">CLOSED</text>
-          <text x="246" y="182" fill="#FAF7F3" fill-opacity="0.65" font-family="monospace" font-size="10">WORKER</text>
-          <rect x="44" y="202" width="124" height="22" rx="6" fill="${accent}" fill-opacity="0.12"/>
-          <text x="56" y="217" fill="${accent}" font-family="monospace" font-size="10">P99: 3.4ms · OK</text>
-        </g>
-      `;
-    case 1:
-      // Raft Consensus / Quorum Ring & Log Replication
-      return `
-        <g transform="translate(430, 44)">
-          <circle cx="170" cy="132" r="92" fill="none" stroke="${accent}" stroke-opacity="0.2" stroke-width="1.2" stroke-dasharray="4 6"/>
-          <circle cx="170" cy="132" r="58" fill="none" stroke="${accent2}" stroke-opacity="0.35" stroke-width="1.5"/>
-          <line x1="170" y1="40" x2="250" y2="178" stroke="${accent}" stroke-opacity="0.5" stroke-width="1.6"/>
-          <line x1="250" y1="178" x2="90" y2="178" stroke="${accent}" stroke-opacity="0.5" stroke-width="1.6"/>
-          <line x1="90" y1="178" x2="170" y2="40" stroke="${accent}" stroke-opacity="0.5" stroke-width="1.6"/>
-          <circle cx="170" cy="40" r="20" fill="#14121D" stroke="${accent}" stroke-width="2.4"/>
-          <text x="153" y="44" fill="${accent}" font-family="monospace" font-weight="bold" font-size="10">LDR</text>
-          <circle cx="250" cy="178" r="18" fill="#14121D" stroke="${accent2}" stroke-width="2"/>
-          <text x="239" y="182" fill="#FAF7F3" fill-opacity="0.8" font-family="monospace" font-size="10">N2</text>
-          <circle cx="90" cy="178" r="18" fill="#14121D" stroke="${accent2}" stroke-width="2"/>
-          <text x="79" y="182" fill="#FAF7F3" fill-opacity="0.8" font-family="monospace" font-size="10">N3</text>
-          <rect x="65" y="220" width="210" height="28" rx="7" fill="#0B0A10" stroke="${accent}" stroke-opacity="0.35"/>
-          <rect x="73" y="227" width="38" height="14" rx="3" fill="${accent}" fill-opacity="0.85"/>
-          <rect x="117" y="227" width="38" height="14" rx="3" fill="${accent}" fill-opacity="0.65"/>
-          <rect x="161" y="227" width="38" height="14" rx="3" fill="${accent}" fill-opacity="0.45"/>
-          <rect x="205" y="227" width="60" height="14" rx="3" fill="${accent2}" fill-opacity="0.25"/>
-        </g>
-      `;
-    case 2:
-      // B-Tree / LSM Storage Pages & WAL Stream
-      return `
-        <g transform="translate(420, 48)">
-          <rect x="115" y="18" width="130" height="38" rx="8" fill="#0A1410" stroke="${accent}" stroke-width="2"/>
-          <text x="135" y="41" fill="${accent}" font-family="monospace" font-size="11">ROOT PAGE #01</text>
-          <line x1="150" y1="56" x2="90" y2="104" stroke="${accent}" stroke-opacity="0.6" stroke-width="1.6"/>
-          <line x1="210" y1="56" x2="270" y2="104" stroke="${accent}" stroke-opacity="0.6" stroke-width="1.6"/>
-          <rect x="28" y="104" width="124" height="42" rx="8" fill="#0A1410" stroke="${accent2}" stroke-width="1.6"/>
-          <text x="44" y="129" fill="#FAF7F3" fill-opacity="0.85" font-family="monospace" font-size="10">INTERNAL [K1..K4]</text>
-          <rect x="208" y="104" width="124" height="42" rx="8" fill="#0A1410" stroke="${accent2}" stroke-width="1.6"/>
-          <text x="224" y="129" fill="#FAF7F3" fill-opacity="0.85" font-family="monospace" font-size="10">INTERNAL [K5..K9]</text>
-          <rect x="28" y="178" width="304" height="52" rx="10" fill="#07100C" stroke="${accent}" stroke-opacity="0.35"/>
-          <line x1="104" y1="178" x2="104" y2="230" stroke="${accent}" stroke-opacity="0.25"/>
-          <line x1="180" y1="178" x2="180" y2="230" stroke="${accent}" stroke-opacity="0.25"/>
-          <line x1="256" y1="178" x2="256" y2="230" stroke="${accent}" stroke-opacity="0.25"/>
-          <text x="45" y="208" fill="${accent}" font-family="monospace" font-size="11">LSN 940</text>
-          <text x="121" y="208" fill="${accent}" font-family="monospace" font-size="11">LSN 941</text>
-          <text x="197" y="208" fill="${accent2}" font-family="monospace" font-size="11">LSN 942</text>
-          <text x="271" y="208" fill="#FAF7F3" fill-opacity="0.7" font-family="monospace" font-size="11">COMMIT</text>
-        </g>
-      `;
-    case 3:
-      // Event-Driven Partition Log & Consumer Group
-      return `
-        <g transform="translate(415, 50)">
-          <rect x="24" y="24" width="190" height="42" rx="8" fill="#120E18" stroke="${accent}" stroke-width="1.6"/>
-          <rect x="34" y="34" width="36" height="22" rx="4" fill="${accent}" fill-opacity="0.3"/>
-          <rect x="76" y="34" width="36" height="22" rx="4" fill="${accent}" fill-opacity="0.5"/>
-          <rect x="118" y="34" width="36" height="22" rx="4" fill="${accent}" fill-opacity="0.75"/>
-          <rect x="160" y="34" width="42" height="22" rx="4" fill="${accent}"/>
-          <rect x="24" y="88" width="190" height="42" rx="8" fill="#120E18" stroke="${accent2}" stroke-width="1.6"/>
-          <rect x="34" y="98" width="48" height="22" rx="4" fill="${accent2}" fill-opacity="0.35"/>
-          <rect x="88" y="98" width="48" height="22" rx="4" fill="${accent2}" fill-opacity="0.65"/>
-          <rect x="142" y="98" width="60" height="22" rx="4" fill="${accent2}"/>
-          <rect x="24" y="152" width="190" height="42" rx="8" fill="#120E18" stroke="${accent}" stroke-opacity="0.5" stroke-width="1.6"/>
-          <rect x="34" y="162" width="56" height="22" rx="4" fill="${accent}" fill-opacity="0.45"/>
-          <rect x="96" y="162" width="56" height="22" rx="4" fill="${accent}" fill-opacity="0.8"/>
-          <path d="M214 45 L 284 78" stroke="${accent}" stroke-width="1.8" stroke-dasharray="4 3"/>
-          <path d="M214 109 L 284 109" stroke="${accent2}" stroke-width="1.8"/>
-          <path d="M214 173 L 284 140" stroke="${accent}" stroke-width="1.8" stroke-dasharray="4 3"/>
-          <rect x="284" y="64" width="70" height="90" rx="12" fill="#120E18" stroke="#FAF7F3" stroke-opacity="0.4" stroke-width="1.8"/>
-          <text x="299" y="105" fill="#FAF7F3" font-family="monospace" font-size="11">ACK</text>
-          <text x="296" y="123" fill="${accent}" font-family="monospace" font-size="10">100%</text>
-        </g>
-      `;
-    case 4:
-      // Latency Distribution Histogram & Telemetry Wave
-      return `
-        <g transform="translate(420, 48)">
-          <rect x="24" y="20" width="316" height="214" rx="14" fill="#111110" fill-opacity="0.8" stroke="${accent}" stroke-opacity="0.3" stroke-width="1.4"/>
-          <rect x="52" y="148" width="24" height="58" rx="4" fill="${accent}" fill-opacity="0.35"/>
-          <rect x="88" y="122" width="24" height="84" rx="4" fill="${accent}" fill-opacity="0.5"/>
-          <rect x="124" y="88" width="24" height="118" rx="4" fill="${accent}" fill-opacity="0.7"/>
-          <rect x="160" y="62" width="24" height="144" rx="4" fill="${accent}"/>
-          <rect x="196" y="102" width="24" height="104" rx="4" fill="${accent2}" fill-opacity="0.8"/>
-          <rect x="232" y="136" width="24" height="70" rx="4" fill="${accent2}" fill-opacity="0.55"/>
-          <rect x="268" y="164" width="24" height="42" rx="4" fill="${accent2}" fill-opacity="0.35"/>
-          <path d="M 48 138 Q 112 72, 172 56 T 304 128" fill="none" stroke="#FAF7F3" stroke-width="2.2"/>
-          <circle cx="172" cy="56" r="5" fill="#FAF7F3"/>
-          <text x="52" y="46" fill="${accent}" font-family="monospace" font-size="11">THROUGHPUT // 48,200 RPS</text>
-        </g>
-      `;
-    default:
-      // Cloud Kubernetes Reconciliation Loop
-      return `
-        <g transform="translate(425, 45)">
-          <rect x="30" y="24" width="132" height="82" rx="12" fill="#0B131E" stroke="${accent}" stroke-width="1.8"/>
-          <text x="48" y="54" fill="${accent}" font-family="monospace" font-size="11">DESIRED SPEC</text>
-          <text x="48" y="76" fill="#FAF7F3" fill-opacity="0.7" font-family="monospace" font-size="10">replicas: 12</text>
-          <text x="48" y="92" fill="#FAF7F3" fill-opacity="0.7" font-family="monospace" font-size="10">state: READY</text>
-          <rect x="198" y="24" width="132" height="82" rx="12" fill="#0B131E" stroke="${accent2}" stroke-width="1.8"/>
-          <text x="216" y="54" fill="${accent2}" font-family="monospace" font-size="11">CLUSTER STATE</text>
-          <text x="216" y="76" fill="#FAF7F3" fill-opacity="0.7" font-family="monospace" font-size="10">healthy: 12/12</text>
-          <text x="216" y="92" fill="#10B981" font-family="monospace" font-size="10">drift: 0.00%</text>
-          <rect x="74" y="144" width="212" height="72" rx="12" fill="#0B131E" stroke="#FAF7F3" stroke-opacity="0.35" stroke-width="1.6"/>
-          <text x="102" y="175" fill="#FAF7F3" font-family="monospace" font-size="11">RECONCILE CONTROLLER</text>
-          <text x="116" y="196" fill="${accent}" font-family="monospace" font-size="10">loop_latency: 1.8ms</text>
-          <path d="M162 64 L 198 64" stroke="${accent}" stroke-width="2"/>
-          <path d="M264 106 L 230 144" stroke="${accent2}" stroke-width="1.8" stroke-dasharray="4 3"/>
-          <path d="M130 144 L 96 106" stroke="${accent}" stroke-width="1.8" stroke-dasharray="4 3"/>
-        </g>
-      `;
-  }
-}
-
-function escapeXml(unsafe: string): string {
-  return unsafe
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&apos;");
-}
 
 export function getPostCoverImage(slug: string): string {
   const index = BLOG_POSTS.findIndex((p) => p.slug === slug);
   const resolvedIndex = index >= 0 ? index : 0;
-  const post = BLOG_POSTS[resolvedIndex] ?? BLOG_POSTS[0];
-  const palette = COVER_PALETTES[resolvedIndex % COVER_PALETTES.length];
-  const issueNum = String(resolvedIndex + 1).padStart(2, "0");
-  const categoryUpper = escapeXml(post.category.toUpperCase());
-  const readTimeUpper = escapeXml(post.readTime.toUpperCase());
-  const diagram = buildDiagramMarkup(
-    resolvedIndex,
-    palette.accent,
-    palette.accentSecondary
-  );
-
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 460" width="800" height="460">
-    <defs>
-      <linearGradient id="bg-${resolvedIndex}" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stop-color="${palette.bgStart}"/>
-        <stop offset="100%" stop-color="${palette.bgEnd}"/>
-      </linearGradient>
-      <radialGradient id="glow-${resolvedIndex}" cx="72%" cy="38%" r="52%">
-        <stop offset="0%" stop-color="${palette.accent}" stop-opacity="0.24"/>
-        <stop offset="55%" stop-color="${palette.accentSecondary}" stop-opacity="0.08"/>
-        <stop offset="100%" stop-color="${palette.bgStart}" stop-opacity="0"/>
-      </radialGradient>
-      <pattern id="grid-${resolvedIndex}" width="32" height="32" patternUnits="userSpaceOnUse">
-        <path d="M 32 0 L 0 0 0 32" fill="none" stroke="#FAF7F3" stroke-opacity="0.045" stroke-width="1"/>
-      </pattern>
-    </defs>
-    <rect width="800" height="460" fill="url(#bg-${resolvedIndex})"/>
-    <rect width="800" height="460" fill="url(#glow-${resolvedIndex})"/>
-    <rect width="800" height="460" fill="url(#grid-${resolvedIndex})"/>
-    <g transform="translate(44, 42)">
-      <text x="0" y="64" fill="#FAF7F3" fill-opacity="0.11" font-family="system-ui, -apple-system, sans-serif" font-weight="800" font-size="84" letter-spacing="-3">${issueNum}</text>
-      <rect x="0" y="92" width="210" height="32" rx="16" fill="${palette.accent}" fill-opacity="0.14" stroke="${palette.accent}" stroke-opacity="0.45" stroke-width="1"/>
-      <circle cx="18" cy="108" r="4" fill="${palette.accent}"/>
-      <text x="30" y="112" fill="${palette.accent}" font-family="monospace" font-weight="600" font-size="11" letter-spacing="1.2">${categoryUpper}</text>
-      <text x="0" y="156" fill="#FAF7F3" fill-opacity="0.5" font-family="monospace" font-size="11" letter-spacing="1.4">${escapeXml(palette.label)}</text>
-      <text x="0" y="180" fill="#FAF7F3" fill-opacity="0.35" font-family="monospace" font-size="11">NOTE #${issueNum} · ${readTimeUpper}</text>
-    </g>
-    ${diagram}
-  </svg>`;
-
-  return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
+  return BLOG_COVERS[resolvedIndex % BLOG_COVERS.length];
 }
 
 export function getPostBySlug(slug: string): BlogPost | undefined {

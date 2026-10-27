@@ -21,8 +21,8 @@ export function SmoothScrollProvider(props: SmoothScrollProviderProps) {
       if (isCancelled) return;
 
       const instance = new Lenis({
-        lerp: 0.095,
-        wheelMultiplier: 0.95,
+        duration: 1.05,
+        lerp: 0.1,
         smoothWheel: true,
         syncTouch: false,
       });
@@ -44,7 +44,6 @@ export function SmoothScrollProvider(props: SmoothScrollProviderProps) {
       const target = event.target as HTMLElement | null;
       const anchor = target?.closest("a[href]") as HTMLAnchorElement | null;
       if (!anchor) return;
-
       const href = anchor.getAttribute("href") ?? "";
       if (!href.includes("#")) return;
 
@@ -56,12 +55,8 @@ export function SmoothScrollProvider(props: SmoothScrollProviderProps) {
         const targetEl = document.getElementById(hashPart);
         if (targetEl) {
           event.preventDefault();
-          const offset = hashPart === "hero-section" ? 0 : -92;
           if (lenisRef.current) {
-            lenisRef.current.scrollTo(targetEl, {
-              offset,
-              duration: 1.05,
-            });
+            lenisRef.current.scrollTo(targetEl, { offset: 0, duration: 1.05 });
           } else {
             targetEl.scrollIntoView({ behavior: "smooth" });
           }
@@ -89,9 +84,8 @@ export function SmoothScrollProvider(props: SmoothScrollProviderProps) {
       if (hash) {
         const targetEl = document.getElementById(hash);
         if (targetEl) {
-          const offset = hash === "hero-section" ? 0 : -92;
           if (lenisRef.current) {
-            lenisRef.current.scrollTo(targetEl, { offset, duration: 0.9 });
+            lenisRef.current.scrollTo(targetEl, { offset: 0, duration: 0.95 });
           } else {
             targetEl.scrollIntoView({ behavior: "smooth" });
           }

@@ -8,75 +8,74 @@ import Link from "next/link";
 
 export interface BlogCardProps {
   post: Omit<BlogPost, "coverImage">;
-  index?: number;
 }
 
 export function BlogCard(props: BlogCardProps) {
-  const { post, index = 0 } = props;
+  const { post } = props;
   const coverSrc = getPostCoverImage(post.slug);
 
   return (
-    <motion.article
-      initial={{ opacity: 0, y: 18 }}
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.2 }}
+      viewport={{ once: true, amount: 0.35 }}
       transition={{
-        duration: 0.5,
-        delay: (index % 3) * 0.05,
-        ease: [0.22, 1, 0.36, 1],
+        type: "spring",
+        bounce: 0.2,
+        delay: 0,
+        duration: 1.4,
       }}
-      style={{ width: "100%", height: "100%" }}
+      style={{ width: "100%" }}
     >
       <Link
         href={`${blogPostUrl(post.slug)}#article-section`}
         className="majd-blog-card"
       >
-        <div className="majd-blog-card-media">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={coverSrc}
-            alt={post.title}
-            className="majd-blog-card-img"
-            loading="lazy"
-          />
-          <div className="majd-blog-card-top-pills">
-            <span className="majd-blog-cat-pill">{post.category}</span>
-            <span className="majd-blog-read-pill">{post.readTime}</span>
-          </div>
-        </div>
-
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={coverSrc}
+          alt={post.title}
+          className="majd-blog-card-img"
+          loading="lazy"
+        />
+        <div className="majd-blog-card-overlay" />
         <div className="majd-blog-card-content">
-          <div className="majd-blog-meta-row">
-            <time dateTime={post.date} className="majd-blog-date">
-              {formatDate(post.date)}
-            </time>
-            <span className="majd-blog-meta-dot" aria-hidden="true" />
-            <span className="majd-blog-meta-tag">Engineering Note</span>
-          </div>
-
-          <h3 className="majd-blog-card-title">{post.title}</h3>
-
-          <p className="majd-blog-card-excerpt">{post.excerpt}</p>
-
-          <div className="majd-blog-card-footer">
-            <span>Read Article</span>
-            <svg
-              width="15"
-              height="15"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden="true"
+          <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+            <p
+              className="majd-p-small"
+              style={{ color: "rgba(250, 247, 243, 0.72)" }}
             >
-              <path d="M5 12h14" />
-              <path d="m12 5 7 7-7 7" />
-            </svg>
+              {formatDate(post.date)} · {post.category}
+            </p>
+            <h3
+              className="majd-h3-card"
+              style={{
+                color: "#faf7f3",
+                fontSize: "25px",
+                lineHeight: "1.22em",
+                display: "-webkit-box",
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: "vertical",
+                overflow: "hidden",
+              }}
+            >
+              {post.title}
+            </h3>
           </div>
+          <p
+            className="majd-p-small"
+            style={{
+              color: "rgba(250, 247, 243, 0.76)",
+              display: "-webkit-box",
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: "vertical",
+              overflow: "hidden",
+            }}
+          >
+            {post.excerpt}
+          </p>
         </div>
       </Link>
-    </motion.article>
+    </motion.div>
   );
 }

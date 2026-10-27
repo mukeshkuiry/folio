@@ -20,17 +20,17 @@ export function WordReveal(props: WordRevealProps) {
     as = "h2",
     className = "",
     trigger = "inView",
-    blurPx = 6,
-    duration = 0.85,
-    startDelay = 0.02,
-    staggerDelay = 0.03,
+    blurPx = 10,
+    duration = 1.8,
+    startDelay = 0.05,
+    staggerDelay = 0.05,
     color,
   } = props;
 
   const Tag = as;
   const words = text.split(" ");
   const effectiveBlur = Math.min(blurPx, 5);
-  const effectiveDuration = Math.min(duration, 0.95);
+  const effectiveDuration = Math.min(duration, 1.0);
 
   return (
     <Tag className={className} style={color ? { color } : undefined}>
@@ -59,7 +59,7 @@ export function WordReveal(props: WordRevealProps) {
             animate={trigger === "mount" ? target : undefined}
             whileInView={trigger === "inView" ? target : undefined}
             viewport={
-              trigger === "inView" ? { once: true, amount: 0.15 } : undefined
+              trigger === "inView" ? { once: true, amount: 0.2 } : undefined
             }
             transition={transition}
             style={{
