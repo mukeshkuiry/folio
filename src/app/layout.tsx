@@ -1,43 +1,40 @@
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import "./globals.css";
-import { Loader } from "@/components/Loader";
+import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
-import { CustomCursor } from "@/components/CustomCursor";
-import { PageTransition } from "@/components/PageTransition";
 import { SmoothScrollProvider } from "@/components/SmoothScrollProvider";
-import { ScrollProgressBar } from "@/components/ScrollProgressBar";
 
 export const metadata: Metadata = {
   title: "Mukesh Kuiry — Software Engineer",
-  description: "Mukesh Kuiry — Independent software engineer building distributed systems, full-stack products, and clean engineering craft.",
+  description:
+    "Software engineer and open-source contributor building high-throughput FinTech systems, distributed Golang & TypeScript microservices, and native developer tools.",
   openGraph: {
     title: "Mukesh Kuiry — Software Engineer",
-    description: "Mukesh Kuiry — Independent software engineer building distributed systems, full-stack products, and clean engineering craft.",
+    description:
+      "Software engineer and open-source contributor building high-throughput FinTech systems, distributed Golang & TypeScript microservices, and native developer tools.",
     type: "website",
   },
-  twitter: { card: "summary_large_image" },
+  twitter: {
+    card: "summary_large_image",
+    title: "Mukesh Kuiry — Software Engineer",
+    description:
+      "Software engineer and open-source contributor building high-throughput FinTech systems, distributed Golang & TypeScript microservices, and native developer tools.",
+  },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout(props: Readonly<{ children: ReactNode }>) {
+  const { children } = props;
+
   return (
     <html lang="en">
       <body>
-        <Loader />
-        <CustomCursor />
-        <PageTransition />
-        <ScrollProgressBar />
+        <div className="framer-noise-overlay" aria-hidden="true" />
         <Header />
         <SmoothScrollProvider>
-          <main className="main-content">
-            {children}
-          </main>
+          <main>{children}</main>
+          <Footer />
         </SmoothScrollProvider>
-        {/* Film grain overlay for texture */}
-        <div className="grain" aria-hidden="true" />
       </body>
     </html>
   );

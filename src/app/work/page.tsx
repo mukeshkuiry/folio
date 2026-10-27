@@ -1,141 +1,133 @@
 "use client";
-import { useState, useEffect, useRef, memo } from "react";
-import Link from "next/link";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { PROJECTS, CATEGORIES, SOCIALS, type Project } from "@/lib/data";
-import { WebGLImage } from "@/components/WebGLImage";
-import { SiteFluidPreview } from "@/components/SiteFluidPreview";
 
-gsap.registerPlugin(ScrollTrigger);
+import { OpenSourceCard } from "@/components/OpenSourceCard";
+import { ProjectCard } from "@/components/ProjectCard";
+import { RollingText } from "@/components/RollingText";
+import { CATEGORIES, OPEN_SOURCE_CONTRIBUTIONS, PROJECTS } from "@/lib/data";
+import { useState } from "react";
 
 export default function WorkPage() {
-  const [activeFilter, setActiveFilter] = useState("All");
-  const gridRef = useRef<HTMLDivElement>(null);
+  const [activeCategory, setActiveCategory] = useState<string>("All");
 
-  const filtered = activeFilter === "All"
-    ? PROJECTS
-    : PROJECTS.filter((p) => p.category === activeFilter);
-
-  useEffect(() => {
-    const items = gridRef.current?.querySelectorAll(".work-item");
-    if (!items?.length) return;
-    gsap.fromTo(items,
-      { opacity: 0, y: 40 },
-      { opacity: 1, y: 0, duration: 0.7, ease: "power2.out", stagger: 0.08 }
-    );
-  }, [activeFilter]);
+  const filteredProjects =
+    activeCategory === "All"
+      ? PROJECTS
+      : PROJECTS.filter((project) => project.category === activeCategory);
 
   return (
-    <>
-      <section className="section">
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", borderBottom: "1px solid var(--color-grey-light)", paddingBottom: "2vw", marginBottom: "3vw" }}>
-          <h1 className="t-section">Work Directory</h1>
-          <span className="t-caption" style={{ color: "var(--color-grey-mid)" }}>{filtered.length}&nbsp;PROJECTS</span>
-        </div>
-
-        <div className="work-filters" role="tablist" aria-label="Filter projects">
-          {CATEGORIES.map((cat) => (
-            <button
-              key={cat}
-              className={`work-filter-btn ${activeFilter === cat ? "active" : ""}`}
-              onClick={() => setActiveFilter(cat)}
-              role="tab"
-              aria-selected={activeFilter === cat}
-            >
-              {cat}
-            </button>
-          ))}
-        </div>
-
-        <div className="work-grid" ref={gridRef} role="tabpanel">
-          {filtered.length === 0 ? (
-            <p className="t-body" style={{ color: "var(--color-grey-mid)", gridColumn: "1 / -1", textAlign: "center", padding: "8vw 0" }}>
-              No projects in this category yet.
-            </p>
-          ) : (
-            filtered.map((project) => (
-              <WorkCard key={project.slug} project={project} />
-            ))
-          )}
-        </div>
-      </section>
-
-      <Footer />
-    </>
-  );
-}
-
-const WorkCard = memo(function WorkCard({ project }: { project: Project }) {
-  const itemRef = useRef<HTMLAnchorElement>(null);
-
-  useEffect(() => {
-    const el = itemRef.current;
-    if (!el) return;
-    gsap.set(el, { opacity: 0, y: 40 });
-    const tween = ScrollTrigger.create({
-      trigger: el,
-      start: "top 90%",
-      once: true,
-      onEnter: () => gsap.to(el, { opacity: 1, y: 0, duration: 0.7, ease: "power2.out" }),
-    });
-    return () => tween.kill();
-  }, []);
-
-  return (
-    <a
-      href={project.external_url}
-      className="work-item"
-      ref={itemRef}
-      target="_blank"
-      rel="noopener noreferrer"
+    <section
+      id="hero-section"
+      style={{
+        width: "100%",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        padding: "180px 20px 120px 20px",
+        gap: "120px",
+      }}
     >
-      <div className="work-thumb">
-        {project.preview_url ? (
-          <SiteFluidPreview
-            url={project.preview_url}
-            fallbackColor={project.color ?? "#141924"}
-          />
-        ) : (
-          <WebGLImage color={project.color ?? "#C8C4BD"} style={{ position: "absolute", inset: 0, height: "100%" }} />
-        )}
-        <div className="work-thumb-overlay">
-          <div className="work-thumb-overlay-inner">
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.6em" }}>
-              <span className="t-caption" style={{ color: "rgba(255,255,255,0.5)", letterSpacing: "0.12em" }}>{project.category}</span>
-              <span style={{ color: "rgba(255,255,255,0.7)", fontSize: "clamp(13px,1vw,16px)" }}>↗</span>
-            </div>
-            <p className="work-thumb-desc">{project.description}</p>
-          </div>
+      <div
+        style={{
+          width: "100%",
+          maxWidth: "1180px",
+          display: "flex",
+          flexDirection: "column",
+          gap: "60px",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-start",
+            gap: "12px",
+          }}
+        >
+          <h1 className="majd-h1-page" style={{ maxWidth: "620px" }}>
+            My Brightest Creations
+          </h1>
+          <p
+            className="majd-p-body"
+            style={{ color: "#111111", maxWidth: "480px" }}
+          >
+            A showcase of my latest production systems, native macOS utilities,
+            and distributed backends—highlighting clean architecture and
+            real-world impact.
+          </p>
         </div>
-      </div>
-      <div className="work-item-meta">
-        <div style={{ display: "flex", flexDirection: "column", gap: "0.3em" }}>
-          <span className="t-project">{project.title}</span>
-          <span className="t-caption" style={{ color: "var(--color-grey-mid)" }}>{project.client}</span>
-        </div>
-        <span className="t-caption" style={{ color: "var(--color-grey-mid)" }}>{project.year}</span>
-      </div>
-    </a>
-  );
-});
 
-function Footer() {
-  return (
-    <footer className="footer-cta" data-theme="dark">
-      <h2 className="footer-cta-heading"><Link href="/contact">Start a project</Link></h2>
-      <div className="footer-bottom">
-        <span>© {new Date().getFullYear()} Mukesh Kuiry</span>
-        <div className="footer-socials">
-          {SOCIALS.map((s) => (
-            <a key={s.label} href={s.href} className="footer-social-link" target="_blank" rel="noopener noreferrer" aria-label={s.label}>
-              <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden="true">
-                <path d={s.iconPath} />
-              </svg>
-            </a>
+        {/* Category Filter Pills */}
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "10px",
+          }}
+          role="tablist"
+          aria-label="Filter projects by category"
+        >
+          {CATEGORIES.map((category) => {
+            const isActive = activeCategory === category;
+            return (
+              <button
+                key={category}
+                type="button"
+                role="tab"
+                aria-selected={isActive}
+                onClick={() => setActiveCategory(category)}
+                className="majd-nav-pill"
+                style={{
+                  backgroundColor: isActive
+                    ? "#111111"
+                    : "rgba(17, 17, 17, 0.08)",
+                  color: isActive ? "#faf7f3" : "#111111",
+                }}
+              >
+                <RollingText
+                  text={category}
+                  color={isActive ? "#faf7f3" : "#111111"}
+                  padding="8px 16px"
+                />
+              </button>
+            );
+          })}
+        </div>
+
+        {/* 2-Column Projects Grid (matching CcTy8bqan.js gap: 20px) */}
+        <div
+          className="majd-projects-grid"
+          style={{ gap: "20px" }}
+          role="tabpanel"
+        >
+          {filteredProjects.map((project) => (
+            <ProjectCard key={project.slug} project={project} />
           ))}
         </div>
       </div>
-    </footer>
+
+      {/* Open Source Contributions Showcase */}
+      <div
+        style={{
+          width: "100%",
+          maxWidth: "1180px",
+          display: "flex",
+          flexDirection: "column",
+          gap: "40px",
+        }}
+      >
+        <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+          <h2 className="majd-h2-display">Open Source Contributions</h2>
+          <p className="majd-p-body" style={{ color: "var(--ink-muted)" }}>
+            Merged pull requests and architectural improvements across CNCF and
+            open-source ecosystems.
+          </p>
+        </div>
+        <div className="majd-flip-grid">
+          {OPEN_SOURCE_CONTRIBUTIONS.map((item) => (
+            <OpenSourceCard key={item.id} item={item} />
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }

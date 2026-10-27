@@ -1773,10 +1773,21 @@ Confidence comes from diff quality, not migration speed.
   },
 ];
 
-export function getFeaturedPosts(): BlogPost[] {
+export function getFeaturedPosts(count = 2): BlogPost[] {
   return [...BLOG_POSTS]
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-    .slice(0, 3);
+    .slice(0, count);
+}
+
+export function getRelatedPosts(currentSlug: string, count = 3): BlogPost[] {
+  return [...BLOG_POSTS]
+    .filter((p) => p.slug !== currentSlug)
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    .slice(0, count);
+}
+
+export function getPostCoverImage(slug: string): string {
+  return `/images/blog/${slug}.svg`;
 }
 
 export function getPostBySlug(slug: string): BlogPost | undefined {
@@ -1786,7 +1797,8 @@ export function getPostBySlug(slug: string): BlogPost | undefined {
 export function formatDate(dateStr: string): string {
   return new Date(dateStr).toLocaleDateString("en-US", {
     year: "numeric",
-    month: "long",
+    month: "short",
     day: "numeric",
+    timeZone: "UTC",
   });
 }

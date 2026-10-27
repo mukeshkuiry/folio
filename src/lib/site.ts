@@ -19,16 +19,16 @@ export const BLOG_URL =
  * - On main deployment  → "https://blog.mukeshkuiry.com"
  */
 export function blogIndexUrl(): string {
-  return isBlogSite ? "/" : BLOG_URL;
+  return isBlogSite ? "/" : "/blog";
 }
 
 /**
  * URL for an individual blog post.
  * - On blog deployment  → "/<slug>"
- * - On main deployment  → "https://blog.mukeshkuiry.com/<slug>"
+ * - On main deployment  → "/blog/<slug>"
  */
 export function blogPostUrl(slug: string): string {
-  return isBlogSite ? `/${slug}` : `${BLOG_URL}/${slug}`;
+  return isBlogSite ? `/${slug}` : `/blog/${slug}`;
 }
 
 /**
