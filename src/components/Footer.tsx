@@ -113,7 +113,7 @@ export function Footer() {
         </div>
       </div>
 
-      {/* Giant Watermark — cleanly framed at bottom without vertical clipping */}
+      {/* Giant Watermark — in normal flex flow so Framer transform never breaks centering */}
       <motion.div
         className="majd-footer-watermark"
         aria-hidden="true"
@@ -123,24 +123,25 @@ export function Footer() {
         transition={{
           type: "spring",
           bounce: 0,
-          duration: 1.6,
+          duration: 1.4,
         }}
       >
         <svg
-          viewBox="0 0 1200 260"
+          viewBox="0 0 1180 230"
           width="100%"
           height="auto"
           style={{ display: "block", overflow: "visible" }}
         >
           <text
-            x="600"
-            y="224"
+            x="590"
+            y="208"
             textAnchor="middle"
+            textLength="1170"
+            lengthAdjust="spacing"
             fill="rgba(250, 247, 243, 0.1)"
             fontFamily="var(--font-archivo)"
             fontWeight="700"
-            fontSize="256"
-            letterSpacing="-0.02em"
+            fontSize="248"
           >
             MUKESH
           </text>

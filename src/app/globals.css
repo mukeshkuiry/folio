@@ -1931,17 +1931,19 @@ mark {
   color: var(--error-red);
 }
 
-/* === FOOTER & GIANT WATERMARK (itKm_zB9I.js replica — Fixed Alignment & Unclipped) === */
+/* === FOOTER & GIANT WATERMARK (Centered Flex Flow — Zero Transform Collision) === */
 .majd-footer {
   position: relative;
   width: 100%;
   background-color: var(--ink-dark);
   color: var(--bg-cream);
-  padding: 120px 20px 290px 20px;
+  padding: 120px 24px 0 24px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  overflow: clip;
+  justify-content: space-between;
+  gap: 80px;
+  overflow: hidden;
 }
 
 .majd-footer-container {
@@ -1961,7 +1963,7 @@ mark {
   flex-direction: row;
   align-items: flex-start;
   justify-content: space-between;
-  max-width: 680px;
+  max-width: 640px;
   width: 100%;
   gap: 48px;
 }
@@ -1971,7 +1973,7 @@ mark {
   flex-direction: column;
   align-items: flex-start;
   gap: 20px;
-  max-width: 340px;
+  max-width: 310px;
   width: 100%;
 }
 
@@ -1983,12 +1985,10 @@ mark {
 }
 
 .majd-footer-watermark {
-  position: absolute;
-  bottom: -14px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 94%;
-  max-width: 1200px;
+  position: relative;
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto -18px auto;
   z-index: 1;
   pointer-events: none;
   user-select: none;
@@ -1996,33 +1996,37 @@ mark {
 
 @media (max-width: 1279.98px) and (min-width: 810px) {
   .majd-footer {
-    padding: 100px 30px 230px 30px;
+    padding: 100px 30px 0 30px;
+    gap: 64px;
   }
   .majd-footer-container {
+    max-width: 960px;
     flex-direction: column;
     align-items: flex-start;
-    gap: 60px;
+    gap: 56px;
   }
   .majd-footer-watermark {
-    bottom: -10px;
+    max-width: 960px;
+    margin-bottom: -12px;
   }
 }
 
 @media (max-width: 809.98px) {
   .majd-footer {
-    padding: 80px 20px 150px 20px;
+    padding: 80px 20px 0 20px;
+    gap: 48px;
   }
   .majd-footer-container {
     flex-direction: column;
     align-items: flex-start;
-    gap: 60px;
+    gap: 48px;
   }
   .majd-footer-columns {
     flex-direction: column;
-    gap: 48px;
+    gap: 40px;
   }
   .majd-footer-watermark {
-    bottom: -6px;
+    margin-bottom: -6px;
   }
 }
 
