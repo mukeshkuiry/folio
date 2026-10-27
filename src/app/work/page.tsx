@@ -118,33 +118,34 @@ export default function WorkPage() {
         </div>
       </div>
 
-      {/* Open Source Contributions Showcase */}
+        {/* Open Source Contributions Showcase */}
       <div
         style={{
           width: "100%",
-          maxWidth: "1180px",
+          maxWidth: "1280px",
           display: "flex",
           flexDirection: "column",
           gap: "40px",
         }}
       >
         <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+          <span className="majd-eyebrow-tag">/ UPSTREAM ENGINEERING</span>
           <WordReveal
             text="Open Source Contributions"
             as="h2"
             className="majd-h2-display"
             trigger="inView"
-            blurPx={10}
-            duration={1.8}
+            blurPx={6}
+            duration={0.9}
           />
           <p className="majd-p-body" style={{ color: "var(--ink-muted)" }}>
             Merged pull requests and architectural improvements across CNCF and
             open-source ecosystems.
           </p>
         </div>
-        <div className="majd-flip-grid">
-          {OPEN_SOURCE_CONTRIBUTIONS.map((item) => (
-            <OpenSourceCard key={item.id} item={item} />
+        <div className="majd-os-grid">
+          {OPEN_SOURCE_CONTRIBUTIONS.map((item, idx) => (
+            <OpenSourceCard key={item.id} item={item} index={idx} />
           ))}
         </div>
       </div>

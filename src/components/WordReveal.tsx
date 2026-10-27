@@ -20,24 +20,26 @@ export function WordReveal(props: WordRevealProps) {
     as = "h2",
     className = "",
     trigger = "inView",
-    blurPx = 10,
-    duration = 1.8,
-    startDelay = 0.05,
-    staggerDelay = 0.05,
+    blurPx = 6,
+    duration = 0.85,
+    startDelay = 0.02,
+    staggerDelay = 0.03,
     color,
   } = props;
 
   const Tag = as;
   const words = text.split(" ");
+  const effectiveBlur = Math.min(blurPx, 5);
+  const effectiveDuration = Math.min(duration, 0.95);
 
   return (
     <Tag className={className} style={color ? { color } : undefined}>
       {words.map((word, index) => {
-        const delay = startDelay + index * staggerDelay;
+        const delay = startDelay + index * Math.min(staggerDelay, 0.04);
         const initial = {
           opacity: 0.001,
-          y: 10,
-          filter: `blur(${blurPx}px)`,
+          y: 8,
+          filter: `blur(${effectiveBlur}px)`,
         };
         const target = {
           opacity: 1,
@@ -45,10 +47,9 @@ export function WordReveal(props: WordRevealProps) {
           filter: "blur(0px)",
         };
         const transition = {
-          type: "spring" as const,
-          bounce: 0,
-          duration,
+          duration: effectiveDuration,
           delay,
+          ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
         };
 
         return (
@@ -58,12 +59,11 @@ export function WordReveal(props: WordRevealProps) {
             animate={trigger === "mount" ? target : undefined}
             whileInView={trigger === "inView" ? target : undefined}
             viewport={
-              trigger === "inView" ? { once: true, amount: 0.2 } : undefined
+              trigger === "inView" ? { once: true, amount: 0.15 } : undefined
             }
             transition={transition}
             style={{
               display: "inline-block",
-              willChange: "transform, opacity, filter",
               marginRight: index < words.length - 1 ? "0.26em" : 0,
             }}
           >

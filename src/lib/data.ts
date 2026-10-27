@@ -341,6 +341,108 @@ export const PROJECTS: Project[] = [
     ],
   },
   {
+    slug: "reel-automation",
+    title: "Reel Automation",
+    shortDescription: "Autonomous Reddit-to-Instagram Reels Pipeline in Go",
+    description:
+      "An end-to-end Golang media automation pipeline that monitors subreddits via OAuth2, scores viral video velocity, transcodes 9:16 vertical video with FFmpeg, and publishes to Instagram Graph API.",
+    category: "Go Media Pipeline",
+    year: "2026",
+    client: "Automated Media Engine",
+    liveUrl: "https://github.com/mukeshkuiry/reel-automation",
+    repoUrl: "https://github.com/mukeshkuiry/reel-automation",
+    techStack: ["Golang", "FFmpeg", "yt-dlp", "PostgreSQL", "robfig/cron", "Instagram Graph API"],
+    metrics: [
+      { label: "Cron Cadence", value: "Every 2 Hours" },
+      { label: "Ranking Formula", value: "0.7*Vel + 0.3*Com" },
+      { label: "Video Engine", value: "FFmpeg 9:16 Pipeline" },
+    ],
+    heroImage: "/images/projects/reel-automation-1.png",
+    galleryImages: [
+      "/images/projects/reel-automation-2.png",
+      "/images/projects/reel-automation-3.png",
+    ],
+    outroImage: "/images/projects/reel-automation-1.png",
+    featured: true,
+    introBlocks: [
+      {
+        heading: "Autonomous Viral Content Engineering",
+        paragraphs: [
+          "Reel Automation is a modular Go system (cmd/reel-automation) designed to detect, transform, and publish trending short-form video content with zero human intervention.",
+          "Triggered every two hours by robfig/cron, the Reddit OAuth2 fetcher pulls candidate video posts across configured subreddits and filters out NSFW, locked, or stale threads.",
+        ],
+      },
+    ],
+    bodyBlocks: [
+      {
+        heading: "Velocity Ranking, Deduplication & FFmpeg Transcoding",
+        paragraphs: [
+          "Instead of relying on raw upvote counts, the ranking engine computes upvote velocity (upvotes / age_in_minutes) and ranks candidates via score = velocity * 0.7 + comments * 0.3.",
+          "Unseen posts pass through sanitized yt-dlp downloading and an FFmpeg 9:16 vertical formatting pipeline before publishing to the Instagram Graph API with configurable exponential backoff retries.",
+        ],
+      },
+    ],
+    outroBlocks: [
+      {
+        heading: "Fault-Tolerant Worker Design",
+        paragraphs: [
+          "Every stage—from download to transcode and Graph API container publish—is guarded by stage-specific retry budgets and persistent PostgreSQL deduplication.",
+        ],
+      },
+    ],
+  },
+  {
+    slug: "committee-khata",
+    title: "Committee Khata",
+    shortDescription: "Community Lending Pool & Reducing-Balance Ledger",
+    description:
+      "A full-stack community lending and savings pool platform (React Native Expo + Express/MongoDB API) featuring reducing-balance interest accrual, 6-month interest capitalization, and a 4-tier payment waterfall.",
+    category: "FinTech Full-Stack",
+    year: "2026",
+    client: "Community Micro-Lending",
+    liveUrl: "https://github.com/mukeshkuiry/committee",
+    repoUrl: "https://github.com/mukeshkuiry/committee-khata-api",
+    techStack: ["React Native", "Expo Router", "TypeScript", "Express.js", "MongoDB", "Zod"],
+    metrics: [
+      { label: "Payment Waterfall", value: "Fine→Int→Prin→Pool" },
+      { label: "Default Rule", value: "6-Month Capitalize" },
+      { label: "Architecture", value: "Expo App + REST API" },
+    ],
+    heroImage: "/images/projects/committee-khata-1.png",
+    galleryImages: [
+      "/images/projects/committee-khata-2.png",
+      "/images/projects/committee-khata-3.png",
+    ],
+    outroImage: "/images/projects/committee-khata-1.png",
+    featured: true,
+    introBlocks: [
+      {
+        heading: "Digitizing Community Savings & Lending Pools",
+        paragraphs: [
+          "Traditional community lending committees track monthly member contributions, pool loans, reducing-balance interest, and late fines in paper notebooks prone to calculation errors.",
+          "Committee Khata provides both an offline-first React Native Expo mobile ledger and a hardened Express + MongoDB + Zod REST API (committee-khata-api) for deterministic financial accounting.",
+        ],
+      },
+    ],
+    bodyBlocks: [
+      {
+        heading: "Deterministic Monthly Engine & Payment Waterfall",
+        paragraphs: [
+          "The core financial engine enforces strict payment allocation priority: Fines → Unpaid Interest → Principal → Monthly Contribution, with real-time breakdown previews before committing a transaction.",
+          "During monthly lifecycle processing, active loans accrue reducing-balance interest, missed contributions accumulate monthly fines, and 6 consecutive months of unpaid interest automatically capitalize into principal.",
+        ],
+      },
+    ],
+    outroBlocks: [
+      {
+        heading: "Audit-Grade Clarity on Mobile",
+        paragraphs: [
+          "Every member's historical ledger, active loan state, and pool liquidity is computed deterministically, eliminating disputes in community micro-finance.",
+        ],
+      },
+    ],
+  },
+  {
     slug: "codearena",
     title: "CodeArena",
     shortDescription: "1v1 Real-Time Competitive Coding & gRPC Rating Engine",
@@ -438,108 +540,6 @@ export const PROJECTS: Project[] = [
         heading: "Production-Ready Container Topology",
         paragraphs: [
           "Orchestrated via Docker Compose with automated SQL schema initialization and health probes, the entire distributed pipeline boots reproducibly with a single command.",
-        ],
-      },
-    ],
-  },
-  {
-    slug: "reel-automation",
-    title: "Reel Automation",
-    shortDescription: "Autonomous Reddit-to-Instagram Reels Pipeline in Go",
-    description:
-      "An end-to-end Golang media automation pipeline that monitors subreddits via OAuth2, scores viral video velocity, transcodes 9:16 vertical video with FFmpeg, and publishes to Instagram Graph API.",
-    category: "Go Media Pipeline",
-    year: "2026",
-    client: "Automated Media Engine",
-    liveUrl: "https://github.com/mukeshkuiry/reel-automation",
-    repoUrl: "https://github.com/mukeshkuiry/reel-automation",
-    techStack: ["Golang", "FFmpeg", "yt-dlp", "PostgreSQL", "robfig/cron", "Instagram Graph API"],
-    metrics: [
-      { label: "Cron Cadence", value: "Every 2 Hours" },
-      { label: "Ranking Formula", value: "0.7*Vel + 0.3*Com" },
-      { label: "Video Engine", value: "FFmpeg 9:16 Pipeline" },
-    ],
-    heroImage: "/images/projects/reel-automation-1.png",
-    galleryImages: [
-      "/images/projects/reel-automation-2.png",
-      "/images/projects/reel-automation-3.png",
-    ],
-    outroImage: "/images/projects/reel-automation-1.png",
-    featured: false,
-    introBlocks: [
-      {
-        heading: "Autonomous Viral Content Engineering",
-        paragraphs: [
-          "Reel Automation is a modular Go system (cmd/reel-automation) designed to detect, transform, and publish trending short-form video content with zero human intervention.",
-          "Triggered every two hours by robfig/cron, the Reddit OAuth2 fetcher pulls candidate video posts across configured subreddits and filters out NSFW, locked, or stale threads.",
-        ],
-      },
-    ],
-    bodyBlocks: [
-      {
-        heading: "Velocity Ranking, Deduplication & FFmpeg Transcoding",
-        paragraphs: [
-          "Instead of relying on raw upvote counts, the ranking engine computes upvote velocity (upvotes / age_in_minutes) and ranks candidates via score = velocity * 0.7 + comments * 0.3.",
-          "Unseen posts pass through sanitized yt-dlp downloading and an FFmpeg 9:16 vertical formatting pipeline before publishing to the Instagram Graph API with configurable exponential backoff retries.",
-        ],
-      },
-    ],
-    outroBlocks: [
-      {
-        heading: "Fault-Tolerant Worker Design",
-        paragraphs: [
-          "Every stage—from download to transcode and Graph API container publish—is guarded by stage-specific retry budgets and persistent PostgreSQL deduplication.",
-        ],
-      },
-    ],
-  },
-  {
-    slug: "committee-khata",
-    title: "Committee Khata",
-    shortDescription: "Community Lending Pool & Reducing-Balance Ledger",
-    description:
-      "A full-stack community lending and savings pool platform (React Native Expo + Express/MongoDB API) featuring reducing-balance interest accrual, 6-month interest capitalization, and a 4-tier payment waterfall.",
-    category: "FinTech Full-Stack",
-    year: "2026",
-    client: "Community Micro-Lending",
-    liveUrl: "https://github.com/mukeshkuiry/committee",
-    repoUrl: "https://github.com/mukeshkuiry/committee-khata-api",
-    techStack: ["React Native", "Expo Router", "TypeScript", "Express.js", "MongoDB", "Zod"],
-    metrics: [
-      { label: "Payment Waterfall", value: "Fine→Int→Prin→Pool" },
-      { label: "Default Rule", value: "6-Month Capitalize" },
-      { label: "Architecture", value: "Expo App + REST API" },
-    ],
-    heroImage: "/images/projects/committee-khata-1.png",
-    galleryImages: [
-      "/images/projects/committee-khata-2.png",
-      "/images/projects/committee-khata-3.png",
-    ],
-    outroImage: "/images/projects/committee-khata-1.png",
-    featured: false,
-    introBlocks: [
-      {
-        heading: "Digitizing Community Savings & Lending Pools",
-        paragraphs: [
-          "Traditional community lending committees track monthly member contributions, pool loans, reducing-balance interest, and late fines in paper notebooks prone to calculation errors.",
-          "Committee Khata provides both an offline-first React Native Expo mobile ledger and a hardened Express + MongoDB + Zod REST API (committee-khata-api) for deterministic financial accounting.",
-        ],
-      },
-    ],
-    bodyBlocks: [
-      {
-        heading: "Deterministic Monthly Engine & Payment Waterfall",
-        paragraphs: [
-          "The core financial engine enforces strict payment allocation priority: Fines → Unpaid Interest → Principal → Monthly Contribution, with real-time breakdown previews before committing a transaction.",
-          "During monthly lifecycle processing, active loans accrue reducing-balance interest, missed contributions accumulate monthly fines, and 6 consecutive months of unpaid interest automatically capitalize into principal.",
-        ],
-      },
-    ],
-    outroBlocks: [
-      {
-        heading: "Audit-Grade Clarity on Mobile",
-        paragraphs: [
-          "Every member's historical ledger, active loan state, and pool liquidity is computed deterministically, eliminating disputes in community micro-finance.",
         ],
       },
     ],
